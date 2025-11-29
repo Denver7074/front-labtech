@@ -1,0 +1,62 @@
+<body class="container h-100 user-theme-light">
+<div class="row h-100">
+
+  <form [formGroup]="registrationForm" (ngSubmit)="signUp()" class="col-sm-9 col-md-8 col-lg-6 mx-auto my-auto">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          <div class="login-logo">
+            <img ngSrc="/logo.jpg" priority alt="image" class="logo-img" height="596" width="637">
+          </div>
+          <div class="flex-spacer"> Регистрация</div>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content (keydown.enter)="formKeyDown()">
+        <div class="row no-gutters mt-2">
+          <!-- Поле Email -->
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Email</mat-label>
+            <input name="email" matInput type="email" formControlName="email"/>
+            <mat-error *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched">
+              Это поле обязательно
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Поле Пароль -->
+          <mat-form-field appearance="outline" class="col-12">
+            <input [type]="isShowPassword() ? 'text' : 'password'" matInput formControlName="password"/>
+            <mat-label>Пароль</mat-label>
+            <button class="password-eye-btn" type="button" (click)="isShowPassword.set(!isShowPassword())">
+              <i [ngClass]="isShowPassword() ? 'bx bx-hide' : 'bx bx-show'"></i>
+            </button>
+            <mat-error *ngIf="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched">
+              Это поле обязательно
+            </mat-error>
+          </mat-form-field>
+
+          <!--Выбор роли -->
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Роль</mat-label>
+            <mat-select formControlName="type" (selectionChange)="onRoleChange($event)">
+              <mat-option *ngFor="let role of rolesArray" [value]="role.key">
+                {{ role.value }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <div class="col-auto">
+          <!-- Кнопка Войти -->
+          <button color="primary" mat-raised-button type="submit"> Регистрация</button>
+        </div>
+
+        <div class="text-nowrap">
+          <span id="enter">Уже есть аккаунт? <a href="/">Войти</a></span>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>
+</body>
