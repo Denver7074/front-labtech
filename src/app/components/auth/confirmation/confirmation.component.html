@@ -1,17 +1,19 @@
 <div class="wrapper">
-  <div class="container-load" *ngIf="!confirmed && !message">
-    <div class="spinner"></div>
-    <p>Подтверждаем активацию...</p>
-  </div>
-
-  <div class="container" *ngIf="confirmed">
-    <h2>Активация прошла успешно 🎉</h2>
-    <p>Теперь вы можете войти в систему.</p>
-    <a routerLink="/" class="btn">Войти</a>
-  </div>
-
-  <div class="container" *ngIf="message">
-    <h2>Ошибка 😕</h2>
-    <div [ngClass]="['message', 'error']"><p>{{ message }}</p></div>
-  </div>
+  @if (!confirmed && !message) {
+    <div class="container-load">
+      <div class="spinner"></div>
+      <p>Подтверждаем активацию...</p>
+    </div>
+  } @else if (confirmed) {
+    <div class="container">
+      <h2>Активация прошла успешно 🎉</h2>
+      <p>Теперь вы можете войти в систему.</p>
+      <a routerLink="/" class="btn">Войти</a>
+    </div>
+  } @else if (message) {
+    <div class="container">
+      <h2>Ошибка 😕</h2>
+      <div [ngClass]="['message', 'error']"><p>{{ message }}</p></div>
+    </div>
+  }
 </div>

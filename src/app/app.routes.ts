@@ -4,11 +4,13 @@ import {RegistrationComponent} from './components/auth/registration/registration
 import {ForgotPasswordComponent} from './components/auth/forgot-password/forgot-password.component';
 import {ResetPasswordComponent} from './components/auth/reset-password/reset-password.component';
 import {ConfirmationComponent} from './components/auth/confirmation/confirmation.component';
+import {UpdatePasswordComponent} from './components/auth/update-password/update-password.component';
 
 export const routes: Routes = [
   {path: '', component: LoggingComponent},
   {path: 'register', component: RegistrationComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'reset-password/:forgotId', component: ResetPasswordComponent},
-  {path: 'confirm/:activateId', component: ConfirmationComponent}
+  {path: 'confirm/:activateId', component: ConfirmationComponent},
+  {path: 'update-password', component: UpdatePasswordComponent}
 ];

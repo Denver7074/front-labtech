@@ -1,18 +1,17 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {NgClass, NgIf} from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-confirmation',
   imports: [
-    NgIf,
     RouterLink,
     NgClass
-  ],
+],
   templateUrl: './confirmation.component.html',
   standalone: true,
-  styleUrl: './confirmation.component.scss'
+  styleUrl: '../logging.scss'
 })
 export class ConfirmationComponent implements OnInit {
   // authService = inject(AuthService)

@@ -1,63 +1,51 @@
-import {Component, inject, signal} from '@angular/core';
-import {NgClass, NgIf} from '@angular/common';
-import {FormControl, FormGroup, ReactiveFormsModule, form} from '@angular/forms';
-import {Router} from '@angular/router';
+import {Component, signal} from '@angular/core';
+import {form, Field, required, email} from '@angular/forms/signals'
 import {LoginForm} from '../auth.interface';
-import {MatCard, MatCardContent, MatCardActions} from '@angular/material/card';
-import {MatButton} from '@angular/material/button';
-import {MatFormField, MatInput, MatLabel, MatError} from '@angular/material/input';
-import {NotifierService} from '../../../service/notifier.service';
+import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
+import {FormsModule} from '@angular/forms';
+import {NgClass} from '@angular/common';
+import {Button} from '../../button/button';
+
+
 
 @Component({
   selector: 'app-logging',
+  templateUrl: './logging.component.html',
   imports: [
-    ReactiveFormsModule,
-    NgClass,
-    NgIf,
-    MatCard,
-    MatCardContent,
-    MatCardActions,
-    MatButton,
+    Field,
     MatFormField,
     MatInput,
     MatLabel,
-    MatError
+    FormsModule,
+    MatError,
+    NgClass,
+    Button
   ],
-  templateUrl: './logging.component.html',
   standalone: true,
-  styleUrl: './logging.scss',
+  styleUrl: "../logging.scss"
 })
 export class LoggingComponent {
   isShowPassword = signal(false);
-
-  loginForm = form<LoginForm>({
-    login: '',
-    password: ''
+  data = signal<LoginForm>({
+    email: '',
+    password: '',
   });
-// {
-//     email: new FormControl('', [Validators.required, Validators.email]),
-//     password: new FormControl('', [Validators.required])
-//   });
 
-  // private authService = inject(AuthService);
-  private router = inject(Router);
-  private notifierService = inject(NotifierService);
+  loginForm = form(
+    this.data,
+    (schema) => {
+      required(schema.password);
+      required(schema.email);
+      email(schema.email);
+    }
+  );
 
-  login() {
-    if (!this.loginForm.valid) return;
-
-    const request: LoginForm = {
-      email: this.loginForm.value.email!,
-      password: this.loginForm.value.password!
-    };
-
-    // this.authService.login(request).subscribe({
-    //   next: () => this.router.navigate(['/update-password']),
-    //   error: (error) => this.notifierService.showError(error.message)
-    // });
-  }
-
-  formKeyDown() {
-    this.login();
+  onSubmit() {
+    const requestBody: LoginForm = {
+      email: this.loginForm.email().value(),
+      password: this.loginForm.password().value()
+    }
+    console.log(this.loginForm.email().value())
+    console.log(this.loginForm.password().value())
   }
 }

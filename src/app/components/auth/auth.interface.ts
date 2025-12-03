@@ -1,30 +1,30 @@
-export interface AccountRequest {
-  email: string | null | undefined,
+export interface ForgotForm {
+  email: string;
 }
 
 export interface LoginForm {
-  email: string | null | undefined,
-  password: string | null | undefined,
+  email: string;
+  password: string;
 }
 
-export interface ResetPasswordRequest {
-  newPassword: string | null | undefined,
-  repeatedPassword: string | null | undefined
+export interface ResetPasswordForm {
+  newPassword: string;
+  repeatedPassword: string;
 }
 
-export interface UserRegisterRequest {
-  email: string | null | undefined;
-  password: string | null | undefined;
-  type: string | null | undefined;
+export interface RegistrationForm {
+  email: string;
+  password: string;
+  type: string;
 }
 
 export interface UpdatePasswordRequest {
-  currentPassword: string | null | undefined;
-  newPassword: string | null | undefined;
-  repeatedPassword: string | null | undefined;
+  currentPassword: string;
+  newPassword: string;
+  repeatedPassword: string;
 }
 
 export interface AuthInterface {
-  accessToken: string,
-  refreshToken: string,
+  accessToken: string;
+  refreshToken: string;
 }

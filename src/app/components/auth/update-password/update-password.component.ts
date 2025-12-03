@@ -1,53 +1,59 @@
 import {Component, inject, signal} from '@angular/core';
 
 import {Router} from '@angular/router';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {UpdatePasswordRequest} from '../auth.interface';
-import {NgClass, NgIf} from '@angular/common';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CommonModule, NgClass} from '@angular/common';
+import {ResetPasswordForm, UpdatePasswordRequest} from '../auth.interface';
+import {form, Field, required} from '@angular/forms/signals'
+import {Button} from '../../button/button';
+import {MatInput, MatLabel, MatError, MatFormField} from '@angular/material/input';
 
 @Component({
   selector: 'app-update-password',
   imports: [
-    NgClass,
-    NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    Button,
+    FormsModule,
+    MatError,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    Field,
+    NgClass
   ],
   templateUrl: './update-password.component.html',
-  standalone: true
+  standalone: true,
+  styleUrl: "../logging.scss"
 })
 export class UpdatePasswordComponent {
   router = inject(Router)
   isShowNewPassword = signal(false);
   isShowRepeatedPassword = signal(false);
   isShowCurrentPassword = signal(false);
-  isUpdate: boolean = true;
-  message: string = ""
 
-  updatePasswordForm = new FormGroup({
-    currentPassword: new FormControl(null, Validators.required),
-    newPassword: new FormControl(null, Validators.required),
-    repeatedPassword: new FormControl(null, Validators.required),
-  })
 
-  updatePassword() {
-    if (!this.updatePasswordForm.valid) {
-      return;
-    }
+  data = signal<UpdatePasswordRequest>({
+    currentPassword: '',
+    newPassword: '',
+    repeatedPassword: '',
+  });
+
+  updatePasswordForm = form(
+    this.data,
+    (schema) => {
+      required(schema.currentPassword)
+      required(schema.newPassword);
+      required(schema.repeatedPassword);
+    });
+
+  onSubmit() {
     const requestBody: UpdatePasswordRequest = {
-      currentPassword: this.updatePasswordForm.value.currentPassword,
-      newPassword: this.updatePasswordForm.value.newPassword,
-      repeatedPassword: this.updatePasswordForm.value.repeatedPassword
+      currentPassword: this.updatePasswordForm.currentPassword().value(),
+      newPassword: this.updatePasswordForm.newPassword().value(),
+      repeatedPassword: this.updatePasswordForm.repeatedPassword().value()
     }
-    //@ts-ignore
-    // this.authService.updatePassword(requestBody).subscribe(
-    //   res => {
-    //     this.message = 'Пароль изменен'
-    //     this.isUpdate = true
-    //   },
-    //   (error) => {
-    //     this.message = error.message
-    //     this.isUpdate = false
-    //   }
-    // )
+    console.log(this.updatePasswordForm.currentPassword().value())
+    console.log(this.updatePasswordForm.newPassword().value())
+    console.log(this.updatePasswordForm.repeatedPassword().value())
   }
 }

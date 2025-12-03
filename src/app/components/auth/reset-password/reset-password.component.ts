@@ -1,50 +1,64 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {CommonModule, NgClass} from '@angular/common';
-import {ResetPasswordRequest} from '../auth.interface';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import {ResetPasswordForm} from '../auth.interface';
+import {form, Field, required} from '@angular/forms/signals'
+import {Button} from '../../button/button';
+import {MatInput, MatLabel, MatError, MatFormField} from '@angular/material/input';
+
 
 @Component({
   selector: 'app-reset-password',
   imports: [
-    NgClass,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    Button,
+    FormsModule,
+    MatError,
+    MatInput,
+    MatLabel,
+    Field,
+    MatFormField
   ],
   templateUrl: './reset-password.component.html',
-  standalone: true
+  standalone: true,
+  styleUrl: "../logging.scss"
 })
-export class ResetPasswordComponent {
+export class ResetPasswordComponent implements OnInit {
   // authService = inject(AuthService)
-  router = inject(Router)
+  router = inject(Router);
+  route = inject(ActivatedRoute);
   isShowNewPassword = signal(false);
   isShowRepeatedPassword = signal(false);
-  message: string = ""
-  forgotId!: string;
+  forgotId = signal('');
+  message = signal('');
 
-  constructor(private route: ActivatedRoute) {
-    this.route.params.subscribe(params => {
-      this.forgotId = params['forgotId'];
+  data = signal<ResetPasswordForm>({
+    newPassword: '',
+    repeatedPassword: '',
+  });
+
+  resetPasswordForm = form(
+    this.data,
+    (schema) => {
+      required(schema.newPassword);
+      required(schema.repeatedPassword);
     });
+
+  onSubmit() {
+    const requestBody: ResetPasswordForm = {
+      newPassword: this.resetPasswordForm.newPassword().value(),
+      repeatedPassword: this.resetPasswordForm.repeatedPassword().value()
+    }
+    console.log(this.resetPasswordForm.newPassword().value())
+    console.log(this.resetPasswordForm.repeatedPassword().value())
+    console.log(this.forgotId())
   }
 
-  resetPasswordForm = new FormGroup({
-    newPassword: new FormControl(null, Validators.required),
-    repeatedPassword: new FormControl(null, Validators.required),
-  })
-
-  resetPassword() {
-    if (!this.resetPasswordForm.valid) {
-      return;
-    }
-    const requestBody: ResetPasswordRequest = {
-      newPassword: this.resetPasswordForm.value.newPassword,
-      repeatedPassword: this.resetPasswordForm.value.repeatedPassword
-    }
-    //@ts-ignore
-    // this.authService.reset(requestBody, this.forgotId).subscribe(
-    //   res => this.router.navigate(['']),
-    //   (error) => this.message = error.message
-    // )
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.forgotId.set(params['forgotId'])
+    });
   }
 }

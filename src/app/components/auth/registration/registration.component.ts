@@ -1,86 +1,63 @@
 import {Component, inject, signal} from '@angular/core';
-import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {UserRegisterRequest} from '../auth.interface';
-import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
+import {RegistrationForm} from '../auth.interface';
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {MatButton} from '@angular/material/button';
-import {MatSelect, MatSelectChange} from '@angular/material/select';
-import {MatOption} from '@angular/material/core';
-import {NotifierService} from '../../../service/notifier.service';
+import {form, Field, required, email} from '@angular/forms/signals'
+import {FormsModule} from '@angular/forms';
+import {Button} from '../../button/button';
+import {MatOption, MatSelect} from '@angular/material/select';
+import {NgClass} from '@angular/common';
+
 
 @Component({
   selector: 'app-registration',
   imports: [
-    NgClass,
-    ReactiveFormsModule,
-    NgForOf,
-    NgOptimizedImage,
-    NgIf,
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatCardContent,
+    Field,
+    FormsModule,
+    Button,
     MatError,
-    MatFormField,
     MatInput,
-    MatLabel,
     MatFormField,
-    MatError,
-    MatButton,
-    MatCardActions,
+    MatLabel,
+    NgClass,
     MatSelect,
-    MatOption,
-    MatSelect,
-    MatSelect
+    MatOption
   ],
   templateUrl: './registration.component.html',
-  standalone: true
+  standalone: true,
+  styleUrl: "../logging.scss"
 })
 export class RegistrationComponent {
   isShowPassword = signal(false);
-  // authService = inject(AuthService)
   router = inject(Router)
-  errorService = inject(NotifierService);
-  selectedRole: string = 'PERSON';
 
-  rolesArray = [
-    {key: 'ORGANIZATION', value: 'Организация'},
-    {key: 'PERSON', value: 'Пользователь'}
-  ];
+  rolesArray = signal([
+    { key: 'ORGANIZATION', value: 'Организация' },
+    { key: 'PERSON', value: 'Пользователь' }
+  ]);
 
-  registrationForm = new FormGroup({
-    email: new FormControl(null, [Validators.required, Validators.email]),
-    password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
-    type: new FormControl(this.selectedRole, Validators.required)
+  data = signal<RegistrationForm>({
+    email: '',
+    password: '',
+    type: '' ,
   });
 
-  signUp() {
-    if (!this.registrationForm.valid) {
-      return;
+  registrationForm = form(
+    this.data,
+    (schema) => {
+      required(schema.email);
+      email(schema.email);
+      required(schema.password);
+    });
+
+  onSubmit() {
+    const requestBody: RegistrationForm = {
+      email: this.registrationForm.email().value(),
+      password: this.registrationForm.password().value(),
+      type: this.registrationForm.type().value()
     }
-    const requestBody: UserRegisterRequest = {
-      email: this.registrationForm.value.email,
-      password: this.registrationForm.value.password,
-      type: this.selectedRole
-    };
-    // this.authService.signUp(requestBody).subscribe(
-    //   (response) => {
-    //     this.errorService.showInfo(`На ${requestBody.email} направлена ссылка для подтверждения`);
-    //   },
-    //   (error) => {
-    //     this.errorService.showError(error.message);
-    //   }
-    // );
-  }
-
-  onRoleChange(event: MatSelectChange) {
-    const selectedValue = event.value;
-    console.log(selectedValue);
-  }
-
-  formKeyDown() {
-    this.signUp();
+    console.log(this.registrationForm.email().value())
+    console.log(this.registrationForm.password().value())
+    console.log(this.registrationForm.type().value())
   }
 }

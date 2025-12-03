@@ -1,57 +1,46 @@
-import {Component, inject} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Component, inject, signal} from '@angular/core';
 import {Router} from '@angular/router';
-import {NgIf} from '@angular/common';
-import {AccountRequest} from '../auth.interface';
-import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
+
+import {ForgotForm} from '../auth.interface';
+import {form, Field, required, email} from '@angular/forms/signals'
+import {FormsModule} from '@angular/forms';
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {MatButton} from '@angular/material/button';
-import {NotifierService} from '../../../service/notifier.service';
+import {Button} from '../../button/button';
+
 
 @Component({
   selector: 'app-forgot-password',
   imports: [
-    ReactiveFormsModule,
-    NgIf,
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatCardContent,
-    MatError,
+    FormsModule,
     MatFormField,
     MatInput,
+    Field,
     MatLabel,
-    MatButton,
-    MatCardActions
+    MatError,
+    Button
   ],
   templateUrl: './forgot-password.component.html',
   standalone: true,
-  styleUrl: './forgot-password.component.scss'
+  styleUrl: '../logging.scss'
 })
 export class ForgotPasswordComponent {
-  // authService = inject(AuthService)
   router = inject(Router)
-  notifierService = inject(NotifierService);
 
-  forgotPasswordForm = new FormGroup({
-    email: new FormControl(null, Validators.required),
-  })
+  data = signal<ForgotForm>({
+    email: '',
+  });
 
-  forgotPassword() {
-    if (!this.forgotPasswordForm.valid) {
-      return;
+  forgotForm = form(
+    this.data,
+    (schema) => {
+      required(schema.email);
+      email(schema.email);
+    });
+
+  onSubmit() {
+    const requestBody: ForgotForm = {
+      email: this.forgotForm.email().value()
     }
-    const requestBody: AccountRequest = {
-      email: this.forgotPasswordForm.value.email,
-    }
-    //@ts-ignore
-    // this.authService.forgot(requestBody).subscribe(
-    //   res => this.router.navigate(['/']),
-    //   (error) => this.notifierService.showError(error.message)
-    // )
-  }
-
-  formKeyDown() {
-    this.forgotPassword();
+    console.log(this.forgotForm.email().value())
   }
 }
