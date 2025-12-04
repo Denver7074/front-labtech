@@ -25,7 +25,7 @@ import {NgClass} from '@angular/common';
   ],
   templateUrl: './registration.component.html',
   standalone: true,
-  styleUrl: "../logging.scss"
+  styleUrl: "../auth.form.scss"
 })
 export class RegistrationComponent {
   isShowPassword = signal(false);

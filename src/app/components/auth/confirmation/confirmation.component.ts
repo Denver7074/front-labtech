@@ -11,7 +11,7 @@ import { NgClass } from '@angular/common';
 ],
   templateUrl: './confirmation.component.html',
   standalone: true,
-  styleUrl: '../logging.scss'
+  styleUrl: '../auth.form.scss'
 })
 export class ConfirmationComponent implements OnInit {
   // authService = inject(AuthService)

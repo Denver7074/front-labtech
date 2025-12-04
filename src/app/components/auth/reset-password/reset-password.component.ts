@@ -23,7 +23,7 @@ import {MatInput, MatLabel, MatError, MatFormField} from '@angular/material/inpu
   ],
   templateUrl: './reset-password.component.html',
   standalone: true,
-  styleUrl: "../logging.scss"
+  styleUrl: "../auth.form.scss"
 })
 export class ResetPasswordComponent implements OnInit {
   // authService = inject(AuthService)

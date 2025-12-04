@@ -22,7 +22,7 @@ import {Button} from '../../button/button';
     Button
   ],
   standalone: true,
-  styleUrl: "../logging.scss"
+  styleUrl: "../auth.form.scss"
 })
 export class LoggingComponent {
   isShowPassword = signal(false);

@@ -23,7 +23,7 @@ import {MatInput, MatLabel, MatError, MatFormField} from '@angular/material/inpu
   ],
   templateUrl: './update-password.component.html',
   standalone: true,
-  styleUrl: "../logging.scss"
+  styleUrl: "../auth.form.scss"
 })
 export class UpdatePasswordComponent {
   router = inject(Router)
@@ -41,7 +41,7 @@ export class UpdatePasswordComponent {
   updatePasswordForm = form(
     this.data,
     (schema) => {
-      required(schema.currentPassword)
+      required(schema.currentPassword);
       required(schema.newPassword);
       required(schema.repeatedPassword);
     });
