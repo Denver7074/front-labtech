@@ -21,7 +21,7 @@ import {Button} from '../../button/button';
   ],
   templateUrl: './forgot-password.component.html',
   standalone: true,
-  styleUrl: '../logging.scss'
+  styleUrl: "../logging.scss"
 })
 export class ForgotPasswordComponent {
   router = inject(Router)
