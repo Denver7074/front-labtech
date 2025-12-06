@@ -1,11 +1,12 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import {ResetPasswordForm} from '../auth.interface';
-import {form, Field, required} from '@angular/forms/signals'
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {ResetPasswordRequest} from '../../../data/auth.interface';
 import {Button} from '../../button/button';
 import {MatInput, MatLabel, MatError, MatFormField} from '@angular/material/input';
+import {AuthService} from '../../../service/auth/auth.service';
+import {NotifierService} from '../../../service/notifier.service';
 
 
 @Component({
@@ -18,7 +19,6 @@ import {MatInput, MatLabel, MatError, MatFormField} from '@angular/material/inpu
     MatError,
     MatInput,
     MatLabel,
-    Field,
     MatFormField
   ],
   templateUrl: './reset-password.component.html',
@@ -26,38 +26,35 @@ import {MatInput, MatLabel, MatError, MatFormField} from '@angular/material/inpu
   styleUrl: "../auth.form.scss"
 })
 export class ResetPasswordComponent implements OnInit {
-  // authService = inject(AuthService)
-  router = inject(Router);
-  route = inject(ActivatedRoute);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private notifierService = inject(NotifierService);
+  private fb = inject(FormBuilder);
+  activatedRoute = inject(ActivatedRoute);
   isShowNewPassword = signal(false);
   isShowRepeatedPassword = signal(false);
   forgotId = signal('');
   message = signal('');
 
-  data = signal<ResetPasswordForm>({
-    newPassword: '',
-    repeatedPassword: '',
-  });
-
-  resetPasswordForm = form(
-    this.data,
-    (schema) => {
-      required(schema.newPassword);
-      required(schema.repeatedPassword);
-    });
+  form = this.fb.group({
+      newPassword: ['', [Validators.minLength(8)]],
+      repeatedPassword: ['', [Validators.minLength(8)]]
+    }
+  );
 
   onSubmit() {
-    const requestBody: ResetPasswordForm = {
-      newPassword: this.resetPasswordForm.newPassword().value(),
-      repeatedPassword: this.resetPasswordForm.repeatedPassword().value()
+    const requestBody: ResetPasswordRequest = {
+      newPassword: this.form.get('newPassword')?.value,
+      repeatedPassword:  this.form.get('repeatedPassword')?.value
     }
-    console.log(this.resetPasswordForm.newPassword().value())
-    console.log(this.resetPasswordForm.repeatedPassword().value())
-    console.log(this.forgotId())
+    this.authService.reset(requestBody, this.forgotId()).subscribe({
+      next: () => this.router.navigate(['/']),
+      error: (error) => this.notifierService.showError(error.message)
+    });
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.activatedRoute.params.subscribe(params => {
       this.forgotId.set(params['forgotId'])
     });
   }

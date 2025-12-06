@@ -1,0 +1,78 @@
+<form [formGroup]="personForm" (ngSubmit)="onSubmit()" class="form">
+  <ng-container class="form-fields">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Имя</mat-label>
+      <input matInput formControlName="firstName" />
+      @if (personForm.controls['firstName'].hasError('required')) {
+        <mat-error>Обязательное поле</mat-error>
+      }
+    </mat-form-field>
+  </ng-container>
+
+  <ng-container class="form-fields">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Отчество</mat-label>
+      <input matInput formControlName="middleName" />
+    </mat-form-field>
+  </ng-container>
+
+  <ng-container class="form-fields">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Фамилия</mat-label>
+      <input matInput formControlName="lastName" />
+      @if (personForm.controls['lastName'].hasError('required')) {
+        <mat-error>Обязательное поле</mat-error>
+      }
+    </mat-form-field>
+  </ng-container>
+
+  <ng-container>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>СНИЛС</mat-label>
+      <input
+        matInput
+        formControlName="snils"
+        mask="000-000-000 00"
+        placeholder="123-456-789 00"
+        [dropSpecialCharacters]="true"
+      />
+      @if (personForm.controls['snils'].hasError('required')) {
+        <mat-error>Обязательное поле</mat-error>
+      }
+      @if (personForm.controls['snils'].hasError('maxlength')) {
+        <mat-error>Не более 11 символов</mat-error>
+      }
+    </mat-form-field>
+  </ng-container>
+
+  <ng-container class="form-fields">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Место рождения</mat-label>
+      <input matInput formControlName="birthPlace" />
+      @if (personForm.controls['birthPlace'].hasError('required')) {
+        <mat-error>Обязательное поле</mat-error>
+      }
+    </mat-form-field>
+  </ng-container>
+
+  <ng-container class="form-fields">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Дата рождения</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="birthDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      @if (personForm.controls['birthDate'].hasError('required')) {
+        <mat-error>Обязательное поле</mat-error>
+      }
+    </mat-form-field>
+  </ng-container>
+
+  <ng-container class="form-actions">
+    <app-button type="submit">
+      Сохранить
+    </app-button>
+  </ng-container>
+</form>

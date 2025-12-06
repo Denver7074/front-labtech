@@ -1,10 +1,8 @@
 import {Component, inject, signal} from '@angular/core';
 
-import {Router} from '@angular/router';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule, NgClass} from '@angular/common';
-import {ResetPasswordForm, UpdatePasswordRequest} from '../auth.interface';
-import {form, Field, required} from '@angular/forms/signals'
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {NgClass} from '@angular/common';
+import {UpdatePasswordRequest} from '../../../data/auth.interface';
 import {Button} from '../../button/button';
 import {MatInput, MatLabel, MatError, MatFormField} from '@angular/material/input';
 
@@ -18,7 +16,6 @@ import {MatInput, MatLabel, MatError, MatFormField} from '@angular/material/inpu
     MatFormField,
     MatInput,
     MatLabel,
-    Field,
     NgClass
   ],
   templateUrl: './update-password.component.html',
@@ -26,34 +23,23 @@ import {MatInput, MatLabel, MatError, MatFormField} from '@angular/material/inpu
   styleUrl: "../auth.form.scss"
 })
 export class UpdatePasswordComponent {
-  router = inject(Router)
+  private fb = inject(FormBuilder);
   isShowNewPassword = signal(false);
   isShowRepeatedPassword = signal(false);
   isShowCurrentPassword = signal(false);
 
-
-  data = signal<UpdatePasswordRequest>({
-    currentPassword: '',
-    newPassword: '',
-    repeatedPassword: '',
-  });
-
-  updatePasswordForm = form(
-    this.data,
-    (schema) => {
-      required(schema.currentPassword);
-      required(schema.newPassword);
-      required(schema.repeatedPassword);
-    });
+  form = this.fb.group({
+      currentPassword: ['', [Validators.minLength(8)]],
+      newPassword: ['', [Validators.minLength(8)]],
+      repeatedPassword: ['', [Validators.minLength(8)]]
+    }
+  );
 
   onSubmit() {
     const requestBody: UpdatePasswordRequest = {
-      currentPassword: this.updatePasswordForm.currentPassword().value(),
-      newPassword: this.updatePasswordForm.newPassword().value(),
-      repeatedPassword: this.updatePasswordForm.repeatedPassword().value()
+      currentPassword: this.form.get('currentPassword')?.value,
+      newPassword: this.form.get('newPassword')?.value,
+      repeatedPassword: this.form.get('repeatedPassword')?.value
     }
-    console.log(this.updatePasswordForm.currentPassword().value())
-    console.log(this.updatePasswordForm.newPassword().value())
-    console.log(this.updatePasswordForm.repeatedPassword().value())
   }
 }

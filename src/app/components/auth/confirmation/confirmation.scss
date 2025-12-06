@@ -1,0 +1,52 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.loading-text {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 1rem;
+}
+
+.container {
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  padding: 2rem;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+
+  &.success {
+    h2 {
+      color: #2e7d32; // зелёный для успеха
+    }
+  }
+
+  &.error {
+    h2 {
+      color: #d32f2f; // красный для ошибки
+    }
+  }
+}
+
+.message.error {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(211, 47, 47, 0.08);
+  border-radius: 8px;
+  color: #d32f2f;
+}

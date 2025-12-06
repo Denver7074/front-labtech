@@ -1,36 +1,39 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
-import { NgClass } from '@angular/common';
+import {AuthService} from '../../../service/auth/auth.service';
+import {NotifierService} from '../../../service/notifier.service';
+import {Button} from '../../button/button';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-confirmation',
   imports: [
+    MatProgressSpinner,
     RouterLink,
-    NgClass
-],
+    Button
+  ],
   templateUrl: './confirmation.component.html',
   standalone: true,
-  styleUrl: '../auth.form.scss'
+  styleUrl: 'confirmation.scss'
 })
 export class ConfirmationComponent implements OnInit {
-  // authService = inject(AuthService)
-  router = inject(Router)
-  confirmed = false;
-  message: string = "";
-  constructor(private route: ActivatedRoute) {}
+  private authService = inject(AuthService)
+  private activatedRoute = inject(ActivatedRoute);
+  private notifierService = inject(NotifierService);
+  isConfirmation = signal(false);
+  message = signal("");
 
   ngOnInit(): void {
-    // const activateId = this.route.snapshot.paramMap.get('activateId');
-    // if (activateId) {
-    //   this.authService.confirmation(activateId).subscribe({
-    //     next: () => {
-    //       this.confirmed = true;
-    //     },
-    //     error: (error) => {
-    //       this.message = error.message || 'Произошла неизвестная ошибка';
-    //     }
-    //   });
-    // }
+    const activateId = this.activatedRoute.snapshot.paramMap.get('activateId');
+    if (activateId) {
+      this.authService.confirmation(activateId).subscribe({
+        next: () =>this.isConfirmation.set(true),
+        error: (error) => this.notifierService.showError(error.message)
+      });
+    }
+  }
+
+  repeatConfirmation() {
+
   }
 }

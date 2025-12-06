@@ -1,0 +1,31 @@
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  gap: 16px;
+}
+
+.error-message {
+  color: var(--mdc-theme-error, #b00020);
+  font-size: 16px;
+  margin: 16px;
+}
+
+.profile-card {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.detail-item {
+  line-height: 1.5;
+}

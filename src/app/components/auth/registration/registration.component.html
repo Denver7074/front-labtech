@@ -1,13 +1,13 @@
-<form class="form" (ngSubmit)="onSubmit()">
+<form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="form-fields">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Email</mat-label>
       <input
         matInput
         type="email"
-        [field]="registrationForm.email"
+        formControlName="email"
       >
-      @if (!registrationForm.email().valid()) {
+      @if (form.controls['email'].hasError('email')) {
         <mat-error>Некорректный email</mat-error>
       }
     </mat-form-field>
@@ -17,19 +17,19 @@
       <input
         matInput
         [type]="isShowPassword() ? 'text' : 'password'"
-        [field]="registrationForm.password"
+        formControlName="password"
       >
       <button class="password-eye-btn" type="button" (click)="isShowPassword.set(!isShowPassword())">
         <i [ngClass]="isShowPassword() ? 'bx bx-hide' : 'bx bx-show'"></i>
       </button>
-      @if (!registrationForm.password().valid()) {
+      @if (form.controls['password'].hasError('minLength')) {
         <mat-error>Пароль менее 8 символов</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Тип аккаунта</mat-label>
-      <mat-select [field]="registrationForm.type">
+      <mat-select formControlName="type">
         @for (role of rolesArray(); track role.key) {
           <mat-option [value]="role.key">{{ role.value }}</mat-option>
         }
@@ -40,7 +40,7 @@
   <div class="form-actions">
     <div>
       <app-button type="submit"
-                  [disabled]="!registrationForm.password().valid() || !registrationForm.email().valid()">
+                  [disabled]="form.controls['password'].hasError('minLength') || form.controls['email'].hasError('email')">
         Регистрация
       </app-button>
     </div>

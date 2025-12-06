@@ -1,13 +1,13 @@
-<form class="form" (ngSubmit)="onSubmit()">
+<form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="form-fields">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Email</mat-label>
       <input
         matInput
         type="email"
-        [field]="loginForm.email"
+        formControlName ="email"
       >
-      @if (!loginForm.email().valid()) {
+      @if (form.controls['email'].hasError('email')) {
         <mat-error>Некорректный email</mat-error>
       }
     </mat-form-field>
@@ -17,20 +17,20 @@
       <input
         matInput
         [type]="isShowPassword() ? 'text' : 'password'"
-        [field]="loginForm.password"
+        formControlName ="password"
       >
       <button class="password-eye-btn" type="button" (click)="isShowPassword.set(!isShowPassword())">
         <i [ngClass]="isShowPassword() ? 'bx bx-hide' : 'bx bx-show'"></i>
       </button>
-      @if (!loginForm.password().valid()) {
-        <mat-error>Пароль не введен</mat-error>
+      @if (form.controls['password'].hasError('require')) {
+        <mat-error>Пароль должен содержать не менее 8 символов</mat-error>
       }
     </mat-form-field>
   </div>
 
   <div class="form-actions">
     <div>
-      <app-button type="submit" [disabled]="!loginForm.password().valid() || !loginForm.email().valid()">
+      <app-button type="submit">
         Вход
       </app-button>
     </div>
