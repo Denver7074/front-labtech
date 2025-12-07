@@ -1,13 +1,12 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav class="mainnav" mode="side" #mainnav opened>
-    <!-- Logo Section -->
     <div class="sidebar-logo">
       <div class="logo-badge">
         <img src="/logo.jpg" alt="Lab.Tech Logo" class="logo-image"/>
       </div>
       <div class="logo-text-container">
         <h1 class="logo-text">Lab.Tech</h1>
-        <p class="logo-subtitle">Laboratory Management</p>
+        <p class="logo-subtitle">Лабораторный менеджмент</p>
       </div>
     </div>
 
@@ -16,17 +15,18 @@
       <div class="nav-section">
         <p class="nav-section-title">Main</p>
         <mat-nav-list role="list" class="nav-list">
-          <mat-list-item class="nav-item" routerLinkActive="active">
-            <mat-icon matListItemIcon class="nav-icon">dashboard</mat-icon>
-            <a matListItemTitle routerLink="" class="nav-link">Dashboard</a>
-          </mat-list-item>
+
           <mat-list-item class="nav-item" routerLinkActive="active">
             <mat-icon matListItemIcon class="nav-icon">assignment</mat-icon>
             <a matListItemTitle routerLink="/tests" class="nav-link">Tests</a>
           </mat-list-item>
           <mat-list-item class="nav-item" routerLinkActive="active">
             <mat-icon matListItemIcon class="nav-icon">groups</mat-icon>
-            <a matListItemTitle routerLink="/patients" class="nav-link">Patients</a>
+            <a matListItemTitle routerLink="/" class="nav-link">Patients</a>
+          </mat-list-item>
+          <mat-list-item class="nav-item" routerLinkActive="active">
+            <mat-icon matListItemIcon class="nav-icon">dashboard</mat-icon>
+            <a matListItemTitle routerLink="" class="nav-link">Dashboard</a>
           </mat-list-item>
         </mat-nav-list>
       </div>
