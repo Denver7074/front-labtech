@@ -1,9 +1,9 @@
 export interface PersonInfo {
   firstName: string;
-  middleName?: string | null;
+  middleName?: string;
   lastName: string;
-  snils?: string | null;
-  birthPlace?: string | null;
+  snils?: string;
+  birthPlace?: string;
   birthDate: string;
   educations: EducationInfo[];
   works: WorkResponsibilityInfo[];

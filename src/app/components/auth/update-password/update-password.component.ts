@@ -3,7 +3,7 @@ import {Component, inject, signal} from '@angular/core';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgClass} from '@angular/common';
 import {UpdatePasswordRequest} from '../../../data/auth.interface';
-import {Button} from '../../button/button';
+import {Button} from '../../ui/button/button';
 import {MatInput, MatLabel, MatError, MatFormField} from '@angular/material/input';
 
 @Component({

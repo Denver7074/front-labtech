@@ -1,31 +1,145 @@
+.profile-page-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  min-height: 100vh;
+}
+
 .loading-spinner {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 32px;
-  gap: 16px;
+  gap: 1rem;
+  margin: 2rem auto;
 }
 
 .error-message {
-  color: var(--mdc-theme-error, #b00020);
-  font-size: 16px;
-  margin: 16px;
+  text-align: center;
+  margin: 2rem;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  max-width: 2000px;
+  width: 100%;
 }
 
 .profile-card {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+
+  &.avatar-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+
+    .avatar-wrapper {
+      flex-shrink: 0;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+
+      .avatar {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .info-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      h2 {
+        margin: 0;
+        font-size: 1.4rem;
+      }
+
+      .age {
+        font-size: 0.9rem;
+        margin: 0 0 10px 0;
+      }
+
+      .detail-item {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem 0.5rem;
+
+        strong {
+          min-width: 100px;
+        }
+      }
+
+      .edit-btn {
+        align-self: flex-start;
+        margin-top: 10px;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  &.contacts-card,
+  &.education-card,
+  &.work-card {
+    padding: 20px;
+
+    mat-card-header {
+      padding: 0 0 16px 0;
+
+      mat-card-title {
+        font-size: 1.1rem;
+        font-weight: 500;
+      }
+    }
+
+    mat-card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .detail-item {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem 0.5rem;
+
+        strong {
+          min-width: 100px;
+        }
+      }
+
+      p {
+        font-style: italic;
+        margin: 0;
+      }
+    }
+  }
 }
 
-.profile-details {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 16px;
-}
+@media (max-width: 768px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
 
-.detail-item {
-  line-height: 1.5;
+  .avatar-card {
+    flex-direction: column;
+    align-items: center;
+
+    .avatar-wrapper {
+      width: 100px;
+      height: 100px;
+    }
+  }
 }

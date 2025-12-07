@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {LoginComponent} from './components/auth/logging/login.component';
 import {RegistrationComponent} from './components/auth/registration/registration.component';
 import {ForgotPasswordComponent} from './components/auth/forgot-password/forgot.password.component';
@@ -8,7 +8,7 @@ import {UpdatePasswordComponent} from './components/auth/update-password/update-
 import {Create} from './components/profile/person/general/create/create';
 import {canActivateAuth} from './service/auth/access.guard';
 import {Main} from './components/profile/person/general/main/main';
-import {LayotComponent} from './components/layot/layot.component';
+import {LayotComponent} from './components/lay/layot/layot.component';
 
 export const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -19,8 +19,8 @@ export const routes: Routes = [
   {path: 'update-password', component: UpdatePasswordComponent},
   {
     path: '', component: LayotComponent, children: [
-      {path: 'persons/:personId/general', component: Main, canActivate: [canActivateAuth]}
-    ]
+      {path: 'persons/:personId/general', component: Main},
+      {path: 'persons/general', component: Create},
+    ], canActivate: [canActivateAuth]
   },
-  {path: 'persons/general', component: Create, canActivate: [canActivateAuth]},
 ];

@@ -2,7 +2,7 @@ import {Component, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {AuthService} from '../../../service/auth/auth.service';
 import {NotifierService} from '../../../service/notifier.service';
-import {Button} from '../../button/button';
+import {Button} from '../../ui/button/button';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 @Component({

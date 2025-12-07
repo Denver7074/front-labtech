@@ -16,7 +16,6 @@ import {AuthInterface, ErrorResponse} from '../../data/response.interface';
   providedIn: 'root'
 })
 export class AuthService {
-
   http = inject(HttpClient);
   cookieService = inject(CookieService);
   router = inject(Router);
@@ -45,7 +44,7 @@ export class AuthService {
     return this.accessToken()
   }
 
-  login(payload: UserLoginRequest) {
+  login(payload: UserLoginRequest): Observable<AuthInterface> {
     return this.http.post<AuthInterface>(
       `/auth-service/api/v1/login`,
       payload)

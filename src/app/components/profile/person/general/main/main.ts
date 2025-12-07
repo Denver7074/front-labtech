@@ -1,22 +1,23 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
 import {PersonGeneralService} from '../../../../../service/profile/person.profile.service';
 import {PersonInfo} from '../../../../../data/profile.interface';
 import {ActivatedRoute} from '@angular/router';
-import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} from '@angular/material/card';
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatError} from '@angular/material/input';
+import {NgOptimizedImage} from '@angular/common';
 
 
 @Component({
   selector: 'app-main',
   imports: [
-    MatCardSubtitle,
+    MatError,
+    MatProgressSpinner,
     MatCardContent,
     MatCardTitle,
     MatCardHeader,
     MatCard,
-    MatError,
-    MatProgressSpinner
+    NgOptimizedImage,
   ],
   templateUrl: './main.html',
   styleUrl: './main.scss',
@@ -25,7 +26,7 @@ import {MatError} from '@angular/material/input';
 export class Main implements OnInit {
   private profileService = inject(PersonGeneralService);
   private activatedRoute = inject(ActivatedRoute);
-  personInfo: PersonInfo | null = null;
+  personInfo = signal<PersonInfo | null>(null);
   isLoading = signal(false);
   errorMessage = signal('');
 
@@ -41,7 +42,8 @@ export class Main implements OnInit {
 
     this.profileService.getMyGeneralInformation(personId).subscribe({
       next: (data) => {
-        this.personInfo = data;
+        console.log('Данные получены:', data);
+        this.personInfo.set(data);
         this.isLoading.set(false);
       },
       error: (error) => {
@@ -54,20 +56,22 @@ export class Main implements OnInit {
 
   // Полное имя
   getFullName(): string {
-    if (!this.personInfo) return '';
+    const info = this.personInfo(); // ← вызов сигнала
+    if (!info) return '';
 
-    const parts = [this.personInfo.lastName, this.personInfo.firstName];
-    if (this.personInfo.middleName) {
-      parts.push(this.personInfo.middleName);
+    const parts = [info.lastName, info.firstName];
+    if (info.middleName) {
+      parts.push(info.middleName);
     }
     return parts.join(' ');
   }
 
   // Возраст
   getAge(): number | null {
-    if (!this.personInfo?.birthDate) return null;
+    const info = this.personInfo();
+    if (!info?.birthDate) return null;
 
-    const birthDate = new Date(this.personInfo.birthDate);
+    const birthDate = new Date(info.birthDate);
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
@@ -80,7 +84,7 @@ export class Main implements OnInit {
   }
 
   // Форматирование даты
-  formatDate(dateString: string): string {
+  formatDate(dateString: string | undefined): string {
     if (!dateString) return '';
 
     try {

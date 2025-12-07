@@ -9,8 +9,8 @@ import {
   MatDatepickerInput,
   MatDatepickerToggle
 } from '@angular/material/datepicker';
-import {Button} from '../../../../button/button';
 import {NgxMaskDirective, provideNgxMask} from 'ngx-mask';
+import {Button} from '../../../../ui/button/button';
 
 
 @Component({
@@ -24,8 +24,8 @@ import {NgxMaskDirective, provideNgxMask} from 'ngx-mask';
     MatDatepickerToggle,
     MatDatepicker,
     MatError,
-    Button,
-    NgxMaskDirective
+    NgxMaskDirective,
+    Button
   ],
   templateUrl: './create.html',
   styleUrl: './create.scss',

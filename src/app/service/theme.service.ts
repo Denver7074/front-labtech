@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
+  isDark = signal(false);
   private readonly THEME_KEY = 'theme_preference';
 
   initTheme() {
@@ -18,6 +19,7 @@ export class ThemeService {
   toggleTheme() {
     const current = document.body.style.colorScheme === 'dark' ? 'light' : 'dark';
     this.setTheme(current);
+    this.isDark.set(current === 'dark')
   }
 
   setTheme(theme: 'light' | 'dark') {

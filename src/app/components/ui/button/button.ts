@@ -15,8 +15,6 @@ export class Button {
   disabled = input<boolean | null>(false);
   type = input<'button' | 'submit' | 'reset'>('button');
   hint = input<string | null>('');
-  color = input<string>('primary');
-  isIconButton = input<boolean>(false);
   buttonClick = output<void>();
 
   protected onClick() {

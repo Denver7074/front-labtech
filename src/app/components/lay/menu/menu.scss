@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+
+.sidenav-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+
+  mat-sidenav {
+    @include mat.sidenav-overrides((
+      container-shape: 0px,
+    ));
+  }
+}
+
+.setting-list-item {
+  @include mat.list-overrides((list-item-two-line-container-height: 80px));
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.mat-sidenav.mainnav {
+  border-right: 1px solid var(--mat-sys-secondary);
+  border-right-color: rgba(100, 255, 218, 0.2);
+  box-shadow: 2px 0 8px rgba(100, 255, 218, 0.1);
+}
+

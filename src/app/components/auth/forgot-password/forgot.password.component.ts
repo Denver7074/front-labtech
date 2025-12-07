@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {AccountRequest} from '../../../data/auth.interface';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {Button} from '../../button/button';
+import {Button} from '../../ui/button/button';
 import {AuthService} from '../../../service/auth/auth.service';
 import {NotifierService} from '../../../service/notifier.service';
 
