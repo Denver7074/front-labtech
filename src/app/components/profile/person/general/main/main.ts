@@ -5,7 +5,6 @@ import {ActivatedRoute} from '@angular/router';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatError} from '@angular/material/input';
-import {NgOptimizedImage} from '@angular/common';
 
 
 @Component({
@@ -17,7 +16,6 @@ import {NgOptimizedImage} from '@angular/common';
     MatCardTitle,
     MatCardHeader,
     MatCard,
-    NgOptimizedImage,
   ],
   templateUrl: './main.html',
   styleUrl: './main.scss',
@@ -39,19 +37,22 @@ export class Main implements OnInit {
     this.errorMessage.set('');
 
     const personId = this.activatedRoute.snapshot.paramMap.get('personId');
+    const v = this.profileService.getMyGeneralInformation(personId)
+    this.personInfo.set(v)
+    this.isLoading.set(false);
 
-    this.profileService.getMyGeneralInformation(personId).subscribe({
-      next: (data) => {
-        console.log('Данные получены:', data);
-        this.personInfo.set(data);
-        this.isLoading.set(false);
-      },
-      error: (error) => {
-        this.errorMessage.set('Ошибка загрузки профиля');
-        this.isLoading.set(false);
-        console.error('Error loading profile:', error);
-      }
-    });
+    // this.profileService.getMyGeneralInformation(personId).subscribe({
+    //   next: (data) => {
+    //     console.log('Данные получены:', data);
+    //     this.personInfo.set(data);
+    //     this.isLoading.set(false);
+    //   },
+    //   error: (error) => {
+    //     this.errorMessage.set('Ошибка загрузки профиля');
+    //     this.isLoading.set(false);
+    //     console.error('Error loading profile:', error);
+    //   }
+    // });
   }
 
   // Полное имя
