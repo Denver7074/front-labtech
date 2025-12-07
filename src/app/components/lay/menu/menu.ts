@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {RouterLink, RouterOutlet} from '@angular/router';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {MatIconButton, MatMiniFabButton} from '@angular/material/button';
 import {MatToolbar} from '@angular/material/toolbar';
@@ -26,7 +26,8 @@ import {AuthService} from '../../../service/auth/auth.service';
     MatMenu,
     MatMenuItem,
     MatMenuTrigger,
-    MatMiniFabButton
+    MatMiniFabButton,
+    RouterLinkActive
   ],
   templateUrl: './menu.html',
   styleUrl: './menu.scss',

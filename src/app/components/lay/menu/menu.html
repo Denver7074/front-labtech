@@ -1,14 +1,68 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav class="mainnav" mode="side" #mainnav opened>
-      <h2>Lab.Tech</h2>
+    <!-- Logo Section -->
+    <div class="sidebar-logo">
+      <div class="logo-badge">
+        <img src="/logo.jpg" alt="Lab.Tech Logo" class="logo-image"/>
+      </div>
+      <div class="logo-text-container">
+        <h1 class="logo-text">Lab.Tech</h1>
+        <p class="logo-subtitle">Laboratory Management</p>
+      </div>
+    </div>
 
-<!--    здесь в зависимости от роли будут свои списки-->
-    <mat-nav-list role="list">
-      <mat-list-item>
-        <mat-icon matListItemIcon>dashboard</mat-icon>
-        <a matListItemTitle routerLink="">Dashboard</a>
-      </mat-list-item>
-    </mat-nav-list>
+    <!-- Navigation Section -->
+    <div class="sidebar-content">
+      <div class="nav-section">
+        <p class="nav-section-title">Main</p>
+        <mat-nav-list role="list" class="nav-list">
+          <mat-list-item class="nav-item" routerLinkActive="active">
+            <mat-icon matListItemIcon class="nav-icon">dashboard</mat-icon>
+            <a matListItemTitle routerLink="" class="nav-link">Dashboard</a>
+          </mat-list-item>
+          <mat-list-item class="nav-item" routerLinkActive="active">
+            <mat-icon matListItemIcon class="nav-icon">assignment</mat-icon>
+            <a matListItemTitle routerLink="/tests" class="nav-link">Tests</a>
+          </mat-list-item>
+          <mat-list-item class="nav-item" routerLinkActive="active">
+            <mat-icon matListItemIcon class="nav-icon">groups</mat-icon>
+            <a matListItemTitle routerLink="/patients" class="nav-link">Patients</a>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+
+      <div class="nav-section">
+        <p class="nav-section-title">Management</p>
+        <mat-nav-list role="list" class="nav-list">
+          <mat-list-item class="nav-item" routerLinkActive="active">
+            <mat-icon matListItemIcon class="nav-icon">people</mat-icon>
+            <a matListItemTitle routerLink="/staff" class="nav-link">Staff</a>
+          </mat-list-item>
+          <mat-list-item class="nav-item" routerLinkActive="active">
+            <mat-icon matListItemIcon class="nav-icon">science</mat-icon>
+            <a matListItemTitle routerLink="/equipment" class="nav-link">Equipment</a>
+          </mat-list-item>
+          <mat-list-item class="nav-item" routerLinkActive="active">
+            <mat-icon matListItemIcon class="nav-icon">inventory_2</mat-icon>
+            <a matListItemTitle routerLink="/inventory" class="nav-link">Inventory</a>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+
+      <div class="nav-section">
+        <p class="nav-section-title">Reports</p>
+        <mat-nav-list role="list" class="nav-list">
+          <mat-list-item class="nav-item" routerLinkActive="active">
+            <mat-icon matListItemIcon class="nav-icon">analytics</mat-icon>
+            <a matListItemTitle routerLink="/analytics" class="nav-link">Analytics</a>
+          </mat-list-item>
+          <mat-list-item class="nav-item" routerLinkActive="active">
+            <mat-icon matListItemIcon class="nav-icon">description</mat-icon>
+            <a matListItemTitle routerLink="/reports" class="nav-link">Reports</a>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+    </div>
   </mat-sidenav>
 
   <!-- Основной контент -->
