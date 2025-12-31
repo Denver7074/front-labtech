@@ -1,5 +1,8 @@
 @use '@angular/material' as mat;
 @use 'styles/theme-colors';
+@use 'styles/notification';
+@use "styles/dialog-form";
+@use "styles/abstract-style";
 
 @include mat.core();
 
@@ -44,3 +47,6 @@ body {
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
 }
+
+
+

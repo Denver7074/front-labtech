@@ -3,9 +3,16 @@ export interface ErrorResponse {
   message: string | undefined;
 }
 
+export interface PagingResults {
+  pageNumber: number;
+  pageSize: number;
+  pageTotal: number;
+  totalItemsCount: number;
+}
+
 export interface AuthInterface {
-  accessToken: string;
-  refreshToken: string;
+  accessToken: string | null;
+  refreshToken: string | null;
 }
 
 export interface JwtPayload {
@@ -21,6 +28,17 @@ export interface JwtPayload {
 export interface ApiResponse<T> {
   error: ErrorResponse;
   value: T
+  pagingResults: PagingResults;
 }
 
+export interface FormDataInterface<T> {
+  mode: 'create' | 'edit' | 'view';
+  value?: T;
+  guide: Map<string, Map<string, string>>;
+}
 
+export interface ResponseType {
+  id: string
+  value: string;
+  icon: string;
+}

@@ -6,7 +6,7 @@ import {ResetPasswordRequest} from '../../../data/auth.interface';
 import {Button} from '../../ui/button/button';
 import {MatInput, MatLabel, MatError, MatFormField} from '@angular/material/input';
 import {AuthService} from '../../../service/auth/auth.service';
-import {NotifierService} from '../../../service/notifier.service';
+import {NotificationService} from '../../ui/notification.service';
 
 
 @Component({
@@ -27,8 +27,8 @@ import {NotifierService} from '../../../service/notifier.service';
 })
 export class ResetPasswordComponent implements OnInit {
   private authService = inject(AuthService);
+  private notification = inject(NotificationService);
   private router = inject(Router);
-  private notifierService = inject(NotifierService);
   private fb = inject(FormBuilder);
   activatedRoute = inject(ActivatedRoute);
   isShowNewPassword = signal(false);
@@ -49,7 +49,7 @@ export class ResetPasswordComponent implements OnInit {
     }
     this.authService.reset(requestBody, this.forgotId()).subscribe({
       next: () => this.router.navigate(['/']),
-      error: (error) => this.notifierService.showError(error.message)
+      error: (error) => this.notification.showErrorMsg(error.error.error.message)
     });
   }
 

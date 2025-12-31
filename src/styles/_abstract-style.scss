@@ -1,0 +1,53 @@
+.password-field {
+  position: relative;
+
+  .password-eye-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 4px;
+    border-radius: 4px;
+    color: var(--mat-sys-on-surface);
+    transition: background-color 0.2s, color 0.2s;
+
+    &:hover,
+    &:focus {
+      background-color: rgba(0, 0, 0, 0.04);
+      color: var(--mat-sys-on-surface);
+    }
+
+    i {
+      font-size: 20px;
+    }
+  }
+
+  .mat-mdc-text-field-wrapper {
+    padding-right: 40px !important;
+  }
+}
+
+.add-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--mat-sys-primary) !important;
+  color: var(--mat-sys-inverse-primary) !important;
+  margin-right: 10px;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px var(--mat-sys-primary);
+  }
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    font-weight: 300;
+  }
+}

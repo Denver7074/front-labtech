@@ -1,0 +1,72 @@
+<div class="dialog-form">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon>person_add</mat-icon>
+      <h2 class="title">{{ title }}</h2>
+    </div>
+    <p class="subtitle">Заполните информацию о контакте</p>
+  </div>
+
+  <!-- Контент -->
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+      <div class="form-fields">
+        <!-- Тип контакта -->
+        <mat-form-field appearance="outline">
+          <mat-label>Тип контакта</mat-label>
+          <mat-select formControlName="contactTypeId">
+            @for (entry of Array.from(this.data!.guide!.get('contact-type')!.entries()); track entry[0]) {
+              <mat-option [value]="entry[0]">
+                {{ entry[1] }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-icon matPrefix>category</mat-icon>
+
+          @if (form.get('contactTypeId')?.hasError('required') && form.get('contactTypeId')?.touched) {
+            <mat-error>Выберите тип контакта</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Значение контакта -->
+        <mat-form-field appearance="outline">
+          <mat-label>Значение контакта</mat-label>
+          <input matInput formControlName="value" placeholder="Введите значение">
+
+          <mat-icon matPrefix>edit</mat-icon>
+
+          @if (form.get('value')?.value) {
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              class="clear-btn"
+              (click)="form.get('value')?.setValue('')"
+              aria-label="Очистить">
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+
+          @if (form.get('value')?.hasError('required') && form.get('value')?.touched) {
+            <mat-error>Введите значение контакта</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+
+  <mat-dialog-actions align="end">
+    <app-button mat-dialog-close class="mr-20 error" (click)="form.reset()">
+      Отмена
+    </app-button>
+
+    <app-button
+      [disabled]="form.invalid"
+      [type]="'submit'"
+      (click)="onSubmit()"
+    >
+      {{ submitLabel }}
+    </app-button>
+  </mat-dialog-actions>
+</div>

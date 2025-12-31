@@ -5,7 +5,7 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {Button} from '../../ui/button/button';
 import {AuthService} from '../../../service/auth/auth.service';
-import {NotifierService} from '../../../service/notifier.service';
+import {NotificationService} from '../../ui/notification.service';
 
 
 @Component({
@@ -25,8 +25,8 @@ import {NotifierService} from '../../../service/notifier.service';
 })
 export class ForgotPasswordComponent {
   private authService = inject(AuthService);
+  private notification = inject(NotificationService);
   private router = inject(Router);
-  private notifierService = inject(NotifierService);
   private fb = inject(FormBuilder);
 
   form: FormGroup = this.fb.group({
@@ -36,11 +36,12 @@ export class ForgotPasswordComponent {
 
   onSubmit() {
     const requestBody: AccountRequest = {
-      email: this.form.get('email')?.value
+      email: this.form.get('email')?.value,
+      password: null
     }
     this.authService.forgot(requestBody).subscribe({
       next: () => this.router.navigate(['/']),
-      error: (error) => this.notifierService.showError(error.message)
+      error: (error) => this.notification.showErrorMsg(error.error.error.message)
     });
   }
 }

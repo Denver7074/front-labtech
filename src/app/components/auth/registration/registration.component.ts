@@ -7,7 +7,7 @@ import {Button} from '../../ui/button/button';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {NgClass} from '@angular/common';
 import {AuthService} from '../../../service/auth/auth.service';
-import {NotifierService} from '../../../service/notifier.service';
+import {NotificationService} from '../../ui/notification.service';
 
 
 @Component({
@@ -30,8 +30,8 @@ import {NotifierService} from '../../../service/notifier.service';
 })
 export class RegistrationComponent {
   private authService = inject(AuthService);
+  private notification = inject(NotificationService);
   private router = inject(Router);
-  private notifierService = inject(NotifierService);
   private fb = inject(FormBuilder);
   isShowPassword = signal(false);
 
@@ -56,7 +56,7 @@ export class RegistrationComponent {
 
     this.authService.registration(requestBody).subscribe({
       next: () => this.router.navigate(['/']),
-      error: (error) => this.notifierService.showError(error.message)
+      error: (error) => this.notification.showErrorMsg(error.error.error.message)
     });
   }
 }

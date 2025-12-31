@@ -1,0 +1,94 @@
+<div class="dialog-form">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon>payments</mat-icon>
+      <h2 class="title">{{ title }}</h2>
+    </div>
+    <p class="subtitle">Заполните параметры тарифного плана</p>
+  </div>
+
+  <mat-dialog-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+      <!-- Пробный период -->
+      <mat-checkbox formControlName="trial" class="form-field">
+        Пробный период
+      </mat-checkbox>
+
+      <!-- Тип тарифа -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Тип тарифа</mat-label>
+        <mat-select formControlName="tariffPlanTypeId" required>
+          @for (entry of Array.from(this.data.guide!.get('tariff-plan-type')!.entries()); track entry[0]) {
+            <mat-option [value]="entry[0]">
+              {{ entry[1] }}
+            </mat-option>
+          }
+        </mat-select>
+        @if (form.get('tariffPlanTypeId')?.hasError('required') && form.get('tariffPlanTypeId')?.touched) {
+          <mat-error>Выберите тип тарифа</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Тарифы по периодам (только если НЕ пробный) -->
+      @if (!form.get('trial')?.value) {
+        <div class="tariffs-section">
+          <h3 class="section-title">Цены по периодам</h3>
+          <div class="tariffs-list">
+            @for (tariffControl of getTariffsControls(); track $index) {
+              <div class="tariff-item grid" [formGroup]="tariffControl">
+                <div class="grid">
+                  <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Период</mat-label>
+                    <mat-select formControlName="period" required>
+                      @for (period of periodKeys; track period) {
+                        <mat-option [value]="period">{{ PERIOD_LABELS[period] }}</mat-option>
+                      }
+                    </mat-select>
+                    @if (tariffControl.get('period')?.hasError('required') && tariffControl.get('period')?.touched) {
+                      <mat-error>Выберите период</mat-error>
+                    }
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Стоимость (₽)</mat-label>
+                    <input matInput formControlName="amount" type="number" required>
+                    @if (tariffControl.get('amount')?.hasError('required') && tariffControl.get('amount')?.touched) {
+                      <mat-error>Укажите стоимость</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+
+                <button
+                  type="button"
+                  mat-icon-button
+                  color="warn"
+                  (click)="removeTariff($index)"
+                  [disabled]="getTariffsControls().length === 1"
+                  aria-label="Удалить период"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            }
+          </div>
+
+          <button type="button" mat-stroked-button color="primary" (click)="addTariff()" class="add-tariff-btn">
+            + Добавить период
+          </button>
+        </div>
+      }
+
+      <!-- Скрытое поле ID (для редактирования) -->
+      <input type="hidden" formControlName="id" />
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <app-button type="button" mat-dialog-close (click)="form.reset()" class="mr-10 error">
+      Отмена
+    </app-button>
+    <app-button (click)="onSubmit()">
+      {{ submitLabel }}
+    </app-button>
+  </mat-dialog-actions>
+</div>

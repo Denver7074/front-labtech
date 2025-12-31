@@ -1,0 +1,112 @@
+<div class="dialog-form">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon>work</mat-icon>
+      <h2 class="title">{{ title }}</h2>
+    </div>
+    <p class="subtitle">Заполните информацию об опыте работы</p>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+      <div class="form-fields">
+        <!-- Организация -->
+        <mat-form-field appearance="outline">
+          <mat-label>Организация</mat-label>
+          <input matInput formControlName="organizationName" placeholder="Название компании">
+          @if (form.get('organizationName')?.hasError('required') && form.get('organizationName')?.touched) {
+            <mat-error>Укажите организацию</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Должность -->
+        <mat-form-field appearance="outline">
+          <mat-label>Должность</mat-label>
+          <input
+            matInput
+            formControlName="position"
+            placeholder="Например, Инженер"
+            [matAutocomplete]="autoPosition"
+          >
+          <mat-icon matPrefix>work</mat-icon>
+
+          <mat-autocomplete #autoPosition="matAutocomplete" [displayWith]="displayPosition">
+            @for (item of filteredPositions(); track item.id) {
+              <mat-option [value]="item.text">
+                {{ item.text }}
+              </mat-option>
+            }
+          </mat-autocomplete>
+
+          <mat-hint>Начните вводить должность (минимум 3 символа)</mat-hint>
+
+          @if (form.get('position')?.hasError('required') && form.get('position')?.touched) {
+            <mat-error>Укажите должность</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="grid">
+          <!-- Дата начала -->
+          <mat-form-field appearance="outline">
+            <mat-label>Дата начала</mat-label>
+            <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+            @if (form.get('startDate')?.hasError('required') && form.get('startDate')?.touched) {
+              <mat-error>Укажите дату начала</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Дата окончания -->
+          <mat-form-field appearance="outline">
+            <mat-label>Дата окончания</mat-label>
+            <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <!-- Типы измерений (мультиселект) -->
+        <mat-form-field appearance="outline">
+          <mat-label>Типы измерений</mat-label>
+          <mat-select formControlName="measurementTypeIds" multiple>
+            @for (entry of Array.from(this.data.guide!.get('measurement-type')!.entries()); track entry[0]) {
+              <mat-option [value]="entry[0]">
+                {{ entry[1] }}
+              </mat-option>
+            }
+          </mat-select>
+          @if (form.get('measurementTypeIds')?.hasError('required') && form.get('measurementTypeIds')?.touched) {
+            <mat-error>Выберите хотя бы один тип</mat-error>
+          }
+        </mat-form-field>
+
+        @if (hasSelectedMeasurementTypes) {
+          <div class="selected-measurement-types">
+            @for (id of form.get('measurementTypeIds')?.value || []; track id) {
+              <div class="selected-item">
+                {{ getMeasurementTypeName(id) }}
+                <button mat-icon-button (click)="removeMeasurementType(id)" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <app-button mat-dialog-close class="mr-20 error" (click)="form.reset()">
+      Отмена
+    </app-button>
+    <app-button
+      [disabled]="form.invalid"
+      (click)="onSubmit()"
+      [type]="'submit'"
+    >
+      {{ submitLabel }}
+    </app-button>
+  </mat-dialog-actions>
+</div>

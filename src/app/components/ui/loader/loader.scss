@@ -1,0 +1,27 @@
+
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Центрирует по вертикали внутри своего контейнера */
+  gap: 1rem;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+}
+
+.loading-text {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 1rem;
+}
+
+.mat-progress-spinner circle {
+  stroke: red !important;
+  stroke-width: 10px !important; /* может сломать анимацию */
+}

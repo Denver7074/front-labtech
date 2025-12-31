@@ -1,0 +1,195 @@
+<div class="dialog-form">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon>location_on</mat-icon>
+      <h2 class="title">{{ title }}</h2>
+    </div>
+    <p class="subtitle">Заполните информацию о помещении</p>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+      <mat-accordion displayMode="flat">
+
+        <!-- Основная информация -->
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Основная информация</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="form-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>Назначение помещения</mat-label>
+              <textarea matInput formControlName="purpose"
+                        placeholder="Например, Испытания на прочность, приёмка образцов"></textarea>
+              <mat-icon matPrefix>description</mat-icon>
+              @if (form.get('purpose')?.hasError('required') && form.get('purpose')?.touched) {
+                <mat-error>Укажите назначение помещения</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Полный адрес помещения</mat-label>
+              <textarea matInput formControlName="address"
+                        placeholder="Например, 443082, РФ, Самарская обл., г. Самара, Железнодорожный р-н, ул. Клиническая, д. 154В, пом. 4"></textarea>
+              <mat-icon matPrefix>place</mat-icon>
+              @if (form.get('address')?.hasError('required') && form.get('address')?.touched) {
+                <mat-error>Укажите полный адрес</mat-error>
+              }
+            </mat-form-field>
+
+            <div class="grid">
+              <mat-form-field appearance="outline">
+                <mat-label>Тип помещения</mat-label>
+                <mat-select formControlName="typeRoom">
+                  @for (entry of Array.from(roomTypeMap.entries()); track entry[0]) {
+                    <mat-option [value]="entry[0]">{{ entry[1] }}</mat-option>
+                  }
+                </mat-select>
+                @if (form.get('typeRoom')?.hasError('required') && form.get('typeRoom')?.touched) {
+                  <mat-error>Выберите тип помещения</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Площадь (м²)</mat-label>
+                <input matInput type="number" formControlName="square" placeholder="Например, 45.5" min="0" step="0.1">
+                <mat-icon matPrefix>straighten</mat-icon>
+                @if (form.get('square')?.hasError('required') && form.get('square')?.touched) {
+                  <mat-error>Укажите площадь</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Характеристики помещения -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Характеристики помещения</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="form-fields">
+
+            <!-- Специальное оборудование -->
+            <mat-form-field appearance="outline">
+              <mat-label>Специальное оборудование</mat-label>
+              <mat-select formControlName="equipmentTypeIds" multiple>
+                @if (data.guide!.get('equipment-type'); as equipmentTypes) {
+                  @for (entry of Array.from(equipmentTypes.entries()); track entry[0]) {
+                    <mat-option [value]="entry[0]">{{ entry[1] }}</mat-option>
+                  }
+                }
+              </mat-select>
+            </mat-form-field>
+
+            @if (hasSelectedTypes("equipmentTypeIds")) {
+              <div class="selected-measurement-types">
+                @for (id of form.get('equipmentTypeIds')?.value || []; track id) {
+                  <div class="selected-item">
+                    {{ getEquipmentTypeName(id) }}
+                    <button mat-icon-button (click)="removeType(id, 'equipmentTypeIds')" type="button">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+
+            <!-- Контролируемые параметры -->
+            <mat-form-field appearance="outline">
+              <mat-label>Контролируемые параметры</mat-label>
+              <mat-select formControlName="parameterTypeIds" multiple>
+                @if (data.guide!.get('parameter-type'); as parameterTypes) {
+                  @for (entry of Array.from(parameterTypes.entries()); track entry[0]) {
+                    <mat-option [value]="entry[0]">{{ entry[1] }}</mat-option>
+                  }
+                }
+              </mat-select>
+            </mat-form-field>
+
+            @if (hasSelectedTypes('parameterTypeIds')) {
+              <div class="selected-measurement-types">
+                @for (id of form.get('parameterTypeIds')?.value || []; track id) {
+                  <div class="selected-item">
+                    {{ getParameterTypeName(id) }}
+                    <button mat-icon-button (click)="removeType(id, 'parameterTypeIds')" type="button">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Договор -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Договор аренды / собственности</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="form-fields" formGroupName="contract">
+            <div class="grid" style="grid-template-columns: 1fr 1fr;">
+              <mat-form-field appearance="outline">
+                <mat-label>Номер договора</mat-label>
+                <input matInput formControlName="contractNumber" placeholder="Например, №45">
+                <mat-icon matPrefix>edit_document</mat-icon>
+                @if (form.get('contract.contractNumber')?.hasError('required') && form.get('contract.contractNumber')?.touched) {
+                  <mat-error>Укажите номер договора</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Дата договора</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="contractDatePicker"
+                  formControlName="contractDate"
+                  placeholder="Выберите дату"
+                />
+                <mat-datepicker-toggle matSuffix [for]="contractDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #contractDatePicker></mat-datepicker>
+                @if (form.get('contract.contractDate')?.hasError('required') && form.get('contract.contractDate')?.touched) {
+                  <mat-error>Укажите дату договора</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="grid">
+              <mat-form-field appearance="outline">
+                <mat-label>Тип владения</mat-label>
+                <mat-select formControlName="isOwn">
+                  <mat-option [value]="true">В собственности</mat-option>
+                  <mat-option [value]="false">В аренде</mat-option>
+                </mat-select>
+                @if (form.get('contract.isOwn')?.hasError('required') && form.get('contract.isOwn')?.touched) {
+                  <mat-error>Выберите тип владения</mat-error>
+                }
+              </mat-form-field>
+
+              @if (form.get('contract.isOwn')?.value === false) {
+                <mat-form-field appearance="outline">
+                  <mat-label>Дата окончания</mat-label>
+                  <input matInput [matDatepicker]="endPicker" formControlName="endAt">
+                  <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #endPicker></mat-datepicker>
+                  <!-- ❗ НЕТ mat-error для 'required', так как поле НЕ обязательно -->
+                  <!-- Если нужно — можно добавить ошибку на валидность даты, но не required -->
+                </mat-form-field>
+              }
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+      </mat-accordion>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <app-button mat-dialog-close class="mr-20 error">
+      Отмена
+    </app-button>
+    <app-button [disabled]="form.invalid" (click)="onSubmit()">
+      {{ submitLabel }}
+    </app-button>
+  </mat-dialog-actions>
+</div>

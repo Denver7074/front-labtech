@@ -1,0 +1,173 @@
+<!-- Заголовок и кнопка добавления -->
+<div class="section-header">
+  <h2>Помещения</h2>
+  <app-button
+    (click)="openDialog(AddressDialog, 'rooms')"
+    [matTooltip]="'Добавить помещение'"
+    class="add-button">
+    <mat-icon>add</mat-icon>
+  </app-button>
+</div>
+
+<div class="table-controls">
+  <button mat-button [matMenuTriggerFor]="columnMenu">
+    <mat-icon>view_column</mat-icon>
+    Колонки
+  </button>
+  <mat-menu #columnMenu="matMenu">
+    @for (col of allColumns; track col) {
+      @if (col !== 'index' && col !== 'actions') {
+        <button mat-menu-item>
+          <mat-checkbox
+            [checked]="displayedColumns.includes(col)"
+            (change)="toggleColumn(col, $event)">
+            {{ getColumnLabel(col) }}
+          </mat-checkbox>
+        </button>
+      }
+    }
+  </mat-menu>
+</div>
+
+<!-- Таблица или пустое состояние -->
+<table mat-table [dataSource]="info()" class="mat-elevation-z8">
+
+  <!-- № п/п -->
+  <ng-container matColumnDef="index">
+    <th mat-header-cell *matHeaderCellDef>№</th>
+    <td mat-cell *matCellDef="let _; let i = index" class="data-cell">
+      {{ i + 1 }}
+    </td>
+  </ng-container>
+
+  <!-- Назначение помещения -->
+  <ng-container matColumnDef="purpose">
+    <th mat-header-cell
+        [matTooltip]="'Назначение помещения (в том числе виды проводимых испытаний, для приемки и хранения образцов, обработки результатов испытаний, хранения документации или другое)'"
+        *matHeaderCellDef>
+      Назначение помещения
+    </th>
+    <td mat-cell *matCellDef="let address" class="data-cell">
+      {{ address.purpose || '—' }}
+    </td>
+  </ng-container>
+
+  <!-- ТИП ПОМЕЩЕНИЯ — ЭТОТ БЛОК БЫЛ УДАЛЁН, НО ОН НУЖЕН! -->
+  <ng-container matColumnDef="typeRoom">
+    <th mat-header-cell [matTooltip]="'Специальное или приспособленное'" *matHeaderCellDef>
+      Тип помещения
+    </th>
+    <td mat-cell *matCellDef="let address" class="data-cell">
+      {{ roomTypeMap.get(address.typeRoom) || address.typeRoom || '—' }}
+    </td>
+  </ng-container>
+
+  <!-- Адрес -->
+  <ng-container matColumnDef="address">
+    <th mat-header-cell [matTooltip]="'Место нахождения или иная уникальная идентификация'" *matHeaderCellDef>
+      Место нахождения / Идентификация
+    </th>
+    <td mat-cell *matCellDef="let address" class="data-cell">
+      {{ address.address || '—' }}
+    </td>
+  </ng-container>
+
+  <!-- Площадь -->
+  <ng-container matColumnDef="square">
+    <th mat-header-cell *matHeaderCellDef>Площадь (м²)</th>
+    <td mat-cell *matCellDef="let address" class="data-cell">
+      {{ address.square || '—' }}
+    </td>
+  </ng-container>
+
+  <!-- Контролируемые параметры -->
+  <ng-container matColumnDef="parameterTypeIds">
+    <th mat-header-cell [matTooltip]="'Перечень контролируемых параметров в помещении'" *matHeaderCellDef>
+      Контролируемые параметры
+    </th>
+    <td mat-cell *matCellDef="let address" class="data-cell">
+      @if (address.parameterTypeIds?.length) {
+        <div class="parameter-list">
+          @for (id of address.parameterTypeIds; track id; let i = $index) {
+            <div class="parameter-item">
+              {{ i + 1 }}. {{ getParameterTypeName(id) || id }}
+            </div>
+          }
+        </div>
+      } @else {
+        <span>—</span>
+      }
+    </td>
+  </ng-container>
+
+  <!-- Специальное оборудование -->
+  <ng-container matColumnDef="equipmentTypeIds">
+    <th mat-header-cell
+        [matTooltip]="'Наличие специального оборудования (например, вентиляционного, защиты от помех)'"
+        *matHeaderCellDef>
+      Специальное оборудование
+    </th>
+    <td mat-cell *matCellDef="let address" class="data-cell">
+      @if (address.equipmentTypeIds?.length) {
+        <div class="parameter-list">
+          @for (id of address.equipmentTypeIds; track id; let i = $index) {
+            <div class="parameter-item">
+              {{ i + 1 }}. {{ getEquipmentTypeName(id) || id }}
+            </div>
+          }
+        </div>
+      } @else {
+        <span>—</span>
+      }
+    </td>
+  </ng-container>
+
+  <!-- Право собственности / реквизиты договора -->
+  <ng-container matColumnDef="ownership">
+    <th mat-header-cell
+        [matTooltip]="'Право собственности или иное законное основание, предусматривающее право владения и пользования (реквизиты подтверждающих документов)'"
+        *matHeaderCellDef>
+      Право владения
+    </th>
+    <td mat-cell *matCellDef="let address" class="data-cell">
+      @if (address.contract; as c) {
+        <div class="contract-info">
+          <div><strong>Тип:</strong> {{ c.isOwn ? 'Собственность' : 'Аренда' }}</div>
+          @if (c.contractNumber) {
+            <div><strong>Договор:</strong> №{{ c.contractNumber }}</div>
+          }
+          @if (c.contractDate) {
+            <div><strong>От:</strong> {{ c.contractDate | date }}</div>
+          }
+          @if (!c.isOwn && c.contractDate && c.endAt) {
+            <div><strong>Срок:</strong> {{ c.contractDate | date }} — {{ c.endAt | date }}</div>
+          }
+        </div>
+      } @else {
+        <span>—</span>
+      }
+    </td>
+  </ng-container>
+
+  <!-- Действия -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Действия</th>
+    <td mat-cell *matCellDef="let address">
+      <button
+        mat-icon-button
+        [matTooltip]="'Редактировать'"
+        (click)="openDialog(AddressDialog, 'rooms', address)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        [matTooltip]="'Удалить'"
+        (click)="delete(address.id, 'rooms')">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

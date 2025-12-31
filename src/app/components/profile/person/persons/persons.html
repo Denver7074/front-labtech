@@ -1,0 +1,32 @@
+<div class="people-list">
+  @for (p of persons(); track p.id) {
+    <div class="person" (click)="openProfile(p)">
+      <div class="grid">
+        <div class="avatar-container">
+          @if (p?.avatarUrl) {
+            <img [src]="p?.avatarUrl" alt="Аватар" class="avatar"/>
+          } @else {
+            <div class="avatar-initials">{{ getInitials(p) }}</div>
+          }
+        </div>
+        <div>
+          <h3>{{ p.lastName }} {{ p.firstName }} {{ p.middleName }}</h3>
+          <p>Дата рождения: {{ p.birthDate | date }}</p>
+          <p>Место рождения: {{ p.birthPlace }}</p>
+          @if (p.works) {
+            <p>Должность: {{ p.works[0]?.position }}</p>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<div class="paginator-container">
+  <mat-paginator
+    [length]="totalItems()"
+    [pageSize]="pageSize()"
+    [pageIndex]="currentPage()"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+</div>

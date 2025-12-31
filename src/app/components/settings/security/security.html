@@ -1,0 +1,155 @@
+<mat-tab-group class="security-tabs" (selectedTabChange)="onTabChange($event)">
+
+  <!-- Вкладка: Логин -->
+  <mat-tab label="Смена логина">
+    <ng-template matTabContent>
+      <!-- Центрирующий контейнер -->
+      <div class="tab-centered-content">
+        <form class="form" [formGroup]="loginForm" (ngSubmit)="onChangeLogin()">
+          <div class="form-fields">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Новый email</mat-label>
+              <input matInput
+                     type="email"
+                     formControlName="newEmail">
+              @if (loginForm.controls['newEmail'].hasError('required') && loginForm.controls['newEmail'].touched) {
+                <mat-error>Email обязателен</mat-error>
+              } @else if (loginForm.controls['newEmail'].hasError('email')) {
+                <mat-error>Некорректный email</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width password-field">
+              <mat-label>Подтвердите паролем</mat-label>
+              <input matInput
+                     [type]="isShowLoginPassword() ? 'text' : 'password'"
+                     formControlName="password">
+              <button class="password-eye-btn" type="button" (click)="isShowLoginPassword.set(!isShowLoginPassword())">
+                <i [ngClass]="isShowLoginPassword() ? 'bx bx-hide' : 'bx bx-show'"></i>
+              </button>
+              @if (loginForm.get('password')?.hasError('required')) {
+                <mat-error>Введите текущий пароль</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="form-actions">
+            <app-button type="submit" [disabled]="loginForm.invalid">
+              Сохранить email
+            </app-button>
+          </div>
+        </form>
+      </div>
+    </ng-template>
+  </mat-tab>
+
+  <!-- Вкладка: Пароль -->
+  <mat-tab label="Смена пароля">
+    <ng-template matTabContent>
+      <div class="tab-centered-content">
+        <form class="form" [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
+          <div class="form-fields">
+            <mat-form-field appearance="outline" class="full-width password-field">
+              <mat-label>Текущий пароль</mat-label>
+              <input matInput
+                     [type]="isShowCurrentPassword() ? 'text' : 'password'"
+                     formControlName="currentPassword">
+              <button class="password-eye-btn" type="button"
+                      (click)="isShowCurrentPassword.set(!isShowCurrentPassword())">
+                <i [ngClass]="isShowCurrentPassword() ? 'bx bx-hide' : 'bx bx-show'"></i>
+              </button>
+              @if (passwordForm.controls['currentPassword'].hasError('required')) {
+                <mat-error>Обязательное поле</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width password-field">
+              <mat-label>Новый пароль</mat-label>
+              <input matInput
+                     [type]="isShowNewPassword() ? 'text' : 'password'"
+                     formControlName="newPassword">
+              <button class="password-eye-btn" type="button" (click)="isShowNewPassword.set(!isShowNewPassword())">
+                <i [ngClass]="isShowNewPassword() ? 'bx bx-hide' : 'bx bx-show'"></i>
+              </button>
+              @if (passwordForm.hasError('mismatch')) {
+                <mat-error>Пароли не совпадают</mat-error>
+              } @else if (passwordForm.controls['newPassword'].hasError('minlength')) {
+                <mat-error>Минимум 8 символов</mat-error>
+              } @else if (passwordForm.controls['newPassword'].hasError('required')) {
+                <mat-error>Обязательное поле</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width password-field">
+              <mat-label>Подтверждение пароля</mat-label>
+              <input matInput
+                     [type]="isShowRepeatedPassword() ? 'text' : 'password'"
+                     formControlName="repeatedPassword">
+              <button class="password-eye-btn" type="button"
+                      (click)="isShowRepeatedPassword.set(!isShowRepeatedPassword())">
+                <i [ngClass]="isShowRepeatedPassword() ? 'bx bx-hide' : 'bx bx-show'"></i>
+              </button>
+              @if (passwordForm.hasError('mismatch')) {
+                <mat-error>Пароли не совпадают</mat-error>
+              } @else if (passwordForm.get('repeatedPassword')?.hasError('required')) {
+                <mat-error>Обязательное поле</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="form-actions">
+            <app-button type="submit" [disabled]="passwordForm.invalid">
+              Обновить пароль
+            </app-button>
+          </div>
+        </form>
+      </div>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab label="Устройства">
+    <ng-template matTabContent>
+      @if (loadingSessions()) {
+        <app-loader>Загрузка активных сессий</app-loader>
+      } @else if (sessions()) {
+        <div class="sessions-list">
+          @for (session of sessions(); track session.refreshToken) {
+            <mat-card
+              class="session-card"
+              [class.current-session]="isCurrentSession(session)">
+
+              <div class="grid">
+                <div class="session-row">
+                  <div>
+                    <strong>{{ session.browser }}</strong> на {{ session.os }}<br>
+                    <small>IP: {{ session.ipAddress }} • {{ session.deviceType }}</small>
+
+                    @if (isCurrentSession(session)) {
+                      <mat-icon
+                        class="current-badge"
+                        matTooltip="Текущая сессия">
+                        check_circle
+                      </mat-icon>
+                    }
+                  </div>
+                </div>
+
+                @if (!isCurrentSession(session)) {
+                  <app-button
+                    [matTooltip]="'Выйти из приложения на устройстве'"
+                    (click)="deleteSession(session)">
+                    Деактивировать устройство
+                  </app-button>
+                }
+              </div>
+            </mat-card>
+          }
+        </div>
+      } @else {
+        <p class="no-sessions">Нет активных сессий</p>
+      }
+    </ng-template>
+  </mat-tab>
+
+</mat-tab-group>
+

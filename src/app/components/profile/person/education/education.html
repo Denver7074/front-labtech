@@ -1,0 +1,172 @@
+<div class="dialog-form">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon>school</mat-icon>
+      <h2 class="title">{{ title }}</h2>
+    </div>
+    <p class="subtitle">Заполните информацию об образовании</p>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+      <div class="form-fields">
+        <!-- Название учебного заведения -->
+        <mat-form-field appearance="outline">
+          <mat-label>Учебное заведение</mat-label>
+          <input
+            matInput
+            formControlName="organizationName"
+            placeholder="Например, МГУ"
+            [matAutocomplete]="auto"
+          >
+          <mat-icon matPrefix>school</mat-icon>
+
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayInstitution">
+            @for (item of filteredInstitutions(); track item.id) {
+              <mat-option [value]="getFullInstitutionName(item)">
+                {{ getFullInstitutionName(item) }}
+              </mat-option>
+            }
+          </mat-autocomplete>
+
+          <mat-hint>Начните вводить название вуза (минимум 3 символа)</mat-hint>
+
+          @if (form.get('organizationName')?.hasError('required') && form.get('organizationName')?.touched) {
+            <mat-error>Укажите учебное заведение</mat-error>
+          }
+          @if (form.get('organizationName')?.hasError('minlength')) {
+            <mat-error>Минимум 2 символа</mat-error>
+          }
+          @if (form.get('organizationName')?.hasError('maxlength')) {
+            <mat-error>Не более 255 символов</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Специальность -->
+        <mat-form-field appearance="outline">
+          <mat-label>Специальность</mat-label>
+          <input matInput formControlName="specialization" placeholder="Например, Прикладная математика">
+          <mat-icon matPrefix>book</mat-icon>
+          @if (form.get('specialization')?.hasError('required') && form.get('specialization')?.touched) {
+            <mat-error>Укажите специальность</mat-error>
+          }
+          @if (form.get('specialization')?.hasError('minlength')) {
+            <mat-error>Минимум 2 символа</mat-error>
+          }
+          @if (form.get('specialization')?.hasError('maxlength')) {
+            <mat-error>Не более 255 символов</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Тип образования -->
+        <mat-form-field appearance="outline">
+          <mat-label>Тип образования</mat-label>
+          <mat-select formControlName="educationTypeId">
+            @for (entry of Array.from(this.data.guide!.get('education-type')!.entries()); track entry[0]) {
+              <mat-option [value]="entry[0]">
+                {{ entry[1] }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-icon matPrefix>menu_book</mat-icon>
+          @if (form.get('educationTypeId')?.hasError('required') && form.get('educationTypeId')?.touched) {
+            <mat-error>Выберите тип образования</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Тип документа -->
+        <mat-form-field appearance="outline">
+          <mat-label>Тип документа</mat-label>
+          <mat-select formControlName="educationDocumentTypeId">
+            @for (entry of Array.from(this.data.guide!.get('education-doc-type')!.entries()); track entry[0]) {
+              <mat-option [value]="entry[0]">
+                {{ entry[1] }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-icon matPrefix>description</mat-icon>
+          @if (form.get('educationDocumentTypeId')?.hasError('required') && form.get('educationDocumentTypeId')?.touched) {
+            <mat-error>Выберите тип документа</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="grid">
+          <!-- Дата начала -->
+          <mat-form-field appearance="outline">
+            <mat-label>Дата начала</mat-label>
+            <input
+              matInput
+              [matDatepicker]="pickerStart"
+              formControlName="startDate"
+              placeholder="Выберите дату"
+            >
+            <mat-icon matSuffix (click)="pickerStart.open()">calendar_today</mat-icon>
+            <mat-datepicker #pickerStart></mat-datepicker>
+          </mat-form-field>
+          <!-- Дата окончания -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Дата окончания</mat-label>
+            <input
+              matInput
+              [matDatepicker]="pickerEnd"
+              formControlName="endDate"
+              placeholder="Выберите дату"
+            >
+            <mat-icon matSuffix (click)="pickerEnd.open()">calendar_today</mat-icon>
+            <mat-datepicker #pickerEnd></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="grid">
+          <!-- Номер документа -->
+          <mat-form-field appearance="outline">
+            <mat-label>Номер документа</mat-label>
+            <input matInput formControlName="documentNumber" placeholder="Например, ВН-123456">
+            <mat-icon matPrefix>confirmation_number</mat-icon>
+            @if (form.get('documentNumber')?.hasError('required') && form.get('documentNumber')?.touched) {
+              <mat-error>Укажите номер документа</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Дата выдачи документа -->
+          <mat-form-field appearance="outline">
+            <mat-label>Дата выдачи</mat-label>
+
+            <!-- Поле ввода -->
+            <input
+              matInput
+              [matDatepicker]="pickerIssue"
+              formControlName="documentIssueDate"
+              placeholder="Выберите дату"
+            >
+
+            <!-- Иконка-триггер (опционально) -->
+            <mat-icon matSuffix (click)="pickerIssue.open()">calendar_today</mat-icon>
+
+            <!-- Сам календарь (скрыт до открытия) -->
+            <mat-datepicker #pickerIssue></mat-datepicker>
+
+            <!-- Ошибки (если нужно) -->
+            @if (form.get('documentIssueDate')?.hasError('required') && form.get('documentIssueDate')?.touched) {
+              <mat-error>Укажите дату выдачи</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <app-button mat-dialog-close class="mr-20 error" (click)="form.reset()">
+      Отмена
+    </app-button>
+
+    <app-button
+      [disabled]="form.invalid"
+      (click)="onSubmit()"
+      [type]="'submit'"
+    >
+      {{ submitLabel }}
+    </app-button>
+  </mat-dialog-actions>
+</div>

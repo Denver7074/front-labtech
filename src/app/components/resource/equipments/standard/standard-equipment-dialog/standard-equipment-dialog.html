@@ -1,0 +1,224 @@
+<div class="dialog-form">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon>inventory_2</mat-icon>
+      <h2 class="title">{{ title }}</h2>
+    </div>
+    <p class="subtitle">Заполните информацию о стандартном образце</p>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+      <mat-accordion displayMode="flat">
+
+        <!-- ОСНОВНАЯ ИНФОРМАЦИЯ -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Основная информация
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="form-fields">
+            <!-- Тип стандартного образца -->
+            <mat-form-field appearance="outline">
+              <mat-label>Тип стандартного образца</mat-label>
+              <mat-select formControlName="standardTypeId" required>
+                @if (data.guide!.get('standard-equipment-type'); as types) {
+                  @for (entry of Array.from(types.entries()); track entry[0]) {
+                    <mat-option [value]="entry[0]">{{ entry[1] }}</mat-option>
+                  }
+                }
+              </mat-select>
+              <mat-icon matPrefix>category</mat-icon>
+              @if (form.get('standardTypeId')?.hasError('required') && form.get('standardTypeId')?.touched) {
+                <mat-error>Выберите тип</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Наименование -->
+            <mat-form-field appearance="outline">
+              <mat-label>Наименование</mat-label>
+              <input matInput formControlName="name" placeholder="Например, СО состава стали">
+              <mat-icon matPrefix>title</mat-icon>
+              @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
+                <mat-error>Укажите наименование</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Номер (регистрационный) -->
+            <mat-form-field appearance="outline">
+              <mat-label>Номер стандартного образца</mat-label>
+              <input matInput formControlName="number" placeholder="Например, ГСО 12345-01">
+              <mat-icon matPrefix>confirmation_number</mat-icon>
+              @if (form.get('number')?.hasError('required') && form.get('number')?.touched) {
+                <mat-error>Укажите номер</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Назначение -->
+            <mat-form-field appearance="outline">
+              <mat-label>Назначение</mat-label>
+              <textarea matInput formControlName="purpose"
+                        placeholder="Для градуировки приборов, контроля методик..."></textarea>
+              <mat-icon matPrefix>description</mat-icon>
+              @if (form.get('purpose')?.hasError('required') && form.get('purpose')?.touched) {
+                <mat-error>Укажите назначение</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Изготовитель -->
+            <mat-form-field appearance="outline">
+              <mat-label>Изготовитель</mat-label>
+              <input matInput formControlName="producer" placeholder="Например, ФГУП «ВНИИМ»">
+              <mat-icon matPrefix>factory</mat-icon>
+              @if (form.get('producer')?.hasError('required') && form.get('producer')?.touched) {
+                <mat-error>Укажите изготовителя</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Сведения о стандартном образце -->
+            <mat-form-field appearance="outline">
+              <mat-label>Сведения о составе и свойствах</mat-label>
+              <textarea matInput formControlName="information"
+                        placeholder="Аттестованные значения, методы аттестации..."></textarea>
+              @if (form.get('information')?.hasError('required') && form.get('information')?.touched) {
+                <mat-error>Укажите сведения</mat-error>
+              }
+            </mat-form-field>
+
+            <div class="grid">
+              <!-- Дата изготовления -->
+              <mat-form-field appearance="outline">
+                <mat-label>Дата изготовления</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="produceDatePicker"
+                  formControlName="produceDate"
+                  placeholder="Выберите дату"
+                />
+                <mat-datepicker-toggle matSuffix [for]="produceDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #produceDatePicker></mat-datepicker>
+                @if (form.get('produceDate')?.hasError('required') && form.get('produceDate')?.touched) {
+                  <mat-error>Укажите дату изготовления</mat-error>
+                }
+              </mat-form-field>
+
+              <!-- Срок годности -->
+              <mat-form-field appearance="outline">
+                <mat-label>Срок годности до</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="expirationDatePicker"
+                  formControlName="expirationDate"
+                  placeholder="Выберите дату"
+                />
+                <mat-datepicker-toggle matSuffix [for]="expirationDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #expirationDatePicker></mat-datepicker>
+                @if (form.get('expirationDate')?.hasError('required') && form.get('expirationDate')?.touched) {
+                  <mat-error>Укажите срок годности</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <!-- Условия применения -->
+            <mat-form-field appearance="outline">
+              <mat-label>Условия применения и хранения</mat-label>
+              <textarea matInput formControlName="termsOfUse"
+                        placeholder="Температура, влажность, особые условия..."></textarea>
+              @if (form.get('termsOfUse')?.hasError('required') && form.get('termsOfUse')?.touched) {
+                <mat-error>Укажите условия</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- МЕТРОЛОГИЧЕСКИЕ ХАРАКТЕРИСТИКИ -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Аттестованные характеристики
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="form-fields">
+            <div formArrayName="characteristics">
+              @for (control of characteristics.controls; track $index; let i = $index) {
+                <div [formGroupName]="i" class="characteristic-item">
+                  <!-- Обёртка для контента -->
+                  <div class="characteristic-content">
+                    <!-- Первая строка: Наименование -->
+                    <div class="field-row">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Характеристика</mat-label>
+                        <input matInput formControlName="name" placeholder="Например, Массовая доля Fe">
+                        @if (control.get('name')?.hasError('required') && control.get('name')?.touched) {
+                          <mat-error>Укажите характеристику</mat-error>
+                        }
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>Значение/Диапазон</mat-label>
+                        <input matInput formControlName="value" placeholder="10.5">
+                        @if (control.get('value')?.hasError('required') && control.get('value')?.touched) {
+                          <mat-error>Укажите значение</mat-error>
+                        }
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>Ед. изм.</mat-label>
+                        <input matInput formControlName="unit" placeholder="%">
+                        @if (control.get('unit')?.hasError('required') && control.get('unit')?.touched) {
+                          <mat-error>Укажите единицу</mat-error>
+                        }
+                      </mat-form-field>
+                    </div>
+
+                    <!-- Вторая строка: Погрешность + Ед. погр. -->
+                    <div class="field-row">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Погрешность</mat-label>
+                        <input matInput formControlName="uncertainty" placeholder="±0.2">
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>Ед. погр.</mat-label>
+                        <input matInput formControlName="unitUncertainty" placeholder="%">
+                      </mat-form-field>
+
+                      <!-- Пустая ячейка для выравнивания -->
+                      <div></div>
+                    </div>
+                  </div>
+
+                  <!-- Кнопка удаления — справа, на всю высоту -->
+                  <button mat-icon-button color="warn" type="button" (click)="removeCharacteristic(i)" class="delete-btn">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              }
+
+              @if (characteristics.length === 0) {
+                <p class="no-data">Нет добавленных характеристик</p>
+              }
+            </div>
+
+            <button mat-stroked-button type="button" (click)="addCharacteristic()" class="add-characteristic-btn">
+              <mat-icon>add</mat-icon>
+              Добавить характеристику
+            </button>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <app-button mat-dialog-close class="mr-20 error">
+      Отмена
+    </app-button>
+    <app-button [disabled]="form.invalid" (click)="onSubmit()">
+      {{ submitLabel }}
+    </app-button>
+  </mat-dialog-actions>
+</div>

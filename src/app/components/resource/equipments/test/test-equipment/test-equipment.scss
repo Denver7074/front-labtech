@@ -1,0 +1,67 @@
+
+h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  flex: 1;
+  text-align: center;
+}
+
+.add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: auto;
+  padding: 0;
+  border-radius: 50%;
+
+  mat-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+  }
+}
+
+
+// Таблица
+::ng-deep .mat-mdc-table {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+// Строка при наведении
+::ng-deep .mat-mdc-row {
+  transition: background-color 0.15s ease;
+}
+::ng-deep .mat-mdc-row:hover {
+  background-color: var(--mat-sys-inverse-on-surface);
+  cursor: pointer;
+}
+
+// Ячейки
+::ng-deep .mat-mdc-cell,
+::ng-deep .mat-mdc-header-cell {
+  padding: 14px 12px;
+  word-break: break-word;
+}
+
+
+.mat-column-index {
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+
+/* Горизонтальные разделители для всех mat-table с классом demo-table */
+.demo-table .mat-mdc-row {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+/* Убираем линию у последней строки */
+.demo-table .mat-mdc-row:last-child {
+  border-bottom: none;
+}

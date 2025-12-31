@@ -1,60 +1,56 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {catchError, Observable, tap, throwError} from "rxjs";
-import {CookieService} from "ngx-cookie-service";
+import {catchError, finalize, map, Observable, tap, throwError} from "rxjs";
 import {Router} from "@angular/router";
 import {
   AccountRequest,
-  ResetPasswordRequest,
+  ResetPasswordRequest, Session,
   UpdatePasswordRequest, UserLoginRequest, UserRegisterRequest
 } from '../../data/auth.interface';
-import {AuthInterface, ErrorResponse} from '../../data/response.interface';
-
-
+import {ApiResponse, AuthInterface, ErrorResponse} from '../../data/response.interface';
+import {CookieService} from 'ngx-cookie-service';
+import {AsyncPipe} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  http = inject(HttpClient);
-  cookieService = inject(CookieService);
-  router = inject(Router);
-  accessToken = signal('');
-  refreshToken = signal('');
-  // apiUrl: string = 'https://testlabtech.ilabtech.tech';
+  private http = inject(HttpClient);
+  private cookieService = inject(CookieService);
+  private router = inject(Router);
 
-  saveToken(res: AuthInterface) {
-    this.accessToken.set(res.accessToken);
-    this.refreshToken.set(res.refreshToken);
-    this.cookieService.set('accessToken', res.accessToken);
-    this.cookieService.set('refreshToken', res.refreshToken);
+  saveToken(res: ApiResponse<AuthInterface>) {
+    const accessToken = res.value.accessToken ?? '';
+    const refreshToken = res.value.refreshToken ?? '';
+    this.cookieService.set('accessToken', accessToken, 0, '/');
+    this.cookieService.set('refreshToken', refreshToken, 0, '/')
   }
 
   isAuth(): boolean {
-    if (!this.accessToken()) {
-      this.accessToken.set(this.cookieService.get("accessToken"))
-    }
-    return !!this.accessToken()
+    return !!this.cookieService.get("accessToken");
   }
 
-  getToken(): string | null {
-    if (!this.accessToken()) {
-      this.accessToken.set(this.cookieService.get("accessToken"))
-    }
-    return this.accessToken()
+  getToken(): string {
+    return this.cookieService.get("accessToken");
+  }
+
+  getRefreshToken(): string {
+    return this.cookieService.get("refreshToken");
   }
 
   login(payload: UserLoginRequest): Observable<AuthInterface> {
-    return this.http.post<AuthInterface>(
+    return this.http.post<ApiResponse<AuthInterface>>(
       `/auth-service/api/v1/login`,
       payload)
       .pipe(
-        tap(val => {
+        map(val => {
+          if (val.error) {
+            throw val.error;
+          }
           this.saveToken(val);
+          return val.value
         }),
-        catchError((error: HttpErrorResponse) => {
-          return throwError(() => this.handleError(error));
-        })
+        catchError(err => throwError(() => err))
       )
   }
 
@@ -69,15 +65,34 @@ export class AuthService {
       )
   }
 
+  updateEmail(payload: AccountRequest) {
+    return this.http.post<void>(
+      `/auth-service/api/v1/update-email`,
+      payload)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => this.handleError(error));
+        })
+      )
+  }
+
   refreshAuthToken() {
-    return this.http.get<AuthInterface>(
-      `/auth-service/api/v1/refresh`
+    const requestBody: AuthInterface = {
+      accessToken: this.cookieService.get('accessToken'),
+      refreshToken: this.cookieService.get('refreshToken'),
+    }
+    return this.http.post<ApiResponse<AuthInterface>>(
+      `/auth-service/api/v1/refresh`,
+      requestBody
     ).pipe(
-      tap(res => this.saveToken(res)),
-      catchError(err => {
-        this.logout()
-        return throwError(err)
-      })
+      map(val => {
+        if (val.error) {
+          throw val.error;
+        }
+        this.saveToken(val);
+        return val
+      }),
+      catchError(err => throwError(() => err))
     )
   }
 
@@ -125,13 +140,62 @@ export class AuthService {
   }
 
   logout() {
-    this.cookieService.deleteAll();
-    this.accessToken.set('');
-    this.refreshToken.set('');
+    const requestBody: AuthInterface = {
+      refreshToken: this.cookieService.get("refreshToken"),
+      accessToken: this.cookieService.get("accessToken")
+    };
 
-    if (this.router.url !== '') {
-      this.router.navigate(['']);
-    }
+    return this.http.post<void>(
+      `/auth-service/api/v1/logout`,
+      requestBody
+    ).pipe(
+      catchError((error: HttpErrorResponse) => {
+        // Логируем ошибку, но не прерываем цепочку (чтобы finalize выполнился)
+        this.handleError(error);
+        return []; // или EMPTY, если не нужен результат
+      }),
+      finalize(() => {
+        this.cookieService.delete('accessToken');
+        this.cookieService.delete('refreshToken');
+      })
+    );
+  }
+
+  logoutAll() {
+    const requestBody: AuthInterface = {
+      refreshToken: this.cookieService.get("refreshToken"),
+      accessToken: this.cookieService.get("accessToken")
+    };
+
+    return this.http.post<void>(
+      `/auth-service/api/v1/logout-all`,
+      requestBody
+    ).pipe(
+      catchError((error: HttpErrorResponse) => {
+        this.handleError(error);
+        return [];
+      }),
+      finalize(() => {
+        this.cookieService.delete('accessToken');
+        this.cookieService.delete('refreshToken');
+      })
+    );
+  }
+
+  getAllSessions(): Observable<Session[]> {
+    return this.http.get<ApiResponse<Session[]>>('/auth-service/api/v1/active-sessions').pipe(
+      map(val => {
+        if (val.error) {
+          throw val.error;
+        }
+        return val.value
+      }),
+      catchError(err => throwError(() => err))
+    )
+  }
+
+  deleteSession(sessionId: string) {
+    return this.http.delete(`/auth-service/api/v1/delete-session/${sessionId}`);
   }
 
   private handleError(error: HttpErrorResponse): ErrorResponse {

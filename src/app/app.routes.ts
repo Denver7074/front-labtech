@@ -4,11 +4,15 @@ import {RegistrationComponent} from './components/auth/registration/registration
 import {ForgotPasswordComponent} from './components/auth/forgot-password/forgot.password.component';
 import {ResetPasswordComponent} from './components/auth/reset-password/reset-password.component';
 import {ConfirmationComponent} from './components/auth/confirmation/confirmation.component';
-import {UpdatePasswordComponent} from './components/auth/update-password/update-password.component';
-import {Create} from './components/profile/person/general/create/create';
-import {canActivateAuth} from './service/auth/access.guard';
-import {Main} from './components/profile/person/general/main/main';
+import {MainPerson} from './components/profile/person/main/main';
 import {LayotComponent} from './components/lay/layot/layot.component';
+import {MainOrganization} from './components/profile/organization/main/main';
+import {Persons} from './components/profile/person/persons/persons';
+import {canActivateAuth} from './service/auth/access.guard';
+import {MainSettings} from './components/settings/main/main';
+import {MainOrganizationPart} from './components/profile/organization-part/main/main';
+import {Rooms} from './components/resource/room/rooms/rooms';
+import {MainEquipment} from './components/resource/equipments/main-equipment/main-equipment';
 
 export const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -16,11 +20,15 @@ export const routes: Routes = [
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'reset/:forgotId', component: ResetPasswordComponent},
   {path: 'confirm/:activateId', component: ConfirmationComponent},
-  {path: 'update-password', component: UpdatePasswordComponent},
   {
     path: '', component: LayotComponent, children: [
-      {path: 'persons/:personId/general', component: Main},
-      {path: 'persons/general', component: Create},
+      {path: 'persons/:personId/general', component: MainPerson},
+      {path: 'persons', component: Persons},
+      {path: 'organizations/:organizationId/general', component: MainOrganization},
+      {path: 'organizations/department/:organizationPartId/general', component: MainOrganizationPart},
+      {path: 'organizations/department/:organizationPartId/inventory', component: Rooms},
+      {path: 'organizations/department/:organizationPartId/equipment', component: MainEquipment},
+      {path: 'settings', component: MainSettings},
     ], canActivate: [canActivateAuth]
   },
 ];

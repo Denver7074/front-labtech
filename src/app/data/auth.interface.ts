@@ -1,5 +1,6 @@
 export interface AccountRequest {
   email: string | null | undefined;
+  password: string | null | undefined;
 }
 
 export interface UserLoginRequest {
@@ -22,4 +23,13 @@ export interface UpdatePasswordRequest {
   currentPassword: string | null | undefined;
   newPassword: string | null | undefined;
   repeatedPassword: string | null | undefined;
+}
+
+export interface Session {
+  id: string;
+  ipAddress: string;
+  os: string;
+  browser: string;
+  deviceType: string;
+  refreshToken: string;
 }

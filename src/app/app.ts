@@ -1,11 +1,12 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
 import {ThemeService} from './service/theme.service';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {RouterOutlet} from '@angular/router';
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [MatSnackBarModule, RouterOutlet],
   templateUrl: './app.html',
   standalone: true,
   styleUrl: './app.scss'

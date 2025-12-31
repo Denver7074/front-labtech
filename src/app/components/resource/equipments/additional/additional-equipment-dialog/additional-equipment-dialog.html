@@ -1,0 +1,176 @@
+<div class="dialog-form">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon>inventory_2</mat-icon>
+      <h2 class="title">{{ title }}</h2>
+    </div>
+    <p class="subtitle">Заполните информацию об оборудовании</p>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+      <mat-accordion displayMode="flat">
+
+        <!-- ОСНОВНАЯ ИНФОРМАЦИЯ -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Основная информация</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="form-fields">
+            <!-- Наименование -->
+            <mat-form-field appearance="outline">
+              <mat-label>Наименование</mat-label>
+              <input matInput formControlName="name" placeholder="Например, Спектрометр">
+              <mat-icon matPrefix>title</mat-icon>
+              @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
+                <mat-error>Укажите наименование</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Назначение -->
+            <mat-form-field appearance="outline">
+              <mat-label>Назначение</mat-label>
+              <input matInput formControlName="purpose" placeholder="Например, анализ воды">
+              <mat-icon matPrefix>description</mat-icon>
+              @if (form.get('purpose')?.hasError('required') && form.get('purpose')?.touched) {
+                <mat-error>Укажите назначение</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Производитель -->
+            <mat-form-field appearance="outline">
+              <mat-label>Производитель</mat-label>
+              <input matInput formControlName="producer" placeholder="Например, ООО ТехноЛаб">
+              <mat-icon matPrefix>factory</mat-icon>
+              @if (form.get('producer')?.hasError('required') && form.get('producer')?.touched) {
+                <mat-error>Укажите производителя</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Место установки -->
+            <mat-form-field appearance="outline">
+              <mat-label>Место установки</mat-label>
+              <input matInput formControlName="location" placeholder="Например, Помещение №4">
+              <mat-icon matPrefix>location_on</mat-icon>
+              @if (form.get('location')?.hasError('required') && form.get('location')?.touched) {
+                <mat-error>Укажите место установки</mat-error>
+              }
+            </mat-form-field>
+
+            <div class="grid">
+              <!-- Год выпуска -->
+              <mat-form-field appearance="outline">
+                <mat-label>Год выпуска</mat-label>
+                <input matInput type="number" formControlName="produceYear" min="1900" max="2100" placeholder="2020">
+                <mat-icon matPrefix>calendar_today</mat-icon>
+                @if (form.get('produceYear')?.hasError('required') && form.get('produceYear')?.touched) {
+                  <mat-error>Укажите год выпуска</mat-error>
+                }
+              </mat-form-field>
+
+              <!-- Год ввода в эксплуатацию -->
+              <mat-form-field appearance="outline">
+                <mat-label>Год ввода в эксплуатацию</mat-label>
+                <input matInput type="number" formControlName="yearOfCommissioning" min="1900" max="2100" placeholder="2021">
+                <mat-icon matPrefix>calendar_month</mat-icon>
+                @if (form.get('yearOfCommissioning')?.hasError('required') && form.get('yearOfCommissioning')?.touched) {
+                  <mat-error>Укажите год ввода в эксплуатацию</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <!-- Заводской номер -->
+            <mat-form-field appearance="outline">
+              <mat-label>Заводской номер</mat-label>
+              <input matInput formControlName="produceNumber" placeholder="Например, SN-123456">
+              <mat-icon matPrefix>qr_code</mat-icon>
+            </mat-form-field>
+
+            <!-- Инвентарный номер -->
+            <mat-form-field appearance="outline">
+              <mat-label>Инвентарный номер</mat-label>
+              <input matInput formControlName="uniqueNumber" placeholder="Например, ИН-7890">
+              <mat-icon matPrefix>confirmation_number</mat-icon>
+              @if (form.get('uniqueNumber')?.hasError('required') && form.get('uniqueNumber')?.touched) {
+                <mat-error>Укажите инвентарный номер</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- ДОГОВОР -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Договор аренды / собственности</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div formGroupName="contract" class="form-fields">
+            <div class="grid">
+              <!-- Номер договора -->
+              <mat-form-field appearance="outline">
+                <mat-label>Номер договора</mat-label>
+                <input matInput formControlName="contractNumber" placeholder="Например, №45-АР/2025">
+                <mat-icon matPrefix>description</mat-icon>
+                @if (form.get('contract.contractNumber')?.hasError('required') && form.get('contract.contractNumber')?.touched) {
+                  <mat-error>Укажите номер договора</mat-error>
+                }
+              </mat-form-field>
+
+              <!-- Дата договора -->
+              <mat-form-field appearance="outline">
+                <mat-label>Дата договора</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="contractDatePicker"
+                  formControlName="contractDate"
+                  placeholder="Выберите дату"
+                />
+                <mat-datepicker-toggle matSuffix [for]="contractDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #contractDatePicker></mat-datepicker>
+                @if (form.get('contract.contractDate')?.hasError('required') && form.get('contract.contractDate')?.touched) {
+                  <mat-error>Укажите дату договора</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="grid">
+              <mat-form-field appearance="outline">
+                <mat-label>Тип владения</mat-label>
+                <mat-select formControlName="isOwn" required>
+                  <mat-option [value]="true">В собственности</mat-option>
+                  <mat-option [value]="false">В аренде</mat-option>
+                </mat-select>
+                @if (form.get('contract.isOwn')?.hasError('required') && form.get('contract.isOwn')?.touched) {
+                  <mat-error>Выберите тип владения</mat-error>
+                }
+              </mat-form-field>
+
+              <!-- Дата окончания (только при аренде) -->
+              @if (form.get('contract.isOwn')?.value === false) {
+                <mat-form-field appearance="outline">
+                  <mat-label>Дата окончания</mat-label>
+                  <input matInput [matDatepicker]="endPicker" formControlName="endAt">
+                  <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #endPicker></mat-datepicker>
+                  @if (form.get('contract.endAt')?.hasError('required') && form.get('contract.endAt')?.touched) {
+                    <mat-error>Укажите дату окончания</mat-error>
+                  }
+                </mat-form-field>
+              }
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <app-button mat-dialog-close class="mr-20 error">
+      Отмена
+    </app-button>
+    <app-button [disabled]="form.invalid" (click)="onSubmit()">
+      {{ submitLabel }}
+    </app-button>
+  </mat-dialog-actions>
+</div>

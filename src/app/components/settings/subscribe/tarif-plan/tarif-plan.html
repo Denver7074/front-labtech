@@ -1,0 +1,64 @@
+<div class="container">
+  <h2 class="title">Тарифные планы</h2>
+  <app-button [matTooltip]="'Добавить тариф'"
+              (click)="openDialog(TariffDialog)">
+    <mat-icon>add</mat-icon>
+  </app-button>
+
+  @if (loading()) {
+    <app-loader></app-loader>
+  } @else {
+    <div class="cards-grid">
+      @for (plan of tariffPlans(); track plan.id) {
+        <mat-card class="tariff-card">
+
+          <mat-card-header class="grid">
+            <button mat-icon-button (click)="openDialog(TariffDialog, plan)" aria-label="Редактировать">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button (click)="onDelete(plan.id)" color="warn" aria-label="Удалить">
+              <mat-icon>delete</mat-icon>
+            </button>
+
+            <mat-card-title>{{ this.tariffPlanTypes()!.get('tariff-plan-type')!.get(plan.tariffPlanTypeId)}}</mat-card-title>
+          </mat-card-header>
+
+          <mat-divider></mat-divider>
+
+          <!-- Выбор срока -->
+          <mat-card-content class="duration-section">
+            <label class="duration-label">Срок подписки:</label>
+            <mat-form-field appearance="outline" class="period-select">
+              <mat-select
+                [value]="selectedPeriod()[plan.id] || (plan.tariffs.length ? plan.tariffs[0].period : null)"
+                (selectionChange)="onPeriodChange(plan.id, $event.value)"
+              >
+                @for (tariff of getSortedTariffs(plan.tariffs); track tariff.period) {
+                  <mat-option [value]="tariff.period">
+                    {{ getPeriodLabel(tariff.period) }} — {{ tariff.amount | number }} ₽
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            @if (getSelectedTariff(plan); as selected) {
+              <div class="total">
+                К оплате: {{ selected.amount | number }} ₽
+              </div>
+            }
+          </mat-card-content>
+
+          <!-- Кнопки действия -->
+          <mat-card-actions class="card-actions">
+            <app-button (click)="onSelectPlan(plan, selectedPeriod()[plan.id])">
+              Оплатить
+            </app-button>
+          </mat-card-actions>
+        </mat-card>
+      } @empty {
+        <p class="no-data">Нет доступных тарифных планов.</p>
+      }
+    </div>
+  }
+</div>

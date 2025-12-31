@@ -9,5 +9,24 @@
     "target": "http://localhost:8080",
     "secure": false,
     "changeOrigin": true
+  },
+
+  "/guide-service": {
+    "target": "http://localhost:9111",
+    "secure": false,
+    "changeOrigin": true
+  },
+
+  "/subscribe-service": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+
+  "/resources-service": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "changeOrigin": true
   }
+
 }

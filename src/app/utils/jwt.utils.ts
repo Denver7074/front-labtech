@@ -18,8 +18,16 @@ export class JwtUtils {
     }
   }
 
-  static getUserId(token: string): string | null {
+  static getUserId(token: string | null): string | null {
+    if (!token) {
+      return null;
+    }
     const payload = this.decodeToken(token);
     return payload?.userId || null;
+  }
+
+  static getPayload(token: string | null): JwtPayload | null {
+    if (!token) return null;
+    return this.decodeToken(token);
   }
 }

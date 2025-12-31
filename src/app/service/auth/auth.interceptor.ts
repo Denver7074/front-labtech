@@ -1,48 +1,67 @@
-import {HttpHandlerFn, HttpInterceptorFn, HttpRequest} from "@angular/common/http";
-import {inject} from "@angular/core";
-import {AuthService} from "./auth.service";
-import {catchError, switchMap, throwError} from "rxjs";
+import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { AuthService } from './auth.service';
+import {BehaviorSubject, catchError, filter, switchMap, take, throwError} from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
-let isRefreshing = false;
+let refreshSubject: BehaviorSubject<string | null> | null = null;
 
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService)
-  const token = authService.getToken()
-  if(!token) return next(req)
-  if (isRefreshing) {
-    return refreshAndProceed(authService, req, next)
+  const authService = inject(AuthService);
+
+  const token = authService.getToken();
+  if (!token) {
+    return next(req);
   }
-  req = addNewToken(req, token)
+
+  req = addAuthHeader(req, token);
   return next(req).pipe(
     catchError(err => {
-      if (err.status == 403) {
-        return refreshAndProceed(authService, req, next)
+      if (err.status === 401 || err.status === 403) {
+        return handleAuthError(authService, req, next);
       }
-      return throwError(err)
+      return throwError(() => err);
     })
-  )
-}
+  );
+};
 
-const refreshAndProceed = (authService: AuthService, req: HttpRequest<unknown>, next: HttpHandlerFn) => {
-  if (isRefreshing) {
-    return next(addNewToken(req, authService.accessToken()!))
+function handleAuthError(
+  authService: AuthService,
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn
+) {
+  if (refreshSubject) {
+    return refreshSubject.pipe(
+      filter(token => token !== null),
+      take(1),
+      switchMap(token => next(addAuthHeader(req, token!)))
+    );
   }
-  isRefreshing = true
-  return authService.refreshAuthToken()
-    .pipe(
-      switchMap(token => {
-        isRefreshing = false
-        return next(addNewToken(req, token.accessToken))
-      })
-    )
+
+  refreshSubject = new BehaviorSubject<string | null>(null);
+  return authService.refreshAuthToken().pipe(
+    switchMap(authResponse => {
+      const newAccessToken = authResponse.value.accessToken;
+      refreshSubject!.next(newAccessToken);
+      refreshSubject = null;
+
+      return next(addAuthHeader(req, newAccessToken));
+    }),
+    catchError(error => {
+      refreshSubject = null;
+      authService.logout();
+      return throwError(() => error);
+    })
+  );
 }
 
-const addNewToken = (req: HttpRequest<unknown>, accessToken: string) => {
+function addAuthHeader(req: HttpRequest<unknown>, token: string | null): HttpRequest<unknown> {
+  if (!token) {
+    return req;
+  }
   return req.clone({
     setHeaders: {
-      Authorization: `Bearer ${accessToken}`
+      Authorization: `Bearer ${token}`
     }
-  })
+  });
 }
-
-

@@ -1,0 +1,103 @@
+<div class="dialog-form">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon>person</mat-icon>
+      <h2 class="title">{{ title }}</h2>
+    </div>
+    <p class="subtitle">Заполните личные данные</p>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+      <div class="form-fields">
+        <!-- Фамилия -->
+        <mat-form-field appearance="outline">
+          <mat-label>Фамилия</mat-label>
+          <input matInput formControlName="lastName" placeholder="Например, Иванов">
+          <mat-icon matPrefix>text_fields</mat-icon>
+          @if (form.get('lastName')?.hasError('required') && form.get('lastName')?.touched) {
+            <mat-error>Укажите фамилию</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Имя -->
+        <mat-form-field appearance="outline">
+          <mat-label>Имя</mat-label>
+          <input matInput formControlName="firstName" placeholder="Например, Иван">
+          <mat-icon matPrefix>text_fields</mat-icon>
+          @if (form.get('firstName')?.hasError('required') && form.get('firstName')?.touched) {
+            <mat-error>Укажите имя</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Отчество (необязательное) -->
+        <mat-form-field appearance="outline">
+          <mat-label>Отчество</mat-label>
+          <input matInput formControlName="middleName" placeholder="Например, Иванович">
+          <mat-icon matPrefix>text_fields</mat-icon>
+        </mat-form-field>
+
+        <!-- Место рождения -->
+        <mat-form-field appearance="outline">
+          <mat-label>Место рождения</mat-label>
+          <input matInput formControlName="birthPlace" placeholder="Город, страна">
+          <mat-icon matPrefix>location_on</mat-icon>
+          @if (form.get('birthPlace')?.hasError('required') && form.get('birthPlace')?.touched) {
+            <mat-error>Укажите место рождения</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="grid">
+          <!-- Дата рождения -->
+          <mat-form-field appearance="outline">
+            <mat-label>Дата рождения</mat-label>
+            <input
+              matInput
+              [matDatepicker]="pickerBirth"
+              formControlName="birthDate"
+              placeholder="Выберите дату"
+            >
+            <mat-icon matSuffix (click)="pickerBirth.open()">calendar_today</mat-icon>
+            <mat-datepicker #pickerBirth></mat-datepicker>
+            @if (form.get('birthDate')?.hasError('required') && form.get('birthDate')?.touched) {
+              <mat-error>Укажите дату рождения</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- СНИЛС -->
+          <mat-form-field appearance="outline">
+            <mat-label>СНИЛС</mat-label>
+            <input
+              matInput
+              formControlName="snils"
+              placeholder="123-456-789 00"
+              mask="000-000-000 00"
+              [validation]="true"
+            >
+            <mat-icon matPrefix>badge</mat-icon>
+            @if (form.get('snils')?.hasError('required') && form.get('snils')?.touched) {
+              <mat-error>Укажите СНИЛС</mat-error>
+            }
+            @if (form.get('snils')?.hasError('maxlength')) {
+              <mat-error>СНИЛС должен содержать 11 цифр</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <app-button mat-dialog-close class="mr-20 error" (click)="form.reset()">
+      Отмена
+    </app-button>
+
+    <app-button
+      [disabled]="form.invalid"
+      (click)="onSubmit()"
+      [type] = "'submit'"
+    >
+      {{ submitLabel }}
+    </app-button>
+  </mat-dialog-actions>
+</div>

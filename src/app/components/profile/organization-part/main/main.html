@@ -1,0 +1,139 @@
+@if (isLoading()) {
+  <app-loader>Загрузка данных профиля...</app-loader>
+} @else {
+  <div class="profile-layout">
+    <!-- Боковая панель с основной информацией -->
+    <aside class="profile-sidebar">
+      <div>
+        <div class="sidebar-section">
+          <div class="grid">
+            <h3>Основная информация</h3>
+            <button
+              mat-icon-button
+              class="add-button"
+              [matTooltip]="
+                info()
+                  ? 'Редактировать информацию о подразделении'
+                  : 'Добавить информацию о подразделении'
+              "
+              (click)="openGeneralDialog(PartDialog, info(), false)"
+            >
+              <mat-icon>{{ info() ? 'edit' : 'add' }}</mat-icon>
+            </button>
+          </div>
+          <div class="info-list">
+            <!-- Название подразделения -->
+            <div class="info-item">
+              <span class="info-label">Название подразделения</span>
+              <span class="info-value">{{ info()?.name }}</span>
+            </div>
+
+            <!-- Тип подразделения -->
+            @if (info()?.organizationTypeId) {
+              <div class="info-item">
+                <span class="info-label">Тип подразделения</span>
+                <span class="info-value">
+                  {{ valueType()!.get('organization-type')!.get(info()!.organizationTypeId) || '—' }}
+                </span>
+              </div>
+            }
+
+            <!-- Номер аккредитации -->
+            @if (info()?.registrationNumber) {
+              <div class="info-item">
+                <span class="info-label">Номер аккредитации</span>
+                <span class="info-value">
+                  <a
+                    [href]="info()?.accreditationLink"
+                    target="_blank"
+                    rel="noopener"
+                    class="link"
+                  >
+                    {{ info()?.registrationNumber }}
+                  </a>
+                </span>
+              </div>
+            }
+
+            <!-- Руководитель -->
+            @if (info()?.headOfPart) {
+              <div class="info-item">
+                <span class="info-label">Руководитель</span>
+                <span class="info-value">{{ info()?.headOfPart }}</span>
+              </div>
+            }
+
+            <!-- Должность руководителя -->
+            @if (info()?.headPosition) {
+              <div class="info-item">
+                <span class="info-label">Должность руководителя</span>
+                <span class="info-value">{{ info()?.headPosition }}</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="info-list"></div>
+
+        <!-- Контакты -->
+        @if (info()) {
+          <mat-accordion class="contact-accordion">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon>contacts</mat-icon>
+                  <span>Контактная информация</span>
+                </mat-panel-title>
+                <button
+                  mat-icon-button
+                  class="add-button"
+                  [matTooltip]="'Добавить контакт'"
+                  (click)="openDialog(ContactDialog, 'contacts')"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+              </mat-expansion-panel-header>
+
+              @if (info()?.contacts?.length) {
+                <div class="contacts-grid">
+                  @for (contact of info()!.contacts; track contact.id) {
+                    <div class="contact-card">
+                      <button
+                        mat-icon-button
+                        [matTooltip]="'Удалить контакт'"
+                        (click)="delete(contact.id, 'contacts')"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        [matTooltip]="'Редактировать'"
+                        (click)="openDialog(ContactDialog, 'contacts', contact)"
+                      >
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <div class="contact-header">
+                        <mat-label>
+                          {{ valueType()!.get('contact-type')!.get(contact.contactTypeId) }}:
+                        </mat-label>
+                      </div>
+                      <div class="contact-body">
+                        <a class="contact-link">{{ contact.value }}</a>
+                      </div>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <div class="empty-state">
+                  <mat-icon>contact_mail</mat-icon>
+                  <p>Контактная информация не указана</p>
+                </div>
+              }
+            </mat-expansion-panel>
+          </mat-accordion>
+        }
+      </div>
+    </aside>
+
+  </div>
+}

@@ -32,19 +32,31 @@
       </div>
 
       <div class="nav-section">
-        <p class="nav-section-title">Management</p>
+        <p class="nav-section-title">Ресурсы</p>
         <mat-nav-list role="list" class="nav-list">
           <mat-list-item class="nav-item" routerLinkActive="active">
             <mat-icon matListItemIcon class="nav-icon">people</mat-icon>
-            <a matListItemTitle routerLink="/staff" class="nav-link">Staff</a>
+            <a matListItemTitle routerLink="organizations/department/{{ this.id() }}/staff" class="nav-link">Персонал</a>
           </mat-list-item>
+
           <mat-list-item class="nav-item" routerLinkActive="active">
-            <mat-icon matListItemIcon class="nav-icon">science</mat-icon>
-            <a matListItemTitle routerLink="/equipment" class="nav-link">Equipment</a>
+            <mat-icon matListItemIcon class="nav-icon">home</mat-icon>
+            <a
+              matListItemTitle
+              [routerLink]="id() ? ['/organizations/department', id(), 'inventory'] : []"
+              [class.disabled]="!id()"
+              class="nav-link"
+            >Помещения</a>
           </mat-list-item>
+
           <mat-list-item class="nav-item" routerLinkActive="active">
-            <mat-icon matListItemIcon class="nav-icon">inventory_2</mat-icon>
-            <a matListItemTitle routerLink="/inventory" class="nav-link">Inventory</a>
+            <mat-icon matListItemIcon class="nav-icon">balance</mat-icon>
+            <a
+              matListItemTitle
+              [routerLink]="id() ? ['/organizations/department', id(), 'equipment'] : []"
+              [class.disabled]="!id()"
+              class="nav-link"
+            >Оборудование</a>
           </mat-list-item>
         </mat-nav-list>
       </div>
@@ -86,7 +98,11 @@
       </button>
 
       <mat-menu #userMenu="matMenu" xPosition="before">
-        <button mat-menu-item routerLink="/profile">
+        <div mat-menu-item class="user-info-header" disabled>
+          {{ userName() }}
+        </div>
+
+        <button mat-menu-item [routerLink]="profileRoute()">
           <mat-icon>person</mat-icon>
           <span>Профиль</span>
         </button>
@@ -94,7 +110,7 @@
           <mat-icon>settings</mat-icon>
           <span>Настройки</span>
         </button>
-        <button mat-menu-item (click)="authService.logout()">
+        <button mat-menu-item (click)="onLogout()">
           <mat-icon>logout</mat-icon>
           <span>Выйти</span>
         </button>

@@ -1,0 +1,229 @@
+<div class="dialog-form">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon>business</mat-icon>
+      <h2 class="title">{{ title }}</h2>
+    </div>
+    <p class="subtitle">Информация об организации</p>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+      <mat-accordion [multi]="false" displayMode="flat">
+
+        <!-- Основная информация -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Основная информация
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="form-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>Полное название организации</mat-label>
+              <input matInput formControlName="fullName" placeholder="Например, ООО «Ромашка»">
+              <mat-icon matPrefix>business</mat-icon>
+              @if (form.get('fullName')?.hasError('required') && form.get('fullName')?.touched) {
+                <mat-error>Укажите полное название</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Сокращённое название</mat-label>
+              <input matInput formControlName="shortName" placeholder="Например, «Ромашка»">
+              <mat-icon matPrefix>short_text</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>ИНН</mat-label>
+              <input matInput formControlName="inn" placeholder="10 или 12 цифр">
+              <mat-icon matPrefix>numbers</mat-icon>
+              @if (form.get('inn')?.hasError('required') && form.get('inn')?.touched) {
+                <mat-error>Укажите ИНН</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>ОГРН / ОГРНИП</mat-label>
+              <input matInput formControlName="ogrn" placeholder="13 цифр (ОГРН) или 15 (ОГРНИП)">
+              <mat-icon matPrefix>badge</mat-icon>
+              @if (form.get('ogrn')?.hasError('required') && form.get('ogrn')?.touched) {
+                <mat-error>Укажите ОГРН или ОГРНИП</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Организационно-правовая форма</mat-label>
+              <mat-select formControlName="legalFormId">
+                @for (entry of Array.from(this.data.guide!.get('legal-form')!.entries()); track entry[0]) {
+                  <mat-option [value]="entry[0]">
+                    {{ entry[1] }}
+                  </mat-option>
+                }
+              </mat-select>
+              <mat-icon matPrefix>menu_book</mat-icon>
+              @if (form.get('legalFormId')?.hasError('required') && form.get('legalFormId')?.touched) {
+                <mat-error>Выберите форму</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Адреса -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Адреса
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="form-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>Адрес регистрации</mat-label>
+              <textarea matInput formControlName="registrationAddress" placeholder="Полный юридический адрес"></textarea>
+              <mat-icon matPrefix>home</mat-icon>
+              @if (form.get('registrationAddress')?.hasError('required') && form.get('registrationAddress')?.touched) {
+                <mat-error>Укажите адрес регистрации</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Фактический адрес</mat-label>
+              <textarea matInput formControlName="actualAddress" placeholder="Если отличается от юридического"></textarea>
+              <mat-icon matPrefix>location_on</mat-icon>
+              @if (form.get('actualAddress')?.hasError('required') && form.get('actualAddress')?.touched) {
+                <mat-error>Укажите фактический адрес</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Руководитель -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Руководитель
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="form-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>ФИО руководителя</mat-label>
+              <input matInput formControlName="nameHeadOfOrganization" placeholder="Иванов Иван Иванович">
+              <mat-icon matPrefix>person</mat-icon>
+              @if (form.get('nameHeadOfOrganization')?.hasError('required') && form.get('nameHeadOfOrganization')?.touched) {
+                <mat-error>Укажите ФИО руководителя</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Должность руководителя</mat-label>
+              <input matInput formControlName="positionOfOrganization" placeholder="Генеральный директор">
+              <mat-icon matPrefix>work</mat-icon>
+              @if (form.get('positionOfOrganization')?.hasError('required') && form.get('positionOfOrganization')?.touched) {
+                <mat-error>Укажите должность</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Банковские реквизиты -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Банковские реквизиты
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="form-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>Наименование банка</mat-label>
+              <input matInput formControlName="bankName" placeholder="ПАО Сбербанк">
+              <mat-icon matPrefix>account_balance</mat-icon>
+              @if (form.get('bankName')?.hasError('required') && form.get('bankName')?.touched) {
+                <mat-error>Укажите наименование банка</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>БИК</mat-label>
+              <input matInput formControlName="bik" placeholder="9 цифр">
+              <mat-icon matPrefix>credit_card</mat-icon>
+              @if (form.get('bik')?.hasError('required') && form.get('bik')?.touched) {
+                <mat-error>Укажите БИК</mat-error>
+              }
+              @if (form.get('bik')?.hasError('pattern') && form.get('bik')?.touched) {
+                <mat-error>БИК должен содержать 9 цифр</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Корреспондентский счёт</mat-label>
+              <input matInput formControlName="correspondentAccount" placeholder="20 цифр">
+              <mat-icon matPrefix>account_balance_wallet</mat-icon>
+              @if (form.get('correspondentAccount')?.hasError('required') && form.get('correspondentAccount')?.touched) {
+                <mat-error>Укажите корреспондентский счёт</mat-error>
+              }
+              @if (form.get('correspondentAccount')?.hasError('pattern') && form.get('correspondentAccount')?.touched) {
+                <mat-error>Корреспондентский счёт должен содержать 20 цифр</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Расчётный счёт</mat-label>
+              <input matInput formControlName="settlementAccount" placeholder="20 цифр">
+              <mat-icon matPrefix>account_balance</mat-icon>
+              @if (form.get('settlementAccount')?.hasError('required') && form.get('settlementAccount')?.touched) {
+                <mat-error>Укажите расчётный счёт</mat-error>
+              }
+              @if (form.get('settlementAccount')?.hasError('pattern') && form.get('settlementAccount')?.touched) {
+                <mat-error>Расчётный счёт должен содержать 20 цифр</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Налогообложение -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Налогообложение
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="form-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>Система налогообложения</mat-label>
+              <mat-select formControlName="taxationSystemId">
+                @for (entry of Array.from(this.data.guide!.get('taxation-type')!.entries()); track entry[0]) {
+                  <mat-option [value]="entry[0]">
+                    {{ entry[1] }}
+                  </mat-option>
+                }
+              </mat-select>
+              <mat-icon matPrefix>receipt_long</mat-icon>
+              @if (form.get('taxationSystemId')?.hasError('required') && form.get('taxationSystemId')?.touched) {
+                <mat-error>Выберите систему налогообложения</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-slide-toggle formControlName="isVatExempt" color="primary" class="vat-toggle">
+              Освобождён от уплаты НДС
+            </mat-slide-toggle>
+          </div>
+        </mat-expansion-panel>
+
+      </mat-accordion>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    @if (!isViewMode) {
+      <app-button mat-dialog-close class="mr-20 error" (click)="form.reset()">
+        Отмена
+      </app-button>
+      <app-button [disabled]="form.invalid" (click)="onSubmit()">
+        {{ submitLabel }}
+      </app-button>
+    } @else {
+      <app-button mat-dialog-close class="mr-20 error">Закрыть</app-button>
+      <app-button [matTooltip]="'Скачать карточку предприятия'">Скачать</app-button>
+    }
+  </mat-dialog-actions>
+</div>

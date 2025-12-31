@@ -1,0 +1,8 @@
+.error-snackbar .mat-mdc-snackbar-surface {
+  background: var(--mat-sys-error) !important;
+}
+
+.success-snackbar .mat-mdc-snackbar-surface {
+  background: var(--mat-sys-primary) !important;
+}
+

@@ -1,0 +1,78 @@
+/* Общий контейнер списка */
+.people-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+/* Карточка одного пользователя */
+.person {
+  padding: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.person:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--mat-sys-inverse-on-surface);
+}
+
+.person h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.person p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+/* Пагинатор — прижать к низу */
+.paginator-container {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Убедитесь, что mat-paginator не растягивается */
+::ng-deep mat-paginator {
+  justify-content: flex-end;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: flex-start; /* чтобы текст не тянул аватар вниз */
+}
+
+.avatar-container {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.avatar,
+.avatar-initials {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  background-color: #9e9e9e;
+  font-size: 18px;
+}
+
+.avatar {
+  object-fit: cover;
+  background-color: #e0e0e0;
+}

@@ -1,0 +1,456 @@
+// --- Контейнеры и основной макет ---
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+/* Только для изображения */
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+/* Только для текстового аватара */
+.avatar-initials {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  user-select: none;
+  border: 2px solid #ddd;
+  background-color: #e0e0e0;
+  color: #555;
+  font-size: 28px;
+  line-height: 1.2;
+  text-align: center;
+  overflow: hidden;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.grid > :nth-child(2) {
+  justify-self: end;
+}
+
+// --- Боковая панель ---
+.profile-sidebar {
+  position: sticky;
+  top: 24px;
+  height: fit-content;
+}
+
+.sidebar-section {
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-section h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// --- Информационные поля ---
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+
+.info-value {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+// --- Аккордеоны ---
+.contact-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-accordion .mat-expansion-panel {
+  border-radius: 20px !important;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid #e2e8f0;
+}
+
+.contact-accordion .mat-expansion-panel-header {
+  padding: 0 24px;
+  height: 72px !important;
+}
+
+.contact-accordion .mat-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+// --- Карточка контакта ---
+.contact-card {
+  display: grid;
+  grid-template-columns: auto auto auto 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+// --- Основной контент (вкладки) ---
+.profile-tabs {
+  min-height: 400px;
+}
+
+.profile-tabs ::ng-deep .mat-mdc-tab-labels {
+  padding: 0 20px;
+}
+
+.tab-label {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 4px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.tab-label mat-icon {
+  font-size: 25px;
+  width: 25px;
+  height: 25px;
+  transition: color 0.2s ease;
+}
+
+.tab-badge {
+  background: #1a73e8;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 10px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.tab-content {
+  padding: 24px;
+  min-height: 300px;
+}
+
+// --- Списки и карточки (опыт, образование) ---
+.tab-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tab-card {
+  padding: 20px;
+  transition: box-shadow 0.3s ease;
+  border-radius: 20px !important;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid #e2e8f0;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.tab-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 16px;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.card-period {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.work-company {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.work-company mat-icon,
+.specialization mat-icon,
+.diploma mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.education-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.specialization,
+.diploma {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.diploma {
+  flex-wrap: wrap;
+  gap: 4px 8px;
+}
+
+.issue-date {
+  font-size: 13px;
+  padding-left: 4px;
+}
+
+// --- Теги (чипы) ---
+.work-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+// --- Пустые состояния ---
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.empty-state mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 16px;
+}
+
+// --- Анимация ---
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// --- АДАПТИВНОСТЬ ---
+@media (max-width: 1024px) {
+  .profile-layout {
+    grid-template-columns: 360px 1fr;
+    gap: 20px;
+  }
+
+  .avatar,
+  .avatar-initials {
+    width: 120px;
+    height: 120px;
+    font-size: 24px;
+  }
+
+  .sidebar-section {
+    padding: 20px;
+  }
+
+  .info-item .info-value {
+    justify-self: start;
+    text-align: right;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-sidebar {
+    position: static;
+    height: auto;
+  }
+
+  .avatar,
+  .avatar-initials {
+    width: 100px;
+    height: 100px;
+    font-size: 20px;
+  }
+
+  .sidebar-section h3 {
+    font-size: 16px;
+  }
+
+  .info-label::after {
+    content: ""; // убираем двоеточие
+  }
+
+  .info-label {
+    text-transform: none;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .tab-content {
+    padding: 16px;
+  }
+
+  .tab-card {
+    padding: 16px;
+  }
+
+  mat-chip-row {
+    font-size: 12px !important;
+    height: 24px !important;
+    padding: 0 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .avatar,
+  .avatar-initials {
+    width: 80px;
+    height: 80px;
+    font-size: 18px;
+  }
+
+  .sidebar-section {
+    padding: 16px;
+  }
+
+  .info-list {
+    gap: 12px;
+  }
+
+  .tab-card {
+    padding: 12px;
+  }
+
+  .card-header h3 {
+    font-size: 16px;
+  }
+
+  .card-period,
+  .work-company,
+  .specialization,
+  .diploma {
+    font-size: 13px;
+  }
+
+  mat-chip-row {
+    font-size: 11px !important;
+    height: 22px !important;
+  }
+
+  .tab-badge {
+    padding: 1px 6px;
+    font-size: 11px;
+  }
+}
+
+.ml-10 {
+  margin-left: 40px;
+}
+
+// Уменьшаем шрифт только в ячейках с данными
+.data-cell {
+  font-size: 13px; // или 12px — по вашему усмотрению
+  line-height: 1.4;
+}
+
+// Опционально: уменьшить отступы для компактности
+.data-cell,
+.mat-mdc-header-cell {
+  padding: 8px 4px !important;
+}
+
+// Стили для списков параметров/оборудования
+.parameter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.parameter-item {
+  font-size: 13px;
+  line-height: 1.3;
+}

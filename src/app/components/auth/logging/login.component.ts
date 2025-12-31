@@ -1,12 +1,14 @@
 import {Component, inject, signal} from '@angular/core';
 import {UserLoginRequest} from '../../../data/auth.interface';
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgClass} from '@angular/common';
 import {Button} from '../../ui/button/button';
 import {AuthService} from '../../../service/auth/auth.service';
 import {Router} from '@angular/router';
-import {NotifierService} from '../../../service/notifier.service';
+import {NotificationService} from '../../ui/notification.service';
+import {JwtUtils} from '../../../utils/jwt.utils';
+import {AuthInterface} from '../../../data/response.interface';
 
 
 @Component({
@@ -28,7 +30,7 @@ import {NotifierService} from '../../../service/notifier.service';
 export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
-  private notifierService = inject(NotifierService);
+  private notification = inject(NotificationService);
   private fb = inject(FormBuilder);
   isShowPassword = signal(false);
 
@@ -44,8 +46,11 @@ export class LoginComponent {
       password: this.form.get('password')?.value
     }
     this.authService.login(requestBody).subscribe({
-      next: () => this.router.navigate(['/general']),
-      error: (error) => this.notifierService.showError(error.message)
+      next: (value) => {
+        const userId = JwtUtils.getPayload(value.accessToken)?.userId
+        this.router.navigate([`persons/${userId}/general`])
+      },
+      error: (error) => this.notification.showErrorMsg(error.error.error.message)
     });
   }
 }

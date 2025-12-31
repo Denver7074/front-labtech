@@ -1,0 +1,86 @@
+<div class="dialog-form">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon>business</mat-icon>
+      <h2 class="title">{{ title }}</h2>
+    </div>
+    <p class="subtitle">Заполните информацию об организации</p>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+      <div class="form-fields">
+        <!--        Название подразделения-->
+        <mat-form-field appearance="outline">
+          <mat-label>Название лаборатории</mat-label>
+          <input matInput formControlName="name"
+                 placeholder="Например, Лаборатория радиационного контроля ООО 'Ромашка'">
+          <mat-icon matPrefix>badge</mat-icon>
+        </mat-form-field>
+
+        <!-- Тип организации -->
+        <mat-form-field appearance="outline">
+          <mat-label>Тип организации</mat-label>
+          <mat-select formControlName="organizationTypeId">
+            @for (entry of Array.from(this.data.guide!.get('organization-type')!.entries()); track entry[0]) {
+              <mat-option [value]="entry[0]">
+                {{ entry[1] }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-icon matPrefix>category</mat-icon>
+          @if (form.get('organizationTypeId')?.hasError('required') && form.get('organizationTypeId')?.touched) {
+            <mat-error>Выберите тип организации</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Регистрационный номер -->
+        <mat-form-field appearance="outline">
+          <mat-label>Регистрационный номер</mat-label>
+          <input matInput formControlName="registrationNumber" placeholder="Например, 123456789">
+          <mat-icon matPrefix>badge</mat-icon>
+        </mat-form-field>
+
+        <!-- Ссылка на аккредитацию -->
+        <mat-form-field appearance="outline">
+          <mat-label>Ссылка на аккредитацию</mat-label>
+          <input matInput formControlName="accreditationLink" placeholder="https://example.com">
+          <mat-icon matPrefix>link</mat-icon>
+        </mat-form-field>
+
+        <!-- ФИО руководителя -->
+        <mat-form-field appearance="outline">
+          <mat-label>ФИО руководителя</mat-label>
+          <input matInput formControlName="headOfPart" placeholder="Иванов Иван Иванович">
+          <mat-icon matPrefix>person</mat-icon>
+          @if (form.get('headOfPart')?.hasError('required') && form.get('headOfPart')?.touched) {
+            <mat-error>Укажите ФИО руководителя</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Должность руководителя -->
+        <mat-form-field appearance="outline">
+          <mat-label>Должность руководителя</mat-label>
+          <input matInput formControlName="headPosition" placeholder="Генеральный директор">
+          <mat-icon matPrefix>work</mat-icon>
+          @if (form.get('headPosition')?.hasError('required') && form.get('headPosition')?.touched) {
+            <mat-error>Укажите должность руководителя</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <app-button mat-dialog-close class="mr-20 error" (click)="form.reset()">
+      Отмена
+    </app-button>
+
+    <app-button
+      [disabled]="form.invalid"
+      (click)="onSubmit()"
+      [type]="'submit'">
+      {{ submitLabel }}
+    </app-button>
+  </mat-dialog-actions>
+</div>
