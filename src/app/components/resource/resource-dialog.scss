@@ -1,0 +1,104 @@
+/* Общий стиль для элементов с удалением (аттестация / характеристика) */
+.item-with-delete {
+  position: relative;
+  margin-bottom: 20px;
+  padding: 16px 64px 16px 16px; /* 64px справа — место для кнопки */
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.item-with-delete:last-child {
+  margin-bottom: 0;
+}
+
+/* Контент (формы) */
+.item-content {
+  flex: 1;
+}
+
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.field-row:last-child {
+  margin-bottom: 0;
+}
+
+
+.field-row ::ng-deep .mat-mdc-form-field,
+.characteristic-grid ::ng-deep .mat-mdc-form-field {
+  margin: 0 !important;
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--mdc-filled-button-container-color, #6750A4);
+  color: white;
+}
+
+.delete-btn:hover {
+  background: var(--mdc-filled-button-hover-container-color, #7f69b8);
+}
+
+.delete-btn mat-icon {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* === Специфично для характеристик === */
+
+.characteristic-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr; /* Наименование шире */
+  grid-template-rows: auto auto;
+  gap: 8px;
+  width: 100%;
+}
+
+.characteristic-grid .characteristic-name-field {
+  grid-row: span 2;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .item-with-delete {
+    padding-right: 16px;
+    flex-direction: column;
+  }
+
+  .characteristic-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, auto);
+  }
+
+  .characteristic-grid .characteristic-name-field {
+    grid-row: span 1;
+  }
+
+  .delete-btn {
+    position: static;
+    align-self: flex-end;
+    margin-top: 12px;
+  }
+}
+

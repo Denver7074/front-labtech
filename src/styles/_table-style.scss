@@ -1,0 +1,60 @@
+h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  flex: 1;
+  text-align: center;
+}
+
+.mat-column-index {
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  margin: 16px 0 24px;
+  gap: 16px;
+}
+
+.table-add-button {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-add-button:hover {
+  background: var(--mat-sys-primary);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.mat-mdc-table .mat-mdc-row:hover .mat-mdc-cell {
+  background-color: var(--mat-sys-inverse-on-surface) !important;
+  cursor: pointer !important;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+.view-mode-select {
+  width: 240px;
+}
+
+

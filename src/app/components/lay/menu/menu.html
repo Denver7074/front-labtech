@@ -12,24 +12,24 @@
 
     <!-- Navigation Section -->
     <div class="sidebar-content">
-      <div class="nav-section">
-        <p class="nav-section-title">Main</p>
-        <mat-nav-list role="list" class="nav-list">
+<!--      <div class="nav-section">-->
+<!--        <p class="nav-section-title">Main</p>-->
+<!--        <mat-nav-list role="list" class="nav-list">-->
 
-          <mat-list-item class="nav-item" routerLinkActive="active">
-            <mat-icon matListItemIcon class="nav-icon">assignment</mat-icon>
-            <a matListItemTitle routerLink="/tests" class="nav-link">Tests</a>
-          </mat-list-item>
-          <mat-list-item class="nav-item" routerLinkActive="active">
-            <mat-icon matListItemIcon class="nav-icon">groups</mat-icon>
-            <a matListItemTitle routerLink="/" class="nav-link">Patients</a>
-          </mat-list-item>
-          <mat-list-item class="nav-item" routerLinkActive="active">
-            <mat-icon matListItemIcon class="nav-icon">dashboard</mat-icon>
-            <a matListItemTitle routerLink="" class="nav-link">Dashboard</a>
-          </mat-list-item>
-        </mat-nav-list>
-      </div>
+<!--          <mat-list-item class="nav-item" routerLinkActive="active">-->
+<!--            <mat-icon matListItemIcon class="nav-icon">assignment</mat-icon>-->
+<!--            <a matListItemTitle routerLink="/tests" class="nav-link">Tests</a>-->
+<!--          </mat-list-item>-->
+<!--          <mat-list-item class="nav-item" routerLinkActive="active">-->
+<!--            <mat-icon matListItemIcon class="nav-icon">groups</mat-icon>-->
+<!--            <a matListItemTitle routerLink="/" class="nav-link">Patients</a>-->
+<!--          </mat-list-item>-->
+<!--          <mat-list-item class="nav-item" routerLinkActive="active">-->
+<!--            <mat-icon matListItemIcon class="nav-icon">dashboard</mat-icon>-->
+<!--            <a matListItemTitle routerLink="" class="nav-link">Dashboard</a>-->
+<!--          </mat-list-item>-->
+<!--        </mat-nav-list>-->
+<!--      </div>-->
 
       <div class="nav-section">
         <p class="nav-section-title">Ресурсы</p>
@@ -58,19 +58,15 @@
               class="nav-link"
             >Оборудование</a>
           </mat-list-item>
-        </mat-nav-list>
-      </div>
 
-      <div class="nav-section">
-        <p class="nav-section-title">Reports</p>
-        <mat-nav-list role="list" class="nav-list">
           <mat-list-item class="nav-item" routerLinkActive="active">
-            <mat-icon matListItemIcon class="nav-icon">analytics</mat-icon>
-            <a matListItemTitle routerLink="/analytics" class="nav-link">Analytics</a>
-          </mat-list-item>
-          <mat-list-item class="nav-item" routerLinkActive="active">
-            <mat-icon matListItemIcon class="nav-icon">description</mat-icon>
-            <a matListItemTitle routerLink="/reports" class="nav-link">Reports</a>
+            <mat-icon matListItemIcon class="nav-icon">science</mat-icon>
+            <a
+              matListItemTitle
+              [routerLink]="id() ? ['/organizations/department', id(), 'standard-sample'] : []"
+              [class.disabled]="!id()"
+              class="nav-link"
+            >Стандартные образцы</a>
           </mat-list-item>
         </mat-nav-list>
       </div>

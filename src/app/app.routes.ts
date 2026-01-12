@@ -12,23 +12,68 @@ import {canActivateAuth} from './service/auth/access.guard';
 import {MainSettings} from './components/settings/main/main';
 import {MainOrganizationPart} from './components/profile/organization-part/main/main';
 import {Rooms} from './components/resource/room/rooms/rooms';
-import {MainEquipment} from './components/resource/equipments/main-equipment/main-equipment';
+import {MainEquipment} from './components/equipment/main-equipment/main-equipment';
+import {StandardEquipment} from './components/standard-sample/standard/standard-equipment/standard-equipment';
+import {StandardMain} from './components/standard-sample/standard-main/standard-main';
 
 export const routes: Routes = [
-  {path: '', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent},
-  {path: 'forgot-password', component: ForgotPasswordComponent},
-  {path: 'reset/:forgotId', component: ResetPasswordComponent},
-  {path: 'confirm/:activateId', component: ConfirmationComponent},
   {
-    path: '', component: LayotComponent, children: [
-      {path: 'persons/:personId/general', component: MainPerson},
-      {path: 'persons', component: Persons},
-      {path: 'organizations/:organizationId/general', component: MainOrganization},
-      {path: 'organizations/department/:organizationPartId/general', component: MainOrganizationPart},
-      {path: 'organizations/department/:organizationPartId/inventory', component: Rooms},
-      {path: 'organizations/department/:organizationPartId/equipment', component: MainEquipment},
-      {path: 'settings', component: MainSettings},
-    ], canActivate: [canActivateAuth]
+    path: '',
+    component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: RegistrationComponent
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent
+  },
+  {
+    path: 'reset/:forgotId',
+    component: ResetPasswordComponent
+  },
+  {
+    path: 'confirm/:activateId',
+    component: ConfirmationComponent
+  },
+  {
+    path: '',
+    component: LayotComponent,
+    canActivate: [canActivateAuth],
+    children: [
+      {
+        path: 'persons/:personId/general',
+        component: MainPerson
+      },
+      {
+        path: 'persons',
+        component: Persons
+      },
+      {
+        path: 'organizations/:organizationId/general',
+        component: MainOrganization
+      },
+      {
+        path: 'organizations/department/:organizationPartId/general',
+        component: MainOrganizationPart
+      },
+      {
+        path: 'organizations/department/:organizationPartId/inventory',
+        component: Rooms
+      },
+      {
+        path: 'organizations/department/:organizationPartId/equipment',
+        component: MainEquipment
+      },
+      {
+        path: 'organizations/department/:organizationPartId/standard-sample',
+        component: StandardMain
+      },
+      {
+        path: 'settings',
+        component: MainSettings
+      },
+    ]
   },
 ];

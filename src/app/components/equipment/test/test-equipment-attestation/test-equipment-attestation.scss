@@ -1,0 +1,39 @@
+.attestation-grid-container {
+  overflow-x: auto;
+  margin: 16px 0;
+  width: 100%;
+}
+
+.attestation-grid {
+  width: 100%;
+  font-size: 13px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+::ng-deep .attestation-grid .mat-mdc-header-cell,
+::ng-deep .attestation-grid .mat-mdc-cell {
+  padding: 6px 8px !important;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+::ng-deep .attestation-grid .mat-mdc-header-cell {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.mark-cell {
+  padding: 0 !important;
+}
+
+.expiry-mark {
+  display: inline-block;
+  font-weight: bold;
+  color: var(--mat-sys-error);
+  font-size: 16px;
+  line-height: 1.2;
+}

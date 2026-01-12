@@ -18,6 +18,7 @@ import {HhInstitution, HhPosition} from '../../../../data/hh.interface';
 import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
 import {WorkResponsibilityInfo} from '../../../../data/profile.interface';
+import {MatChipGrid, MatChipRow} from '@angular/material/chips';
 
 @Component({
   selector: 'app-work',
@@ -42,7 +43,9 @@ import {WorkResponsibilityInfo} from '../../../../data/profile.interface';
     MatNativeDateModule,
     MatDatepickerToggle,
     MatAutocomplete,
-    MatAutocompleteTrigger
+    MatAutocompleteTrigger,
+    MatChipGrid,
+    MatChipRow
   ],
   templateUrl: './work.html',
   standalone: true

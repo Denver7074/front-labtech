@@ -66,33 +66,44 @@
           </mat-form-field>
         </div>
 
-        <!-- Типы измерений (мультиселект) -->
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="measurement-types-chip-select">
           <mat-label>Типы измерений</mat-label>
-          <mat-select formControlName="measurementTypeIds" multiple>
+
+          <!-- Чипсы: отображаем выбранные значения -->
+          <mat-chip-grid aria-label="Выбранные типы измерений">
+            @for (id of form.get('measurementTypeIds')?.value || []; track id) {
+              <mat-chip-row
+                removable="true"
+                (removed)="removeMeasurementType(id)">
+                {{ getMeasurementTypeName(id) }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+          </mat-chip-grid>
+
+          <!-- Селект для выбора -->
+          <mat-select
+            formControlName="measurementTypeIds"
+            multiple
+            [compareWith]="compareIds">
+
+            <!-- Отключаем автоматический текст от mat-select -->
+            <mat-select-trigger></mat-select-trigger>
+
             @for (entry of Array.from(this.data.guide!.get('measurement-type')!.entries()); track entry[0]) {
               <mat-option [value]="entry[0]">
                 {{ entry[1] }}
               </mat-option>
             }
           </mat-select>
+
+          <!-- Ошибка валидации -->
           @if (form.get('measurementTypeIds')?.hasError('required') && form.get('measurementTypeIds')?.touched) {
             <mat-error>Выберите хотя бы один тип</mat-error>
           }
         </mat-form-field>
-
-        @if (hasSelectedMeasurementTypes) {
-          <div class="selected-measurement-types">
-            @for (id of form.get('measurementTypeIds')?.value || []; track id) {
-              <div class="selected-item">
-                {{ getMeasurementTypeName(id) }}
-                <button mat-icon-button (click)="removeMeasurementType(id)" type="button">
-                  <mat-icon>close</mat-icon>
-                </button>
-              </div>
-            }
-          </div>
-        }
       </div>
     </form>
   </mat-dialog-content>

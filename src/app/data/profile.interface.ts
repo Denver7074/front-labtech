@@ -1,4 +1,4 @@
-import {RoomInfo} from './recources.interface';
+import {RoomInfo} from './equipment.interface';
 
 export interface OrganizationInfo {
   id: string;

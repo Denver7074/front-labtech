@@ -1,15 +1,9 @@
 <!-- Заголовок и кнопка добавления -->
 <div class="section-header">
   <h2>Помещения</h2>
-  <app-button
-    (click)="openDialog(AddressDialog, 'rooms')"
-    [matTooltip]="'Добавить помещение'"
-    class="add-button">
-    <mat-icon>add</mat-icon>
-  </app-button>
 </div>
 
-<div class="table-controls">
+<div class="table-actions">
   <button mat-button [matMenuTriggerFor]="columnMenu">
     <mat-icon>view_column</mat-icon>
     Колонки
@@ -27,6 +21,13 @@
       }
     }
   </mat-menu>
+
+  <button
+    (click)="openDialog(AddressDialog, 'rooms')"
+    [matTooltip]="'Добавить помещение'"
+    class="table-add-button">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>
 
 <!-- Таблица или пустое состояние -->

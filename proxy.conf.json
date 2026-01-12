@@ -23,7 +23,13 @@
     "changeOrigin": true
   },
 
-  "/resources-service": {
+  "/equipment-service": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+
+  "/standard-sample-service": {
     "target": "http://localhost:8080",
     "secure": false,
     "changeOrigin": true

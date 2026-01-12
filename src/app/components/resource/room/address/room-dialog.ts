@@ -5,18 +5,18 @@ import {Button} from '../../../ui/button/button';
 import {MatError, MatFormField, MatInput, MatLabel, MatPrefix} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
-import {MatOption, MatSelect} from '@angular/material/select';
-import {RoomInfo, roomTypeMap} from '../../../../data/recources.interface';
+import {MatOption, MatSelect, MatSelectTrigger} from '@angular/material/select';
+import {RoomInfo, roomTypeMap} from '../../../../data/equipment.interface';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconButton} from '@angular/material/button';
 import {
   MatAccordion,
   MatExpansionPanel,
   MatExpansionPanelHeader,
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
+import {MatChipGrid, MatChipRow} from '@angular/material/chips';
 
 
 @Component({
@@ -42,11 +42,13 @@ import {
     MatDatepickerInput,
     MatNativeDateModule,
     MatFormFieldModule,
-    MatIconButton,
     MatExpansionPanelTitle,
     MatExpansionPanelHeader,
     MatExpansionPanel,
     MatAccordion,
+    MatChipGrid,
+    MatChipRow,
+    MatSelectTrigger
   ],
   templateUrl: './room-dialog.html',
   standalone: true,
@@ -125,11 +127,6 @@ export class RoomDialog extends AbstractDialogComponent<RoomInfo> implements OnI
       const updated = current.filter(item => item !== id);
       control.setValue(updated);
     }
-  }
-
-  protected hasSelectedTypes(field: string): boolean {
-    const value = this.form.get(field)?.value;
-    return Array.isArray(value) && value.length > 0;
   }
 
   getEquipmentTypeName(id: string): string {

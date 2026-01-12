@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>История расхода</h2>
+
+<div class="reagent-info">
+  <strong>{{ data.value!.name }}</strong> (№ {{ data.value!.number }})
+</div>
+
+<mat-dialog-content>
+  @if (this.data.value?.expenditures && this.data.value!.expenditures.length > 0) {
+    <table mat-table [dataSource]="this.data.value!.expenditures" class="history-table">
+
+      <ng-container matColumnDef="useDate">
+        <th mat-header-cell *matHeaderCellDef>Дата взятия</th>
+        <td mat-cell *matCellDef="let exp">
+          {{ exp.useDate | date }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>Количество</th>
+        <td mat-cell *matCellDef="let exp">
+          {{ exp.quantity }} {{ this.data.value?.unit }}
+        </td>
+      </ng-container>
+
+      <!-- Цель -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Цель</th>
+        <td mat-cell *matCellDef="let exp">
+          {{ exp.description || '—' }}
+        </td>
+      </ng-container>
+
+      <!-- Исполнитель -->
+      <ng-container matColumnDef="executor">
+        <th mat-header-cell *matHeaderCellDef>Исполнитель</th>
+        <td mat-cell *matCellDef="let exp">
+          —
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let exp">
+          <button
+            mat-icon-button
+            [matTooltip]="'Удалить'"
+            (click)="deleteExpenditure(exp.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Заголовки и строки -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  } @else {
+    <p class="no-data">История расхода отсутствует</p>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-flat-button mat-dialog-close color="primary">Закрыть</button>
+</mat-dialog-actions>

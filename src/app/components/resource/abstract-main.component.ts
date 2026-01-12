@@ -20,7 +20,7 @@ export abstract class AbstractMainComponent<TInterface>  extends AbstractGuideCo
   info = signal<TInterface[]>([]);
 
   protected getPath(): string {
-    return `organizations/parts`;
+    return `/equipment-service/api/v1/organizations/parts/`;
   }
 
   protected abstract getResource(): string;
@@ -30,7 +30,7 @@ export abstract class AbstractMainComponent<TInterface>  extends AbstractGuideCo
 
   protected loadEntities(): void {
     this.isLoading.set(true);
-    const path = `resources-service/api/v1/organizations/parts/${this.getResource()}`
+    const path = `${this.getPath()}${this.getResource()}`
     const filter = {
       organizationPartId: this.id()
     }
@@ -38,7 +38,6 @@ export abstract class AbstractMainComponent<TInterface>  extends AbstractGuideCo
       next: (response: ApiResponse<TInterface[]>) => {
         this.info.set(response.value);
         this.totalItems.set(response.pagingResults.totalItemsCount);
-        console.log(response.value)
       },
       error: (err) => {
         const message = err?.error?.error?.message || 'Ошибка загрузки';
@@ -82,17 +81,17 @@ export abstract class AbstractMainComponent<TInterface>  extends AbstractGuideCo
       if (!result) return;
 
       if (mode === 'edit') {
-        const p = `/resources-service/api/v1/${this.getPath()}/${this.id()}/${path}/${result.id}`;
+        const p = `${this.getPath()}${this.id()}/${path}/${result.id}`;
         this.update(result, p);
       } else {
-        const p = `/resources-service/api/v1/${this.getPath()}/${this.id()}/${path}`;
+        const p = `${this.getPath()}${this.id()}/${path}`;
         this.add(result, p);
       }
     });
   }
 
   protected delete(id: string, path: string) {
-    const p = `/resources-service/api/v1/${this.getPath()}/${this.id()}/${path}/${id}`
+    const p = `${this.getPath()}/${this.id()}/${path}/${id}`
     this.crudService.delete(p).subscribe({
       next: () => {
         this.loadEntities();
@@ -115,6 +114,4 @@ export abstract class AbstractMainComponent<TInterface>  extends AbstractGuideCo
       this.displayedColumns = this.displayedColumns.filter(col => col !== column);
     }
   }
-
-
 }

@@ -43,9 +43,9 @@ export abstract class AbstractMainComponent<TInterface> extends AbstractGuideCom
       mode = "view";
     }
     const dialogRef = this.dialog.open(dialogComponent, {
+      width: '900px',
+      maxWidth: '95vw',
       data: {
-        width: '900px',
-        maxWidth: '95vw',
         mode: mode,
         value: profile,
         guide: this.valueType(),

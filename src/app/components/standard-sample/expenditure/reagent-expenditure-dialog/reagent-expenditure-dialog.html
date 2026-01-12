@@ -1,0 +1,54 @@
+<h2 mat-dialog-title>Взять реактив</h2>
+
+<!-- Отображение остатка -->
+@if (data.value?.remains) {
+  <div class="dialog-remainder">
+    <strong>Остаток:</strong> {{ this.data.value?.remains }} {{ this.data.value?.unit }}
+  </div>
+}
+
+<mat-dialog-content class="dialog-content">
+  <form [formGroup]="form">
+    <div class="form-fields">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Количество</mat-label>
+        <input matInput type="number" step="0.001" formControlName="quantity"/>
+        <span matTextSuffix>{{ this.data.value?.unit }}</span>
+
+        <!-- Ошибки валидации -->
+        @if (form.get('quantity')?.hasError('required') && form.get('quantity')?.touched) {
+          <mat-error>Укажите количество</mat-error>
+        }
+        @if (form.get('quantity')?.hasError('greaterThanZero')) {
+          <mat-error>Количество должно быть больше 0</mat-error>
+        }
+        @if (form.get('quantity')?.hasError('exceedsRemain')) {
+          <mat-error>
+            Недостаточно остатка. Доступно: {{ data.value?.remains }} {{ data.value?.unit }}
+          </mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Дата взятия</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="useDate"/>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Цель (опционально)</mat-label>
+        <textarea matInput formControlName="description" rows="2"></textarea>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <app-button mat-dialog-close class="mr-20 error">
+    Отмена
+  </app-button>
+  <app-button [disabled]="form.invalid" (click)="onSubmit()">
+    {{ submitLabel }}
+  </app-button>
+</mat-dialog-actions>

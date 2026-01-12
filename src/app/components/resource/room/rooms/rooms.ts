@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractMainComponent} from '../../abstract-main.component';
-import {RoomInfo, roomTypeMap} from '../../../../data/recources.interface';
+import {RoomInfo, roomTypeMap} from '../../../../data/equipment.interface';
 import {
   MatCell,
   MatCellDef,
@@ -17,12 +17,11 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {MatButton, MatIconButton} from '@angular/material/button';
 
 import {MatIconModule} from '@angular/material/icon';
-
-import {Button} from '../../../ui/button/button';
 import {DatePipe} from '@angular/common';
 import {RoomDialog} from '../address/room-dialog';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+
 
 @Component({
   selector: 'app-rooms',
@@ -40,7 +39,6 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
     MatCellDef,
     MatHeaderCellDef,
     MatTable,
-    Button,
     DatePipe,
     MatButton,
     MatCheckbox,
@@ -49,13 +47,11 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
     MatMenuTrigger
   ],
   templateUrl: './rooms.html',
-  styleUrl: './rooms.scss',
   standalone: true
 })
 export class Rooms extends AbstractMainComponent<RoomInfo> implements OnInit {
   protected readonly AddressDialog = RoomDialog;
   protected readonly roomTypeMap = roomTypeMap;
-
 
   protected override getResource(): string {
     return 'rooms';

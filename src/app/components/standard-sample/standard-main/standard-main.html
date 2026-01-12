@@ -1,0 +1,27 @@
+<mat-tab-group class="vertical-tabs" mat-stretch-tabs="false">
+  <mat-tab label="Стандартные образцы">
+    <ng-template matTabContent>
+      <app-standard-equipment></app-standard-equipment>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Реактивы">
+    <ng-template matTabContent>
+      <app-reagent-main></app-reagent-main>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Учет этилового спирта">
+    <ng-template matTabContent>
+      <app-ethanol-main></app-ethanol-main>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Прекурсоры">
+    <ng-template matTabContent>
+      <app-precursors-main></app-precursors-main>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="История приготовленных растворов">
+    <ng-template matTabContent>
+      <app-chemical-solution-main></app-chemical-solution-main>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

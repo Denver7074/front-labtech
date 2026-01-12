@@ -12,7 +12,7 @@
       <mat-accordion displayMode="flat">
 
         <!-- Основная информация -->
-        <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>Основная информация</mat-panel-title>
           </mat-expansion-panel-header>
@@ -70,9 +70,30 @@
           <div class="form-fields">
 
             <!-- Специальное оборудование -->
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="equipment-chip-select">
               <mat-label>Специальное оборудование</mat-label>
-              <mat-select formControlName="equipmentTypeIds" multiple>
+
+              <mat-chip-grid aria-label="Выбранные типы оборудования">
+                @for (id of form.get('equipmentTypeIds')?.value || []; track id) {
+                  <mat-chip-row
+                    removable="true"
+                    (removed)="removeType(id, 'equipmentTypeIds')">
+                    {{ getEquipmentTypeName(id) }}
+                    <button matChipRemove>
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                }
+              </mat-chip-grid>
+
+              <mat-select
+                formControlName="equipmentTypeIds"
+                multiple
+                [compareWith]="compareIds">
+
+                <!-- 👇 ЭТО УБИРАЕТ АВТОМАТИЧЕСКИЙ ТЕКСТ -->
+                <mat-select-trigger></mat-select-trigger>
+
                 @if (data.guide!.get('equipment-type'); as equipmentTypes) {
                   @for (entry of Array.from(equipmentTypes.entries()); track entry[0]) {
                     <mat-option [value]="entry[0]">{{ entry[1] }}</mat-option>
@@ -81,23 +102,32 @@
               </mat-select>
             </mat-form-field>
 
-            @if (hasSelectedTypes("equipmentTypeIds")) {
-              <div class="selected-measurement-types">
-                @for (id of form.get('equipmentTypeIds')?.value || []; track id) {
-                  <div class="selected-item">
-                    {{ getEquipmentTypeName(id) }}
-                    <button mat-icon-button (click)="removeType(id, 'equipmentTypeIds')" type="button">
-                      <mat-icon>close</mat-icon>
-                    </button>
-                  </div>
-                }
-              </div>
-            }
-
-            <!-- Контролируемые параметры -->
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="parameter-chip-select">
               <mat-label>Контролируемые параметры</mat-label>
-              <mat-select formControlName="parameterTypeIds" multiple>
+
+              <!-- Чипсы: отображаем выбранные значения -->
+              <mat-chip-grid aria-label="Выбранные контролируемые параметры">
+                @for (id of form.get('parameterTypeIds')?.value || []; track id) {
+                  <mat-chip-row
+                    removable="true"
+                    (removed)="removeType(id, 'parameterTypeIds')">
+                    {{ getParameterTypeName(id) }}
+                    <button matChipRemove>
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                }
+              </mat-chip-grid>
+
+              <!-- Селект для выбора -->
+              <mat-select
+                formControlName="parameterTypeIds"
+                multiple
+                [compareWith]="compareIds">
+
+                <!-- Отключаем автоматический текст от mat-select -->
+                <mat-select-trigger></mat-select-trigger>
+
                 @if (data.guide!.get('parameter-type'); as parameterTypes) {
                   @for (entry of Array.from(parameterTypes.entries()); track entry[0]) {
                     <mat-option [value]="entry[0]">{{ entry[1] }}</mat-option>
@@ -105,19 +135,6 @@
                 }
               </mat-select>
             </mat-form-field>
-
-            @if (hasSelectedTypes('parameterTypeIds')) {
-              <div class="selected-measurement-types">
-                @for (id of form.get('parameterTypeIds')?.value || []; track id) {
-                  <div class="selected-item">
-                    {{ getParameterTypeName(id) }}
-                    <button mat-icon-button (click)="removeType(id, 'parameterTypeIds')" type="button">
-                      <mat-icon>close</mat-icon>
-                    </button>
-                  </div>
-                }
-              </div>
-            }
 
           </div>
         </mat-expansion-panel>
@@ -154,7 +171,7 @@
               </mat-form-field>
             </div>
 
-            <div class="grid">
+            <div class="grid" style="grid-template-columns: 1fr 1fr;">
               <mat-form-field appearance="outline">
                 <mat-label>Тип владения</mat-label>
                 <mat-select formControlName="isOwn">

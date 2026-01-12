@@ -1,0 +1,48 @@
+@if (info()) {
+  <div class="year-selector">
+    <mat-form-field appearance="outline">
+      <mat-label>Год</mat-label>
+      <mat-select [value]="selectedYear()" (selectionChange)="onYearChange($event)">
+        @for (year of years(); track year) {
+          <mat-option [value]="year">{{ year }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="attestation-grid-container mat-elevation-z1">
+    <table mat-table [dataSource]="gridRows()" class="attestation-grid">
+
+      <!-- Оборудование -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Оборудование </th>
+        <td mat-cell *matCellDef="let row"> {{ row.equipment.name }} </td>
+      </ng-container>
+
+      <!-- Заводской номер -->
+      <ng-container matColumnDef="produceNumber">
+        <th mat-header-cell *matHeaderCellDef> Зав. № </th>
+        <td mat-cell *matCellDef="let row"> {{ row.equipment.produceNumber }} </td>
+      </ng-container>
+
+
+      @for (month of months; track month.key; let i = $index) {
+        <ng-container [matColumnDef]="month.key">
+          <th mat-header-cell *matHeaderCellDef>
+            <div class="vertical-header">{{ month.name }}</div>
+          </th>
+          <td mat-cell *matCellDef="let row" class="mark-cell">
+            @if (row.monthIndex === i) {
+              {{ row.expiryDate | date }}
+            }
+          </td>
+        </ng-container>
+      }
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+} @else {
+  <p class="no-data">Нет данных</p>
+}
