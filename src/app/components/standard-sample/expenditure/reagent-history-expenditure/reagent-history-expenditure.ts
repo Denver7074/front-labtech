@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
-import {AbstractReagent, ExpenditureInfo} from '../../../../data/standard-sample.interface';
+import {Reagent, ExpenditureInfo} from '../../../../data/standard-sample.interface';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {
@@ -14,9 +14,9 @@ import {
   MatRow,
   MatRowDef, MatTable
 } from '@angular/material/table';
-import {DatePipe} from '../../../ui/pipes/date-pipe';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatIconModule} from '@angular/material/icon';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-reagent-history-expenditure',
@@ -45,7 +45,7 @@ import {MatIconModule} from '@angular/material/icon';
   styleUrl: './reagent-history-expenditure.scss',
   standalone: true
 })
-export class ReagentHistoryExpenditure extends AbstractDialogComponent<AbstractReagent> {
+export class ReagentHistoryExpenditure extends AbstractDialogComponent<Reagent> {
   protected readonly displayedColumns = ['useDate', 'quantity', 'description',  'executor', 'actions'];
 
   deleteExpenditure(id: string) {

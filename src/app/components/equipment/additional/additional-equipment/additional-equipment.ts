@@ -22,6 +22,7 @@ import {MatCheckbox} from '@angular/material/checkbox';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {AbstractMainComponent} from '../../../resource/abstract-main.component';
 import {AdditionalEquipmentInfo} from '../../../../data/equipment.interface';
+import {Mode} from '../../../../data/response.interface';
 
 
 

@@ -23,7 +23,7 @@
   </mat-menu>
 
   <button
-    (click)="openDialog(AddressDialog, 'rooms')"
+    (click)="openDialog(AddressDialog, 'rooms', Mode.CREATE)"
     [matTooltip]="'Добавить помещение'"
     class="table-add-button">
     <mat-icon>add</mat-icon>
@@ -157,7 +157,7 @@
       <button
         mat-icon-button
         [matTooltip]="'Редактировать'"
-        (click)="openDialog(AddressDialog, 'rooms', address)">
+        (click)="openDialog(AddressDialog, 'rooms', Mode.EDIT, address)">
         <mat-icon>edit</mat-icon>
       </button>
       <button

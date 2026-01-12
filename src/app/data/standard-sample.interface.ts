@@ -1,20 +1,17 @@
 import {MetrologicalCharacteristicInfo} from './equipment.interface';
 
-export interface StandardReagentInfo extends AbstractReagent {
+export interface StandardReagentInfo extends Reagent {
   standardTypeId: string;
   information: string;
   characteristics: StandardMetrologicalCharacteristic[];
   consumable: boolean;
 }
 
-export interface AbstractReagent {
-  id: string;
-  name: string;
+export interface Reagent extends AbstractReagent {
   number: string;
   purpose: string;
   producer: string;
   termsOfUse: string;
-  expirationDate: string;
   produceDate: string;
   initialQuantity: number;
   unit: string;
@@ -22,6 +19,7 @@ export interface AbstractReagent {
   remains: number;
   purityTypeId: string;
   purityValue: number;
+  chemicalSolutionName: string;
 }
 
 export interface ExpenditureInfo {
@@ -35,3 +33,24 @@ export interface StandardMetrologicalCharacteristic extends MetrologicalCharacte
   uncertainty: string;
   unitUncertainty: string;
 }
+
+export interface ChemicalSolutionInfo extends AbstractReagent {
+  description: string;
+  dishes: string;
+  termsOfUse: string;
+  unit: string;
+  createdSolution: string;
+  initialQuantity: number;
+  remains: number;
+  canUse: boolean;
+  conditions: string;
+}
+
+export interface AbstractReagent {
+  id: string;
+  name: string;
+  canUse: boolean;
+  expirationDate: string;
+}
+
+

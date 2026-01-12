@@ -1,13 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
-import {AbstractReagent} from '../../../../data/standard-sample.interface';
+import {Reagent} from '../../../../data/standard-sample.interface';
 import {FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Button} from '../../../ui/button/button';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {MatError, MatFormField, MatInput, MatLabel, MatPrefix, MatSuffix} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
-import {MatSelect, MatOption} from '@angular/material/select';
+import {MatOption, MatSelect} from '@angular/material/select';
+import {Mode} from '../../../../data/response.interface';
 
 @Component({
   selector: 'app-reagent-dialog',
@@ -35,7 +36,7 @@ import {MatSelect, MatOption} from '@angular/material/select';
   styleUrl: './reagent-dialog.scss',
   standalone: true
 })
-export class ReagentDialog extends AbstractDialogComponent<AbstractReagent> implements OnInit {
+export class ReagentDialog extends AbstractDialogComponent<Reagent> implements OnInit {
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -53,19 +54,19 @@ export class ReagentDialog extends AbstractDialogComponent<AbstractReagent> impl
   });
 
   ngOnInit() {
-    if (this.data.mode === 'edit' && this.data.value) {
+    if ((this.data.mode === Mode.EDIT || this.data.mode === Mode.CREATE_AS_TEMPLATE) && this.data.value) {
       const value = this.data.value;
 
       this.form.patchValue({
-        id: value.id,
+        id: this.isCreateAsTemplate ? null : value.id,
         name: value.name,
-        number: value.number,
+        number: this.isCreateAsTemplate ? null : value.number,
         purpose: value.purpose,
         producer: value.producer,
         termsOfUse: value.termsOfUse,
-        expirationDate: value.expirationDate,
-        produceDate: value.produceDate,
-        initialQuantity: value.initialQuantity,
+        expirationDate: this.isCreateAsTemplate ? null : value.expirationDate,
+        produceDate: this.isCreateAsTemplate ? null :  value.produceDate,
+        initialQuantity: this.isCreateAsTemplate ? null : value.initialQuantity,
         unit: value.unit,
         purityTypeId: value.purityTypeId,
         purityValue: value.purityValue,

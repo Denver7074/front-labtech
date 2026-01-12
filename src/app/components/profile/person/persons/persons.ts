@@ -3,9 +3,9 @@ import {NotificationService} from '../../../ui/notification.service';
 import {Router} from '@angular/router';
 import {ApiResponse} from '../../../../data/response.interface';
 import {MatPaginator} from '@angular/material/paginator';
-import {DatePipe} from '../../../ui/pipes/date-pipe';
 import {CrudService} from '../../../../service/crud.service';
 import {PersonInfo} from '../../../../data/profile.interface';
+import {DatePipe} from '@angular/common';
 
 
 @Component({

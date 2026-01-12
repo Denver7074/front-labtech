@@ -32,9 +32,16 @@ export interface ApiResponse<T> {
 }
 
 export interface FormDataInterface<T> {
-  mode: 'create' | 'edit' | 'view';
+  mode: Mode;
   value?: T;
   guide: Map<string, Map<string, string>>;
+}
+
+export enum Mode {
+  CREATE = 'create',
+  EDIT = 'edit',
+  VIEW = 'view',
+  CREATE_AS_TEMPLATE = 'create-as-template'
 }
 
 export interface ResponseType {

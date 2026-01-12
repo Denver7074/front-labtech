@@ -23,6 +23,7 @@ import {AbstractReagentComponent} from '../../abstract-reagent.component';
 import {MatTooltip} from '@angular/material/tooltip';
 import {ReagentExpiration} from '../../reagent-expiration/reagent-expiration';
 import {ReagentDialog} from '../reagent-dialog/reagent-dialog';
+import {MatPaginator} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-reagent-main',
@@ -51,9 +52,9 @@ import {ReagentDialog} from '../reagent-dialog/reagent-dialog';
     MatSelect,
     ReagentExpiration,
     MatHeaderCellDef,
+    MatPaginator,
   ],
   templateUrl: './reagent-main.html',
-  styleUrl: './reagent-main.scss',
   standalone: true
 })
 export class ReagentMain extends AbstractReagentComponent<AbstractReagent> implements OnInit {

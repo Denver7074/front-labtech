@@ -12,7 +12,8 @@ import {
 import {MatFormField, MatLabel, MatSelect, MatSelectChange, MatOption} from '@angular/material/select';
 import {TestEquipmentInfo} from '../../../../data/equipment.interface';
 import {AbstractMonthChartComponent, GridRow} from '../../../abstract/abstract-month-chart';
-import {DatePipe} from '../../../ui/pipes/date-pipe';
+import {DatePipe} from '@angular/common';
+
 
 @Component({
   selector: 'app-test-equipment-attestation',
@@ -32,7 +33,6 @@ import {DatePipe} from '../../../ui/pipes/date-pipe';
     MatSelect,
     MatLabel,
     MatFormField,
-    DatePipe
   ],
   templateUrl: './test-equipment-attestation.html',
   styleUrl: './test-equipment-attestation.scss',

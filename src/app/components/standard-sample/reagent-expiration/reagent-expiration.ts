@@ -1,7 +1,7 @@
 import {Component, computed} from '@angular/core';
 import {AbstractMonthChartComponent, GridRow} from '../../abstract/abstract-month-chart';
 import {AbstractReagent} from '../../../data/standard-sample.interface';
-import {DatePipe} from '../../ui/pipes/date-pipe';
+
 import {
   MatCell,
   MatCellDef,
@@ -12,6 +12,7 @@ import {
 } from '@angular/material/table';
 import {MatSelect, MatOption} from '@angular/material/select';
 import {MatFormField, MatLabel} from '@angular/material/input';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-reagent-expiration',

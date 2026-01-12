@@ -1,14 +1,15 @@
 import {inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AbstractGuideComponent} from '../abstract/abstract-guide.component';
 import {CrudService} from '../../service/crud.service';
-import {ApiResponse} from '../../data/response.interface';
+import {ApiResponse, Mode} from '../../data/response.interface';
 import {ComponentType} from '@angular/cdk/portal';
 
 
 export abstract class AbstractMainComponent<TInterface>  extends AbstractGuideComponent {
-  crudService = inject(CrudService);
+  protected readonly Mode = Mode;
+  protected crudService = inject(CrudService);
   protected activatedRoute = inject(ActivatedRoute);
   protected dialog = inject(MatDialog);
   currentPage = signal(0);
@@ -66,8 +67,7 @@ export abstract class AbstractMainComponent<TInterface>  extends AbstractGuideCo
       });
   }
 
-  protected openDialog(dialogComponent: ComponentType<any>, path: string, value?: any) {
-    const mode = value ? 'edit' : 'create';
+  protected openDialog(dialogComponent: ComponentType<any>, path: string, mode: Mode, value?: any) {
     const dialogRef = this.dialog.open(dialogComponent, {
       width: '900px',
       maxWidth: '95vw',
@@ -77,13 +77,18 @@ export abstract class AbstractMainComponent<TInterface>  extends AbstractGuideCo
         guide: this.valueType()
       }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (!result) return;
+    return this.afterCloseDialog(dialogRef, path, mode)
+  }
 
-      if (mode === 'edit') {
+  protected afterCloseDialog(dialogRef: MatDialogRef<any>, path: string, mode: Mode): void {
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result || mode === Mode.VIEW) return;
+
+      if (mode === Mode.EDIT) {
         const p = `${this.getPath()}${this.id()}/${path}/${result.id}`;
         this.update(result, p);
       } else {
+        // CREATE или CREATE_AS_TEMPLATE
         const p = `${this.getPath()}${this.id()}/${path}`;
         this.add(result, p);
       }
@@ -103,7 +108,7 @@ export abstract class AbstractMainComponent<TInterface>  extends AbstractGuideCo
     });
   }
 
-  toggleColumn(column: string, event: any) {
+  protected toggleColumn(column: string, event: any) {
     const checked = event.checked;
     if (checked) {
       if (!this.displayedColumns.includes(column)) {

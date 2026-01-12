@@ -24,6 +24,7 @@ import {TestEquipmentAttestation} from '../test-equipment-attestation/test-equip
 import {TestEquipmentMaintenance} from '../test-equipment-maintenance/test-equipment-maintenance';
 import {AbstractMainComponent} from '../../../resource/abstract-main.component';
 import {TestEquipmentInfo} from '../../../../data/equipment.interface';
+import {Mode} from '../../../../data/response.interface';
 
 @Component({
   selector: 'app-test-equipment',

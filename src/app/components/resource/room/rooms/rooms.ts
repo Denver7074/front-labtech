@@ -21,6 +21,7 @@ import {DatePipe} from '@angular/common';
 import {RoomDialog} from '../address/room-dialog';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import {Mode} from '../../../../data/response.interface';
 
 
 @Component({

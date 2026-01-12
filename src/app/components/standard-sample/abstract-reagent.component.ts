@@ -3,14 +3,27 @@ import {AbstractMainComponent} from '../resource/abstract-main.component';
 import {ReagentExpenditureDialog} from './expenditure/reagent-expenditure-dialog/reagent-expenditure-dialog';
 import {ReagentHistoryExpenditure} from './expenditure/reagent-history-expenditure/reagent-history-expenditure';
 import {AbstractReagent} from '../../data/standard-sample.interface';
+import {PageEvent} from '@angular/material/paginator';
 
 @Directive()
 export abstract class AbstractReagentComponent<TInterface extends AbstractReagent> extends AbstractMainComponent<TInterface>{
   protected readonly Array = Array;
   protected viewMode: 'table' | 'expiration-chart' = 'table';
+  protected canUse: 'all' | 'isCanNotUse' | 'isCanUse' = 'all'
 
   protected override getPath(): string {
     return `/standard-sample-service/api/v1/organizations/parts/`;
+  }
+
+  filterInfo(info: TInterface[], canUse: string): TInterface[] {
+    switch (canUse) {
+      case 'isCanNotUse':
+        return info.filter(item => !item.canUse);
+      case 'isCanUse':
+        return info.filter(item => item.canUse);
+      default:
+        return info;
+    }
   }
 
   openDialogExpenditure(path: string, standardReagent: TInterface) {
@@ -49,5 +62,11 @@ export abstract class AbstractReagentComponent<TInterface extends AbstractReagen
         }
       });
     });
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.currentPage.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
+    this.loadEntities();
   }
 }

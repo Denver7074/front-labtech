@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
-import {AbstractReagent, ExpenditureInfo, StandardReagentInfo} from '../../../../data/standard-sample.interface';
+import {Reagent, ExpenditureInfo, StandardReagentInfo} from '../../../../data/standard-sample.interface';
 import {
   AbstractControl,
   FormGroup,
@@ -37,7 +37,7 @@ import {Button} from '../../../ui/button/button';
   styleUrl: './reagent-expenditure-dialog.scss',
   standalone: true
 })
-export class ReagentExpenditureDialog extends AbstractDialogComponent<AbstractReagent> {
+export class ReagentExpenditureDialog extends AbstractDialogComponent<Reagent> {
 
   form: FormGroup = this.fb.group({
     id: [''],

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormArray, FormGroup, ReactiveFormsModule, ValidationErrors, Validators} from '@angular/forms';
+import {FormArray, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
@@ -15,8 +15,9 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {Button} from '../../../ui/button/button';
 import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
-import {StandardReagentInfo, StandardMetrologicalCharacteristic} from '../../../../data/standard-sample.interface';
+import {StandardMetrologicalCharacteristic, StandardReagentInfo} from '../../../../data/standard-sample.interface';
 import {MatCheckbox} from '@angular/material/checkbox';
+import {Mode} from '../../../../data/response.interface';
 
 
 @Component({
@@ -67,27 +68,28 @@ export class StandardEquipmentDialog extends AbstractDialogComponent<StandardRea
     produceDate: ['', [Validators.required]],
     characteristics: this.fb.array([]),
     consumable: [false, [Validators.required]],
-    initialQuantity: [null, [Validators.required]],
+    initialQuantity: [],
     unit: ['']
   });
 
   ngOnInit() {
-    if (this.data.mode === 'edit' && this.data.value) {
+    if ((this.data.mode === Mode.EDIT || this.data.mode === Mode.CREATE_AS_TEMPLATE) && this.data.value) {
       const value = this.data.value;
 
+      console.log(this.data.value)
       this.form.patchValue({
-        id: value.id,
+        id: this.isCreateAsTemplate ? null : value.id,
         name: value.name,
-        number: value.number,
+        number: this.isCreateAsTemplate ? null : value.number,
         purpose: value.purpose,
         producer: value.producer,
         information: value.information,
         termsOfUse: value.termsOfUse,
-        expirationDate: value.expirationDate,
-        produceDate: value.produceDate,
+        expirationDate: this.isCreateAsTemplate ? null : value.expirationDate,
+        produceDate: this.isCreateAsTemplate ? null : value.produceDate,
         standardTypeId: value.standardTypeId,
         consumable: value.consumable,
-        initialQuantity: value.initialQuantity,
+        initialQuantity: this.isCreateAsTemplate ? null : value.initialQuantity,
         unit: value.unit
       });
 
@@ -106,7 +108,7 @@ export class StandardEquipmentDialog extends AbstractDialogComponent<StandardRea
 
   createCharacteristic(char?: StandardMetrologicalCharacteristic): FormGroup {
     return this.fb.group({
-      id: [char?.id || ''],
+      id: [this.isCreateAsTemplate ? '' : char?.id || ''],
       name: [char?.name || '', Validators.required],
       value: [char?.value || '', Validators.required],
       unit: [char?.unit || '', Validators.required],

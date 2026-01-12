@@ -1,6 +1,6 @@
 import {inject} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {FormDataInterface} from '../../data/response.interface';
+import {FormDataInterface, Mode} from '../../data/response.interface';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 export abstract class AbstractDialogComponent<TInterface> {
@@ -10,7 +10,15 @@ export abstract class AbstractDialogComponent<TInterface> {
   protected dialogRef = inject(MatDialogRef<TInterface>);
 
   get isEditMode(): boolean {
-    return this.data.mode === 'edit';
+    return this.data.mode === Mode.EDIT;
+  }
+
+  get isViewMode(): boolean {
+    return this.data?.mode === Mode.VIEW;
+  }
+
+  get isCreateAsTemplate(): boolean {
+    return this.data?.mode === Mode.CREATE_AS_TEMPLATE;
   }
 
   get title(): string {
@@ -29,9 +37,6 @@ export abstract class AbstractDialogComponent<TInterface> {
     return text;
   }
 
-  get isViewMode(): boolean {
-    return this.data?.mode === 'view';
-  }
 
   protected formatDate(date: Date | string | null): string | null {
     if (!date) return null;

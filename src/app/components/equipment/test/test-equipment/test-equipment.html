@@ -32,7 +32,7 @@
     </mat-menu>
 
     <button
-      (click)="openDialog(TestEquipmentDialog, 'test-equipments')"
+      (click)="openDialog(TestEquipmentDialog, 'test-equipments', Mode.CREATE)"
       [matTooltip]="'Добавить оборудование'"
       class="table-add-button">
       <mat-icon>add</mat-icon>
@@ -240,7 +240,7 @@
         <button
           mat-icon-button
           [matTooltip]="'Редактировать'"
-          (click)="openDialog(TestEquipmentDialog, 'test-equipments', item)">
+          (click)="openDialog(TestEquipmentDialog, 'test-equipments', Mode.EDIT, item)">
           <mat-icon>edit</mat-icon>
         </button>
         <button

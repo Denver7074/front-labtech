@@ -4,9 +4,9 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTabsModule} from '@angular/material/tabs';
 import {SnilsPipe} from '../../../ui/pipes/snils-pipe';
-import {DatePipe} from '../../../ui/pipes/date-pipe';
+
 import {MatChipsModule} from '@angular/material/chips';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconButton} from '@angular/material/button';
 import {MatTooltip} from '@angular/material/tooltip';

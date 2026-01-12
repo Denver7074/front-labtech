@@ -25,6 +25,8 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import {MatFormField, MatLabel} from '@angular/material/input';
 import {ReagentExpiration} from '../../reagent-expiration/reagent-expiration';
 import {AbstractReagentComponent} from '../../abstract-reagent.component';
+import {MatPaginator} from '@angular/material/paginator';
+import {Mode} from '../../../../data/response.interface';
 
 
 @Component({
@@ -53,7 +55,8 @@ import {AbstractReagentComponent} from '../../abstract-reagent.component';
     MatLabel,
     MatOption,
     MatSelect,
-    ReagentExpiration
+    ReagentExpiration,
+    MatPaginator,
   ],
   templateUrl: './standard-equipment.html',
   standalone: true

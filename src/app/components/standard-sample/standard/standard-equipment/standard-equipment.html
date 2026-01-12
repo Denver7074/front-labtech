@@ -8,6 +8,15 @@
       <mat-option value="expiration-chart">Сроки годности</mat-option>
     </mat-select>
   </mat-form-field>
+
+  <mat-form-field appearance="outline" class="view-mode-select">
+    <mat-label>Просмотр СО</mat-label>
+    <mat-select [(value)]="canUse">
+      <mat-option value="all">Все реактивы</mat-option>
+      <mat-option value="isCanUse">Можно использовать</mat-option>
+      <mat-option value="isCanNotUse">Нельзя использовать</mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 
 @if (viewMode == 'table') {
@@ -31,7 +40,7 @@
     </mat-menu>
 
     <button
-      (click)="openDialog(StandardEquipmentDialog, 'standard-samples')"
+      (click)="openDialog(StandardEquipmentDialog, 'standard-samples', Mode.CREATE)"
       [matTooltip]="'Добавить реактив'"
       class="table-add-button">
       <mat-icon>add</mat-icon>
@@ -39,7 +48,7 @@
   </div>
 
   <!-- Таблица -->
-  <table mat-table [dataSource]="info()" class="mat-elevation-z8">
+  <table mat-table [dataSource]="filterInfo(info(), canUse)" class="mat-elevation-z8">
 
     <!-- № п/п -->
     <ng-container matColumnDef="index">
@@ -206,13 +215,20 @@
           <!-- Редактировать -->
           <button
             mat-menu-item
-            (click)="openDialog(StandardEquipmentDialog, 'standard-samples', item)">
+            (click)="openDialog(StandardEquipmentDialog, 'standard-samples', Mode.EDIT, item)">
             <mat-icon>edit</mat-icon>
             <span>Редактировать</span>
           </button>
 
+          <button
+            mat-menu-item
+            (click)="openDialog(StandardEquipmentDialog, 'standard-samples', Mode.CREATE_AS_TEMPLATE, item)">
+            <mat-icon>content_copy</mat-icon>
+            <span>Создать на основе</span>
+          </button>
+
           <!-- Взять реактив (только если consumable = true) -->
-          @if (item.consumable) {
+          @if (item.consumable && item.canUse) {
             <button
               mat-menu-item
               (click)="openDialogExpenditure('standard-samples', item)">
@@ -232,9 +248,11 @@
           <button
             mat-menu-item
             (click)="delete(item.id, 'standard-samples')">
-            <mat-icon>delete</mat-icon>
-            <span>Удалить</span>
+            <mat-icon>{{ item.canUse ? 'move_to_inbox' : 'delete' }}</mat-icon>
+            <span>{{ item.canUse ? 'Убрать в архив' : 'Удалить' }} </span>
           </button>
+
+          <!--          todo нужно потом добавить возможность возвращать из архива-->
         </mat-menu>
       </td>
     </ng-container>
@@ -242,6 +260,17 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  <mat-paginator
+    [length]="totalItems()"
+    [pageIndex]="currentPage()"
+    [pageSize]="pageSize()"
+    [pageSizeOptions]="[5, 10, 20]"
+    (page)="onPageChange($event)"
+    aria-label="Пагинация транзакций"
+  >
+  </mat-paginator>
+
 } @else if (viewMode == 'expiration-chart') {
-  <app-reagent-expiration [info]="info()"></app-reagent-expiration>
+  <app-reagent-expiration [info]="filterInfo(info(), canUse)"></app-reagent-expiration>
 }
