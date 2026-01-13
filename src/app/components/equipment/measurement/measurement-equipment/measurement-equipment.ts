@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractMainComponent} from '../../../resource/abstract-main.component';
+import {AbstractTableComponent} from '../../../resource/abstract-main.component';
 import {MeasurementEquipmentInfo} from '../../../../data/equipment.interface';
 
 @Component({
@@ -9,7 +9,7 @@ import {MeasurementEquipmentInfo} from '../../../../data/equipment.interface';
   styleUrl: './measurement-equipment.scss',
   standalone: true
 })
-export class MeasurementEquipment extends AbstractMainComponent<MeasurementEquipmentInfo> implements OnInit {
+export class MeasurementEquipment extends AbstractTableComponent<MeasurementEquipmentInfo> implements OnInit {
   protected override getResource(): string {
     return 'measurement-equipments';
   }

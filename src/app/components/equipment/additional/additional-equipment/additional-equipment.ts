@@ -20,10 +20,8 @@ import {DatePipe} from '@angular/common';
 import {AdditionalEquipmentDialog} from '../additional-equipment-dialog/additional-equipment-dialog';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {AbstractMainComponent} from '../../../resource/abstract-main.component';
+import {AbstractTableComponent} from '../../../resource/abstract-main.component';
 import {AdditionalEquipmentInfo} from '../../../../data/equipment.interface';
-import {Mode} from '../../../../data/response.interface';
-
 
 
 @Component({
@@ -52,7 +50,7 @@ import {Mode} from '../../../../data/response.interface';
   templateUrl: './additional-equipment.html',
   standalone: true
 })
-export class AdditionalEquipment extends AbstractMainComponent<AdditionalEquipmentInfo> implements OnInit {
+export class AdditionalEquipment extends AbstractTableComponent<AdditionalEquipmentInfo> implements OnInit {
   protected readonly AdditionalEquipmentDialog = AdditionalEquipmentDialog;
 
   protected override getResource(): string {

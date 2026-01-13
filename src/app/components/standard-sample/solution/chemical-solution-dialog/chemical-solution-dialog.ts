@@ -1,12 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
-import {
-  ChemicalSolutionInfo,
-  StandardMetrologicalCharacteristic,
-  StandardReagentInfo
-} from '../../../../data/standard-sample.interface';
-import {FormArray, FormGroup, Validators} from '@angular/forms';
+import {ChemicalSolutionInfo} from '../../../../data/standard-sample.interface';
+import {FormGroup, Validators} from '@angular/forms';
 import {Mode} from '../../../../data/response.interface';
+import {AbstractReagentDialog} from '../../abstract-reagent-dialog';
 
 @Component({
   selector: 'app-chemical-solution-dialog',
@@ -15,8 +11,8 @@ import {Mode} from '../../../../data/response.interface';
   styleUrl: './chemical-solution-dialog.scss',
   standalone: true
 })
-export class ChemicalSolutionDialog extends AbstractDialogComponent<ChemicalSolutionInfo> implements OnInit {
-  form: FormGroup = this.fb.group({
+export class ChemicalSolutionDialog extends AbstractReagentDialog<ChemicalSolutionInfo> implements OnInit {
+  override form: FormGroup = this.fb.group({
     id: [''],
     name: ['', [Validators.required]],
     description: [''],
@@ -37,26 +33,11 @@ export class ChemicalSolutionDialog extends AbstractDialogComponent<ChemicalSolu
       this.form.patchValue({
         id: this.isCreateAsTemplate ? null : value.id,
         name: value.name,
-        conditions: value.conditions,
-        description: value.description,
-        dishes: value.dishes,
         termsOfUse: value.termsOfUse,
         expirationDate: this.isCreateAsTemplate ? null : value.expirationDate,
-        createdSolution: this.isCreateAsTemplate ? null : value.createdSolution,
+        produceDate: this.isCreateAsTemplate ? null : value.produceDate,
         initialQuantity: this.isCreateAsTemplate ? null : value.initialQuantity,
         unit: value.unit
-      });
-    }
-  }
-
-  onSubmit() {
-    if (this.form.valid) {
-      const raw = this.form.getRawValue();
-
-      this.dialogRef.close({
-        ...raw,
-        produceDate: raw.produceDate ? this.formatDate(raw.produceDate) : null,
-        expirationDate: raw.expirationDate ? this.formatDate(raw.expirationDate) : null
       });
     }
   }

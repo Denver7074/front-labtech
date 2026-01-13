@@ -31,7 +31,7 @@ import {PartInfo} from '../../../../data/profile.interface';
   standalone: true
 })
 export class PartDialog extends AbstractDialogComponent<PartInfo> implements OnInit {
-  form: FormGroup = this.fb.group({
+  protected override form: FormGroup = this.fb.group({
     id: [''],
     name: ['', [Validators.required]],
     organizationTypeId: ['', [Validators.required]],

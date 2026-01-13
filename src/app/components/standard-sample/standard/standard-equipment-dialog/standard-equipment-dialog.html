@@ -46,6 +46,38 @@
               }
             </mat-form-field>
 
+            <!-- Нормативнй документ -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Нормативный документ</mat-label>
+
+              <mat-chip-grid #chipList>
+                @for (doc of form.get('regulatoryDocuments')?.value || []; track doc) {
+                  <mat-chip-row (removed)="removeDocument(doc)">
+                    {{ doc }}
+                    <button matChipRemove>
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                }
+              </mat-chip-grid>
+
+              <input
+                matInput
+                [formControl]="documentInput"
+                [matAutocomplete]="auto"
+                [matChipInputFor]="chipList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="addDocument($event)" />
+
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onDocumentSelected($event)">
+                @for (doc of filteredDocuments(); track doc) {
+                  <mat-option [value]="doc">{{ doc }}</mat-option>
+                }
+              </mat-autocomplete>
+
+              <mat-icon matPrefix>description</mat-icon>
+            </mat-form-field>
+
             <!-- Номер (регистрационный) -->
             <mat-form-field appearance="outline">
               <mat-label>Номер стандартного образца/номер партии</mat-label>
@@ -79,7 +111,7 @@
 
             <!-- Сведения о стандартном образце -->
             <mat-form-field appearance="outline">
-              <mat-label>Сведения о составе и свойствах</mat-label>
+              <mat-label>Дополнительная информация</mat-label>
               <textarea matInput formControlName="information"
                         placeholder="Аттестованные значения, методы аттестации..."></textarea>
             </mat-form-field>
@@ -123,13 +155,8 @@
               <mat-label>Условия применения и хранения</mat-label>
               <textarea matInput formControlName="termsOfUse"
                         placeholder="Температура, влажность, особые условия..."></textarea>
-              @if (form.get('termsOfUse')?.hasError('required') && form.get('termsOfUse')?.touched) {
-                <mat-error>Укажите условия</mat-error>
-              }
             </mat-form-field>
           </div>
-
-          <!-- В шаблоне standard-equipment-dialog.html -->
 
           <mat-checkbox formControlName="consumable">
             Расходуемый стандартный образец

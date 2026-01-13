@@ -62,7 +62,7 @@ import {Button} from '../../../ui/button/button';
 export class TestEquipmentDialog extends AbstractDialogComponent<TestEquipmentInfo> implements OnInit {
   protected readonly frequencyTypeMap = frequencyTypeMap;
 
-  form: FormGroup = this.fb.group({
+  protected override form: FormGroup = this.fb.group({
     id: [''],
     name: ['', [Validators.required]],
     producer: ['', [Validators.required]],

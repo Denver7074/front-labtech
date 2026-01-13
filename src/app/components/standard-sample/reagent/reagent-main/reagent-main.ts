@@ -16,7 +16,7 @@ import {
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {AbstractReagent} from '../../../../data/standard-sample.interface';
+import {ChemicalSolutionInfo} from '../../../../data/standard-sample.interface';
 import {MatIconModule} from '@angular/material/icon';
 import {MatFormField, MatLabel} from '@angular/material/input';
 import {AbstractReagentComponent} from '../../abstract-reagent.component';
@@ -57,7 +57,7 @@ import {MatPaginator} from '@angular/material/paginator';
   templateUrl: './reagent-main.html',
   standalone: true
 })
-export class ReagentMain extends AbstractReagentComponent<AbstractReagent> implements OnInit {
+export class ReagentMain extends AbstractReagentComponent<ChemicalSolutionInfo> implements OnInit {
   protected readonly ReagentDialog = ReagentDialog;
 
   protected override getResource(): string {
@@ -74,33 +74,6 @@ export class ReagentMain extends AbstractReagentComponent<AbstractReagent> imple
     this.loadGuide();
     this.loadEntities();
     this.displayedColumns = [...this.allColumns];
-  }
-
-  protected allColumns = [
-    'index',
-    'name',
-    'number',
-    'producer',
-    'purpose',
-    'termsOfUse',
-    'expirationDate',
-    'produceDate',
-    'purity',
-    'actions'
-  ];
-
-  getColumnLabel(column: string): string {
-    const labels: Record<string, string> = {
-      name: 'Наименование',
-      producer: 'Изготовитель',
-      number: 'Уникальная идентификация',
-      purpose: 'Назначение',
-      expirationDate: 'Срок годности',
-      produceDate: 'Дата выпуска',
-      termsOfUse: 'Нормативный документ(НД), порядок и условия применения',
-      purity: 'Чистота реактива'
-    };
-    return labels[column] || column;
   }
 
   getPurity(typeId: string, value: number): string | '-' {

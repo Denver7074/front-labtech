@@ -1,12 +1,11 @@
 import {Directive} from '@angular/core';
-import {AbstractMainComponent} from '../resource/abstract-main.component';
+import {AbstractTableComponent} from '../resource/abstract-main.component';
 import {ReagentExpenditureDialog} from './expenditure/reagent-expenditure-dialog/reagent-expenditure-dialog';
 import {ReagentHistoryExpenditure} from './expenditure/reagent-history-expenditure/reagent-history-expenditure';
-import {AbstractReagent} from '../../data/standard-sample.interface';
-import {PageEvent} from '@angular/material/paginator';
+import {ChemicalSolutionInfo} from '../../data/standard-sample.interface';
 
 @Directive()
-export abstract class AbstractReagentComponent<TInterface extends AbstractReagent> extends AbstractMainComponent<TInterface>{
+export abstract class AbstractReagentComponent<TInterface extends ChemicalSolutionInfo> extends AbstractTableComponent<TInterface> {
   protected readonly Array = Array;
   protected viewMode: 'table' | 'expiration-chart' = 'table';
   protected canUse: 'all' | 'isCanNotUse' | 'isCanUse' = 'all'
@@ -15,7 +14,7 @@ export abstract class AbstractReagentComponent<TInterface extends AbstractReagen
     return `/standard-sample-service/api/v1/organizations/parts/`;
   }
 
-  filterInfo(info: TInterface[], canUse: string): TInterface[] {
+  protected filterInfo(info: TInterface[], canUse: string): TInterface[] {
     switch (canUse) {
       case 'isCanNotUse':
         return info.filter(item => !item.canUse);
@@ -64,9 +63,26 @@ export abstract class AbstractReagentComponent<TInterface extends AbstractReagen
     });
   }
 
-  onPageChange(event: PageEvent): void {
-    this.currentPage.set(event.pageIndex);
-    this.pageSize.set(event.pageSize);
-    this.loadEntities();
+  protected allColumns = [
+    'index',
+    'name',
+    'producer',
+    'purpose',
+    'information',
+    'regulatoryDocument',
+    'termsOfUse',
+    'actions'
+  ];
+
+  protected getColumnLabel(column: string): string {
+    const labels: Record<string, string> = {
+      name: 'Наименование, номер реактива',
+      producer: 'Изготовитель и дата выпуска',
+      information: 'Дополнительные сведения',
+      purpose: 'Назначение',
+      termsOfUse: 'Условия применения',
+      regulatoryDocument: 'Нормативный документ (НД)',
+    };
+    return labels[column] || column;
   }
 }

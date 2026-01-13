@@ -58,7 +58,7 @@ export class RoomDialog extends AbstractDialogComponent<RoomInfo> implements OnI
   protected equipmentType = signal<Map<string, string>>(new Map<string, string>());
   protected parameterType = signal<Map<string, string>>(new Map<string, string>());
 
-  form: FormGroup = this.fb.group({
+  override form: FormGroup = this.fb.group({
     id: [''],
     purpose: ['', [Validators.required]],
     address: ['', [Validators.required]],

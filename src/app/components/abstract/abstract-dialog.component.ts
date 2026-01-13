@@ -1,11 +1,12 @@
 import {inject} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {FormDataInterface, Mode} from '../../data/response.interface';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 export abstract class AbstractDialogComponent<TInterface> {
-  protected readonly Array = Array;
   protected fb = inject(FormBuilder);
+  protected form: FormGroup = this.fb.group({});
+  protected readonly Array = Array;
   protected data = inject<FormDataInterface<TInterface>>(MAT_DIALOG_DATA);
   protected dialogRef = inject(MatDialogRef<TInterface>);
 

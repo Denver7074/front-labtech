@@ -26,7 +26,6 @@ import {MatFormField, MatLabel} from '@angular/material/input';
 import {ReagentExpiration} from '../../reagent-expiration/reagent-expiration';
 import {AbstractReagentComponent} from '../../abstract-reagent.component';
 import {MatPaginator} from '@angular/material/paginator';
-import {Mode} from '../../../../data/response.interface';
 
 
 @Component({
@@ -80,40 +79,34 @@ export class StandardEquipment extends AbstractReagentComponent<StandardReagentI
     this.displayedColumns = [...this.allColumns];
   }
 
-  protected allColumns = [
+  protected override allColumns = [
     'index',
     'name',
-    'number',
-    'standardTypeId',
     'producer',
     'purpose',
     'characteristicNameValue',
     'characteristicUncertainty',
     'information',
+    // 'regulatoryDocument',
     'termsOfUse',
-    'expirationDate',
-    'produceDate',
     'actions'
   ];
 
-  getColumnLabel(column: string): string {
+  protected override getColumnLabel(column: string): string {
     const labels: Record<string, string> = {
-      standardTypeId: 'Тип стандартного образца',
-      name: 'Наименование',
-      producer: 'Изготовитель',
-      number: 'Уникальная идентификация',
+      name: 'Наименование, № и категория СО',
+      producer: 'Изготовитель и дата выпуска',
       information: 'Дополнительные сведения',
       purpose: 'Назначение',
-      expirationDate: 'Срок годности',
-      produceDate: 'Дата выпуска',
-      termsOfUse: 'Нормативный документ(НД), порядок и условия применения',
+      termsOfUse: 'Условия применения',
+      // regulatoryDocument: 'Нормативный документ(НД)',
       characteristicNameValue: 'Наименование и аттестованное значение',
       characteristicUncertainty: 'Неопределённость и (или) характеристика погрешности аттестованного значения'
     };
     return labels[column] || column;
   }
 
-  getTypeLabel(typeId: string): string | null {
+  protected getTypeLabel(typeId: string): string | null {
     if (!typeId) return null;
     return this.valueType()!.get('standard-equipment-type')?.get(typeId) || null;
   }

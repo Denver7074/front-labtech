@@ -40,7 +40,7 @@ import {ContactInfo} from '../../../data/profile.interface';
   standalone: true
 })
 export class ContactDialog extends AbstractDialogComponent<ContactInfo> implements OnInit{
-  protected form = this.fb.group({
+  protected override form = this.fb.group({
     contactTypeId: ['', [Validators.required]],
     value: ['', [Validators.required]],
     id: ['']

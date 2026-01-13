@@ -72,34 +72,34 @@ export class ChemicalSolutionMain extends AbstractReagentComponent<ChemicalSolut
     this.displayedColumns = [...this.allColumns];
   }
 
-  protected allColumns = [
-    'index',
-    'name',
-    'description',
-    'dishes',
-    'termsOfUse',
-    'conditions',
-    'createdSolution',
-    'expirationDate',
-    'initialQuantity',
-    'remains',
-    'actions'
-  ];
-
-  getColumnLabel(column: string): string {
-    const labels: Record<string, string> = {
-      name: 'Наименование',
-      description: 'Описание',
-      dishes: 'Посуда',
-      termsOfUse: 'Нормативный документ (НД)',
-      conditions: 'Условия хранения',
-      createdSolution: 'Дата приготовления',
-      expirationDate: 'Срок годности раствора',
-      initialQuantity: 'Начальное количество',
-      remains: 'Остаток',
-    };
-    return labels[column] || column;
-  }
+  // protected allColumns = [
+  //   'index',
+  //   'name',
+  //   'description',
+  //   'dishes',
+  //   'termsOfUse',
+  //   'conditions',
+  //   'createdSolution',
+  //   'expirationDate',
+  //   'initialQuantity',
+  //   'remains',
+  //   'actions'
+  // ];
+  //
+  // protected override getColumnLabel(column: string): string {
+  //   const labels: Record<string, string> = {
+  //     name: 'Наименование',
+  //     description: 'Описание',
+  //     dishes: 'Посуда',
+  //     termsOfUse: 'Нормативный документ (НД)',
+  //     conditions: 'Условия хранения',
+  //     createdSolution: 'Дата приготовления',
+  //     expirationDate: 'Срок годности раствора',
+  //     initialQuantity: 'Начальное количество',
+  //     remains: 'Остаток',
+  //   };
+  //   return labels[column] || column;
+  // }
 
   getTypeLabel(typeId: string): string | null {
     if (!typeId) return null;

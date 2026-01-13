@@ -17,7 +17,7 @@ import {
 })
 export class MeasurementEquipmentDialog extends AbstractDialogComponent<MeasurementEquipmentInfo> implements OnInit {
 
-  form: FormGroup = this.fb.group({
+  protected override form: FormGroup = this.fb.group({
     id: [''],
     name: ['', [Validators.required]],
     producer: ['', [Validators.required]],

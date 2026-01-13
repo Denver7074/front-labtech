@@ -39,7 +39,7 @@ import {Button} from '../../../ui/button/button';
 })
 export class ReagentExpenditureDialog extends AbstractDialogComponent<Reagent> {
 
-  form: FormGroup = this.fb.group({
+  override form: FormGroup = this.fb.group({
     id: [''],
     description: [''],
     useDate: ['', [Validators.required]],

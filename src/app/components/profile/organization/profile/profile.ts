@@ -47,7 +47,7 @@ import {
   standalone: true
 })
 export class OrganizationDialog extends AbstractDialogComponent<OrganizationInfo> implements OnInit {
-  form: FormGroup = this.fb.group({
+  protected override form: FormGroup = this.fb.group({
     fullName: ['', Validators.required],
     shortName: [''],
     inn: ['', [Validators.required, Validators.pattern(/^\d{10,12}$/)]],

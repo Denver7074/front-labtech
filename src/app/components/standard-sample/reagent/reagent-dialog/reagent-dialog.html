@@ -73,6 +73,9 @@
           <mat-label>Изготовитель</mat-label>
           <input matInput formControlName="producer" placeholder="Например, ФГУП «ВНИИМ»">
           <mat-icon matPrefix>factory</mat-icon>
+          @if (form.get('producer')?.hasError('required') && form.get('producer')?.touched) {
+            <mat-error>Укажите изготовителя</mat-error>
+          }
         </mat-form-field>
 
         <!-- Условия применения -->
@@ -80,6 +83,23 @@
           <mat-label>Условия применения и хранения</mat-label>
           <textarea matInput formControlName="termsOfUse"
                     placeholder="Температура, влажность, особые условия..."></textarea>
+        </mat-form-field>
+
+        <!-- Сведения о стандартном образце -->
+        <mat-form-field appearance="outline">
+          <mat-label>Дополнительная информация</mat-label>
+          <textarea matInput formControlName="information"
+                    placeholder="Аттестованные значения, методы аттестации..."></textarea>
+        </mat-form-field>
+
+        <!-- Нормативнй документ -->
+        <mat-form-field appearance="outline">
+          <mat-label>Нормативный документ</mat-label>
+          <input matInput formControlName="regulatoryDocuments" placeholder="Например, СО состава стали">
+          <mat-icon matPrefix>title</mat-icon>
+          @if (form.get('regulatoryDocuments')?.hasError('required') && form.get('regulatoryDocuments')?.touched) {
+            <mat-error>Укажите НД</mat-error>
+          }
         </mat-form-field>
 
         <div class="grid">
@@ -114,27 +134,27 @@
               <mat-error>Укажите срок годности</mat-error>
             }
           </mat-form-field>
+        </div>
 
-          <div class="grid">
-            <mat-form-field appearance="outline">
-              <mat-label>Начальный остаток</mat-label>
-              <input matInput type="number" step="0.001" formControlName="initialQuantity"/>
-              @if (form.get('initialQuantity')?.hasError('required') && form.get('initialQuantity')?.touched) {
-                <mat-error>Укажите количество</mat-error>
-              }
-              @if (form.get('initialQuantity')?.hasError('greaterThanZero')) {
-                <mat-error>Количество должно быть больше 0</mat-error>
-              }
-            </mat-form-field>
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Начальный остаток</mat-label>
+            <input matInput type="number" step="0.001" formControlName="initialQuantity"/>
+            @if (form.get('initialQuantity')?.hasError('required') && form.get('initialQuantity')?.touched) {
+              <mat-error>Укажите количество</mat-error>
+            }
+            @if (form.get('initialQuantity')?.hasError('greaterThanZero')) {
+              <mat-error>Количество должно быть больше 0</mat-error>
+            }
+          </mat-form-field>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Единица измерения</mat-label>
-              <input matInput formControlName="unit" placeholder="мл, г, шт..."/>
-              @if (form.get('unit')?.hasError('required') && form.get('unit')?.touched) {
-                <mat-error>Укажите единицу измерения</mat-error>
-              }
-            </mat-form-field>
-          </div>
+          <mat-form-field appearance="outline">
+            <mat-label>Единица измерения</mat-label>
+            <input matInput formControlName="unit" placeholder="мл, г, шт..."/>
+            @if (form.get('unit')?.hasError('required') && form.get('unit')?.touched) {
+              <mat-error>Укажите единицу измерения</mat-error>
+            }
+          </mat-form-field>
         </div>
 
 

@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
 import {Reagent} from '../../../../data/standard-sample.interface';
 import {FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Button} from '../../../ui/button/button';
@@ -9,6 +8,7 @@ import {MatError, MatFormField, MatInput, MatLabel, MatPrefix, MatSuffix} from '
 import {MatIconModule} from '@angular/material/icon';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {Mode} from '../../../../data/response.interface';
+import {AbstractReagentDialog} from '../../abstract-reagent-dialog';
 
 @Component({
   selector: 'app-reagent-dialog',
@@ -36,19 +36,21 @@ import {Mode} from '../../../../data/response.interface';
   styleUrl: './reagent-dialog.scss',
   standalone: true
 })
-export class ReagentDialog extends AbstractDialogComponent<Reagent> implements OnInit {
+export class ReagentDialog extends AbstractReagentDialog<Reagent> implements OnInit {
 
-  form: FormGroup = this.fb.group({
+  protected override form: FormGroup = this.fb.group({
     id: [''],
     name: ['', [Validators.required]],
     number: ['', [Validators.required]],
     purpose: ['', [Validators.required]],
-    producer: [''],
+    producer: ['', [Validators.required]],
     termsOfUse: [''],
+    information: [''],
     expirationDate: ['', [Validators.required]],
     produceDate: ['', [Validators.required]],
-    initialQuantity: [],
+    initialQuantity: [null, [Validators.required]],
     unit: ['', [Validators.required]],
+    regulatoryDocument: ['', [Validators.required]],
     purityTypeId: [''],
     purityValue: [''],
   });
@@ -64,24 +66,14 @@ export class ReagentDialog extends AbstractDialogComponent<Reagent> implements O
         purpose: value.purpose,
         producer: value.producer,
         termsOfUse: value.termsOfUse,
+        information: value.information,
         expirationDate: this.isCreateAsTemplate ? null : value.expirationDate,
         produceDate: this.isCreateAsTemplate ? null :  value.produceDate,
         initialQuantity: this.isCreateAsTemplate ? null : value.initialQuantity,
         unit: value.unit,
+        regulatoryDocuments: value.regulatoryDocuments,
         purityTypeId: value.purityTypeId,
         purityValue: value.purityValue,
-      });
-    }
-  }
-
-  onSubmit() {
-    if (this.form.valid) {
-      const raw = this.form.getRawValue();
-
-      this.dialogRef.close({
-        ...raw,
-        produceDate: raw.produceDate ? this.formatDate(raw.produceDate) : null,
-        expirationDate: raw.expirationDate ? this.formatDate(raw.expirationDate) : null
       });
     }
   }

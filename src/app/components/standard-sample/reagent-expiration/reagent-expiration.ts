@@ -1,6 +1,6 @@
 import {Component, computed} from '@angular/core';
 import {AbstractMonthChartComponent, GridRow} from '../../abstract/abstract-month-chart';
-import {AbstractReagent} from '../../../data/standard-sample.interface';
+import {ChemicalSolutionInfo} from '../../../data/standard-sample.interface';
 
 import {
   MatCell,
@@ -13,6 +13,7 @@ import {
 import {MatSelect, MatOption} from '@angular/material/select';
 import {MatFormField, MatLabel} from '@angular/material/input';
 import {DatePipe} from '@angular/common';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-reagent-expiration',
@@ -31,21 +32,22 @@ import {DatePipe} from '@angular/common';
     MatRowDef,
     MatSelect,
     MatTable,
-    MatHeaderCellDef
+    MatHeaderCellDef,
+    MatTooltip
   ],
   templateUrl: './reagent-expiration.html',
   styleUrl: './reagent-expiration.scss',
   standalone: true
 })
-export class ReagentExpiration extends AbstractMonthChartComponent<AbstractReagent> {
-  displayedColumns = ['name', 'number', ...this.months.map(m => m.key)];
+export class ReagentExpiration extends AbstractMonthChartComponent<ChemicalSolutionInfo> {
+  displayedColumns = ['name', 'initialQuantity', 'remains', ...this.months.map(m => m.key)];
 
-  gridRows = computed<GridRow<AbstractReagent>[]>(() => {
+  gridRows = computed<GridRow<ChemicalSolutionInfo>[]>(() => {
     const equipments = this.info();
     const year = this.selectedYear();
     if (!equipments) return [];
 
-    const rows: GridRow<AbstractReagent>[] = [];
+    const rows: GridRow<ChemicalSolutionInfo>[] = [];
 
     for (const eq of equipments) {
       if (!eq.expirationDate) continue;
@@ -64,4 +66,9 @@ export class ReagentExpiration extends AbstractMonthChartComponent<AbstractReage
       return new Date(a.expiryDate!).getTime() - new Date(b.expiryDate!).getTime();
     });
   });
+
+  getValue(value: number, unit: string): string {
+    if (value == null) return '-';
+    return `${value}, ${unit}`
+  }
 }

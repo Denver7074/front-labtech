@@ -55,7 +55,7 @@ export class WorkDialog extends AbstractDialogComponent<WorkResponsibilityInfo> 
   protected filteredPositions = signal<HhPosition[]>([]);
   valueType = signal<Map<string, string>>(new Map<string, string>());
 
-  protected form = this.fb.group({
+  protected override form = this.fb.group({
     id: [''],
     organizationName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(255)]],
     startDate: new FormControl<Date | null>(null, [Validators.required]),

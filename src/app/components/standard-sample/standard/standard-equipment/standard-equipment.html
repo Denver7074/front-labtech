@@ -58,47 +58,33 @@
       </td>
     </ng-container>
 
-    <!-- Тип стандартного образца -->
-    <ng-container matColumnDef="standardTypeId">
-      <th mat-header-cell [matTooltip]="'Тип стандартного образца (ГСО, СО и т.д.)'" *matHeaderCellDef>
-        Категория СО
+    <!-- Объединённая колонка: Наименование + Категория СО -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell
+          [matTooltip]="'Наименование, номер и тип стандартного образца (ГСО, СО и т.д.)'"
+          *matHeaderCellDef>
+        Наименование, № и категория СО
       </th>
       <td mat-cell *matCellDef="let item" class="data-cell">
-        @if (getTypeLabel(item.standardTypeId); as label) {
-          {{ label }}
-        } @else {
-          {{ item.standardTypeId || '—' }}
+        {{ item.name }}, № {{ item.number }}
+        @if (getTypeLabel(item.standardTypeId); as typeLabel) {
+          ({{ typeLabel }})
         }
       </td>
     </ng-container>
 
-    <!-- Наименование -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell [matTooltip]="'Наименование стандартного образца'" *matHeaderCellDef>
-        Наименование
-      </th>
-      <td mat-cell *matCellDef="let item" class="data-cell">
-        {{ item.name || '—' }}
-      </td>
-    </ng-container>
-
-    <!-- Изготовитель -->
+    <!-- Изготовитель и дата изготовления -->
     <ng-container matColumnDef="producer">
-      <th mat-header-cell [matTooltip]="'Организация-изготовитель'" *matHeaderCellDef>
-        Изготовитель
+      <th mat-header-cell
+          [matTooltip]="'Организация-изготовитель и дата выпуска стандартного образца'"
+          *matHeaderCellDef>
+        Изготовитель и дата выпуска
       </th>
       <td mat-cell *matCellDef="let item" class="data-cell">
         {{ item.producer || '—' }}
-      </td>
-    </ng-container>
-
-    <!-- Номер -->
-    <ng-container matColumnDef="number">
-      <th mat-header-cell *matHeaderCellDef>
-        Номер СО
-      </th>
-      <td mat-cell *matCellDef="let item" class="data-cell">
-        {{ item.number || '—' }}
+        @if (item.produceDate) {
+          от {{ item.produceDate | date:'dd.MM.yyyy' }}
+        }
       </td>
     </ng-container>
 
@@ -126,33 +112,23 @@
 
     <!-- Условия применения -->
     <ng-container matColumnDef="termsOfUse">
-      <th mat-header-cell [matTooltip]="'Нормативный документ(НД), порядок и условия применения'" *matHeaderCellDef>
-        Нормативный документ(НД)
+      <th mat-header-cell [matTooltip]="'Условия применения'" *matHeaderCellDef>
+        Условия применения
       </th>
       <td mat-cell *matCellDef="let item" class="data-cell">
         {{ item.termsOfUse || '—' }}
       </td>
     </ng-container>
 
-    <!-- Дата изготовления -->
-    <ng-container matColumnDef="produceDate">
-      <th mat-header-cell [matTooltip]="'Дата изготовления стандартного образца'" *matHeaderCellDef>
-        Дата изготовления
-      </th>
-      <td mat-cell *matCellDef="let item" class="data-cell">
-        {{ item.produceDate ? (item.produceDate | date) : '—' }}
-      </td>
-    </ng-container>
-
-    <!-- Срок годности -->
-    <ng-container matColumnDef="expirationDate">
-      <th mat-header-cell [matTooltip]="'Срок годности до'" *matHeaderCellDef>
-        Срок годности
-      </th>
-      <td mat-cell *matCellDef="let item" class="data-cell">
-        {{ item.expirationDate ? (item.expirationDate | date) : '—' }}
-      </td>
-    </ng-container>
+<!--    &lt;!&ndash; Условия применения &ndash;&gt;-->
+<!--    <ng-container matColumnDef="regulatoryDocuments">-->
+<!--      <th mat-header-cell [matTooltip]="'Нормативный документ (НД)'" *matHeaderCellDef>-->
+<!--        Нормативный документ(НД)-->
+<!--      </th>-->
+<!--      <td mat-cell *matCellDef="let item" class="data-cell">-->
+<!--        {{ item.regulatoryDocument || '—' }}-->
+<!--      </td>-->
+<!--    </ng-container>-->
 
     <!-- 1. Наименование и аттестованное значение -->
     <ng-container matColumnDef="characteristicNameValue">
@@ -260,17 +236,16 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-
-  <mat-paginator
-    [length]="totalItems()"
-    [pageIndex]="currentPage()"
-    [pageSize]="pageSize()"
-    [pageSizeOptions]="[5, 10, 20]"
-    (page)="onPageChange($event)"
-    aria-label="Пагинация транзакций"
-  >
-  </mat-paginator>
-
 } @else if (viewMode == 'expiration-chart') {
   <app-reagent-expiration [info]="filterInfo(info(), canUse)"></app-reagent-expiration>
 }
+
+<mat-paginator
+  [length]="totalItems()"
+  [pageIndex]="currentPage()"
+  [pageSize]="pageSize()"
+  [pageSizeOptions]="[5, 10, 20]"
+  (page)="onPageChange($event)"
+  aria-label="Пагинация транзакций"
+>
+</mat-paginator>

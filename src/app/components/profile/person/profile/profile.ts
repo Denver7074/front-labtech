@@ -38,7 +38,7 @@ import {PersonInfo} from '../../../../data/profile.interface';
   ]
 })
 export class ProfileDialog extends AbstractDialogComponent<PersonInfo> implements OnInit {
-  form: FormGroup = this.fb.group({
+  protected override form: FormGroup = this.fb.group({
     firstName: ['', [Validators.required]],
     middleName: [''],
     lastName: ['', [Validators.required]],

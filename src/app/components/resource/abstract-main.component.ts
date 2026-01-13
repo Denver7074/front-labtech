@@ -5,9 +5,10 @@ import {AbstractGuideComponent} from '../abstract/abstract-guide.component';
 import {CrudService} from '../../service/crud.service';
 import {ApiResponse, Mode} from '../../data/response.interface';
 import {ComponentType} from '@angular/cdk/portal';
+import {PageEvent} from '@angular/material/paginator';
 
 
-export abstract class AbstractMainComponent<TInterface>  extends AbstractGuideComponent {
+export abstract class AbstractTableComponent<TInterface>  extends AbstractGuideComponent {
   protected readonly Mode = Mode;
   protected crudService = inject(CrudService);
   protected activatedRoute = inject(ActivatedRoute);
@@ -118,5 +119,11 @@ export abstract class AbstractMainComponent<TInterface>  extends AbstractGuideCo
     } else {
       this.displayedColumns = this.displayedColumns.filter(col => col !== column);
     }
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.currentPage.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
+    this.loadEntities();
   }
 }

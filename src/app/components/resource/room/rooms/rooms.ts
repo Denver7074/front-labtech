@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractMainComponent} from '../../abstract-main.component';
+import {AbstractTableComponent} from '../../abstract-main.component';
 import {RoomInfo, roomTypeMap} from '../../../../data/equipment.interface';
 import {
   MatCell,
@@ -21,7 +21,6 @@ import {DatePipe} from '@angular/common';
 import {RoomDialog} from '../address/room-dialog';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {Mode} from '../../../../data/response.interface';
 
 
 @Component({
@@ -50,7 +49,7 @@ import {Mode} from '../../../../data/response.interface';
   templateUrl: './rooms.html',
   standalone: true
 })
-export class Rooms extends AbstractMainComponent<RoomInfo> implements OnInit {
+export class Rooms extends AbstractTableComponent<RoomInfo> implements OnInit {
   protected readonly AddressDialog = RoomDialog;
   protected readonly roomTypeMap = roomTypeMap;
 

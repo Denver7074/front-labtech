@@ -19,12 +19,11 @@ import {DatePipe} from '@angular/common';
 import {TestEquipmentDialog} from '../test-equipment-dialog/test-equipment-dialog';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatMenuModule} from '@angular/material/menu';
-import {MatOption, MatSelect, MatLabel, MatFormField} from '@angular/material/select';
+import {MatFormField, MatLabel, MatOption, MatSelect} from '@angular/material/select';
 import {TestEquipmentAttestation} from '../test-equipment-attestation/test-equipment-attestation';
 import {TestEquipmentMaintenance} from '../test-equipment-maintenance/test-equipment-maintenance';
-import {AbstractMainComponent} from '../../../resource/abstract-main.component';
+import {AbstractTableComponent} from '../../../resource/abstract-main.component';
 import {TestEquipmentInfo} from '../../../../data/equipment.interface';
-import {Mode} from '../../../../data/response.interface';
 
 @Component({
   selector: 'app-test-equipment',
@@ -56,7 +55,7 @@ import {Mode} from '../../../../data/response.interface';
   templateUrl: './test-equipment.html',
   standalone: true
 })
-export class TestEquipment extends AbstractMainComponent<TestEquipmentInfo> implements OnInit {
+export class TestEquipment extends AbstractTableComponent<TestEquipmentInfo> implements OnInit {
   protected readonly TestEquipmentDialog = TestEquipmentDialog;
   protected readonly Array = Array;
   protected viewMode: 'table' | 'attestation-chart' | 'maintenance-chart' = 'table';

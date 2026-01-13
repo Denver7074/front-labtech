@@ -46,7 +46,7 @@ export class TariffDialog extends AbstractDialogComponent<TariffPlanInfo> implem
   protected readonly PERIOD_LABELS = PERIOD_LABELS;
   protected readonly periodKeys = Object.keys(PERIOD_LABELS);
 
-  form: FormGroup = this.fb.group({
+  override form: FormGroup = this.fb.group({
     id: [''],
     trial: [false, [Validators.required]],
     tariffPlanTypeId: ['', [Validators.required]],
