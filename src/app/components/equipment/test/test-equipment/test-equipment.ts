@@ -60,6 +60,10 @@ export class TestEquipment extends AbstractTableComponent<TestEquipmentInfo> imp
   protected readonly Array = Array;
   protected viewMode: 'table' | 'attestation-chart' | 'maintenance-chart' = 'table';
 
+  protected override getPathValue(): string {
+    return 'test-equipments';
+  }
+
   protected override getPath(): string {
     return '/equipment-service/api/v1/organizations/parts/';
   }

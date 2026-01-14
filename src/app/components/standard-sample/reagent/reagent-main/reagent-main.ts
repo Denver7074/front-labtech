@@ -60,6 +60,11 @@ import {MatPaginator} from '@angular/material/paginator';
 export class ReagentMain extends AbstractReagentComponent<ChemicalSolutionInfo> implements OnInit {
   protected readonly ReagentDialog = ReagentDialog;
 
+
+  protected override getPathValue(): string {
+    return 'reagent';
+  }
+
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
@@ -72,5 +77,28 @@ export class ReagentMain extends AbstractReagentComponent<ChemicalSolutionInfo> 
     if (!typeId) return '-';
     const type = this.valueType()!.get('purity-reagent-type')?.get(typeId) || null;
     return type + ` ${value}`
+  }
+
+  protected override allColumns = [
+    'index',
+    'name',
+    'producer',
+    'purpose',
+    'information',
+    'regulatoryDocuments',
+    'termsOfUse',
+    'actions'
+  ];
+
+  protected override getColumnLabel(column: string): string {
+    const labels: Record<string, string> = {
+      name: 'Наименование, номер реактива',
+      producer: 'Изготовитель и дата выпуска',
+      information: 'Дополнительные сведения',
+      purpose: 'Назначение',
+      termsOfUse: 'Условия применения',
+      regulatoryDocuments: 'Нормативные документы (НД)',
+    };
+    return labels[column] || column;
   }
 }

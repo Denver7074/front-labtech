@@ -8,7 +8,7 @@ import {ComponentType} from '@angular/cdk/portal';
 import {PageEvent} from '@angular/material/paginator';
 
 
-export abstract class AbstractTableComponent<TInterface>  extends AbstractGuideComponent {
+export abstract class AbstractTableComponent<TInterface> extends AbstractGuideComponent {
   protected readonly Mode = Mode;
   protected crudService = inject(CrudService);
   protected activatedRoute = inject(ActivatedRoute);
@@ -18,14 +18,17 @@ export abstract class AbstractTableComponent<TInterface>  extends AbstractGuideC
   protected totalItems = signal(0);
   protected id = signal<string | null>('');
   protected info = signal<TInterface[]>([]);
-
-  protected abstract getPath(): string;
-  protected abstract readonly allColumns: string[];
-  protected abstract getColumnLabel(column: string): string;
   protected displayedColumns: string[] = [];
 
+  protected abstract getPath(): string;
+  protected abstract getPathValue(): string;
+
+  protected abstract readonly allColumns: string[];
+
+  protected abstract getColumnLabel(column: string): string;
+
   protected loadEntities(value?: string): void {
-    const path = `${this.getPath()}${value}`
+    const path = `${this.getPath()}${this.getPathValue()}`
     const filter = {
       organizationPartId: this.id()
     }
@@ -45,7 +48,7 @@ export abstract class AbstractTableComponent<TInterface>  extends AbstractGuideC
     this.crudService.put<TInterface>(result, path)
       .subscribe({
         next: () => {
-          this.loadEntities();
+          this.loadEntities(this.getPathValue());
         },
         error: (err) => this.notification.showErrorMsg(err.error.error.message)
       });
@@ -55,7 +58,7 @@ export abstract class AbstractTableComponent<TInterface>  extends AbstractGuideC
     this.crudService.post<TInterface>(result, path)
       .subscribe({
         next: () => {
-          this.loadEntities();
+          this.loadEntities(this.getPathValue());
         },
         error: (err) => this.notification.showErrorMsg(err.error.error.message)
       });

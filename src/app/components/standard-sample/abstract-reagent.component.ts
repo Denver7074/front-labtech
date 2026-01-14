@@ -65,29 +65,6 @@ export abstract class AbstractReagentComponent<TInterface extends ChemicalSoluti
     });
   }
 
-  protected allColumns = [
-    'index',
-    'name',
-    'producer',
-    'purpose',
-    'information',
-    'regulatoryDocuments',
-    'termsOfUse',
-    'actions'
-  ];
-
-  protected getColumnLabel(column: string): string {
-    const labels: Record<string, string> = {
-      name: 'Наименование, номер реактива',
-      producer: 'Изготовитель и дата выпуска',
-      information: 'Дополнительные сведения',
-      purpose: 'Назначение',
-      termsOfUse: 'Условия применения',
-      regulatoryDocuments: 'Нормативные документы (НД)',
-    };
-    return labels[column] || column;
-  }
-
   protected override afterCloseDialog(dialogRef: MatDialogRef<any>, path: string, mode: Mode): void {
     dialogRef.afterClosed().subscribe(result => {
       if (!result || mode === Mode.VIEW) return;

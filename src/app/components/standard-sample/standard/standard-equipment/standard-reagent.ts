@@ -63,6 +63,10 @@ import {MatPaginator} from '@angular/material/paginator';
 export class StandardReagent extends AbstractReagentComponent<StandardReagentInfo> implements OnInit {
   protected readonly StandardEquipmentDialog = StandardEquipmentDialog;
 
+  protected override getPathValue(): string {
+    return 'standard-samples';
+  }
+
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);

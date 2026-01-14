@@ -53,6 +53,10 @@ export class Rooms extends AbstractTableComponent<RoomInfo> implements OnInit {
   protected readonly AddressDialog = RoomDialog;
   protected readonly roomTypeMap = roomTypeMap;
 
+  protected override getPathValue(): string {
+    return 'rooms';
+  }
+
   protected override getPath(): string {
     return '/equipment-service/api/v1/organizations/parts/';
   }

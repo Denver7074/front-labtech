@@ -1,6 +1,6 @@
 <!-- Заголовок и кнопка добавления -->
 <div class="section-header">
-  <h2>Стандартные образцы</h2>
+  <h2>Реактивы</h2>
   <mat-form-field appearance="outline" class="view-mode-select">
     <mat-label>Просмотр</mat-label>
     <mat-select [(value)]="viewMode">
@@ -40,7 +40,7 @@
     </mat-menu>
 
     <button
-      (click)="openDialog(ChemicalSolutionDialog, 'standard-samples', Mode.CREATE)"
+      (click)="openDialog(ChemicalSolutionDialog, 'reagent', Mode.CREATE)"
       [matTooltip]="'Добавить реактив'"
       class="table-add-button">
       <mat-icon>add</mat-icon>
@@ -58,83 +58,80 @@
       </td>
     </ng-container>
 
-    <!-- Наименование -->
+    <!-- Объединённая колонка: Наименование + Категория СО -->
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Наименование</th>
-      <td mat-cell *matCellDef="let item">
-        {{ item.name || '—' }}
+      <th mat-header-cell
+          [matTooltip]="'Наименование, номер'"
+          *matHeaderCellDef>
+        Наименование, номер реактива
+      </th>
+      <td mat-cell *matCellDef="let item" class="data-cell">
+        {{ item.name }}, № {{ item.number }}
       </td>
     </ng-container>
 
-    <!-- Описание -->
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef>Описание</th>
-      <td mat-cell *matCellDef="let item">
-        {{ item.description || '—' }}
+    <!-- Изготовитель и дата изготовления -->
+    <ng-container matColumnDef="producer">
+      <th mat-header-cell
+          [matTooltip]="'Организация-изготовитель и дата выпуска стандартного образца'"
+          *matHeaderCellDef>
+        Изготовитель и дата выпуска
+      </th>
+      <td mat-cell *matCellDef="let item" class="data-cell">
+        {{ item.producer || '—' }}
+        @if (item.produceDate) {
+          от {{ item.produceDate | date:'dd.MM.yyyy' }}
+        }
       </td>
     </ng-container>
 
-    <!-- Посуда -->
-    <ng-container matColumnDef="dishes">
-      <th mat-header-cell *matHeaderCellDef>Посуда</th>
-      <td mat-cell *matCellDef="let item">
-        {{ item.dishes || '—' }}
+    <!-- Назначение -->
+    <ng-container matColumnDef="purpose">
+      <th mat-header-cell [matTooltip]="'Назначение (например, градуировка, контроль точности)'" *matHeaderCellDef>
+        Назначение
+      </th>
+      <td mat-cell *matCellDef="let item" class="data-cell">
+        {{ item.purpose || '—' }}
       </td>
     </ng-container>
 
-    <!-- Нормативный документ -->
+    <!-- Сведения -->
+    <ng-container matColumnDef="information">
+      <th mat-header-cell
+          [matTooltip]="'Дополнительные сведения (в том числе из Федерального информационного фонда по обеспечению единства измерений на ГСО)'"
+          *matHeaderCellDef>
+        Дополнительные сведения
+      </th>
+      <td mat-cell *matCellDef="let item" class="data-cell">
+        {{ item.information || '—' }}
+      </td>
+    </ng-container>
+
+    <!-- Условия применения -->
     <ng-container matColumnDef="termsOfUse">
-      <th mat-header-cell *matHeaderCellDef>Нормативный документ (НД)</th>
-      <td mat-cell *matCellDef="let item">
+      <th mat-header-cell [matTooltip]="'Условия применения'" *matHeaderCellDef>
+        Условия применения
+      </th>
+      <td mat-cell *matCellDef="let item" class="data-cell">
         {{ item.termsOfUse || '—' }}
       </td>
     </ng-container>
 
-    <!-- Условия хранения -->
-    <ng-container matColumnDef="conditions">
-      <th mat-header-cell *matHeaderCellDef>Условия хранения</th>
-      <td mat-cell *matCellDef="let item">
-        {{ item.conditions || '—' }}
-      </td>
-    </ng-container>
-
-    <!-- Единица измерения -->
-    <ng-container matColumnDef="unit">
-      <th mat-header-cell *matHeaderCellDef>Ед. изм.</th>
-      <td mat-cell *matCellDef="let item">
-        {{ item.unit || '—' }}
-      </td>
-    </ng-container>
-
-    <!-- Дата приготовления -->
-    <ng-container matColumnDef="createdSolution">
-      <th mat-header-cell *matHeaderCellDef>Дата приготовления</th>
-      <td mat-cell *matCellDef="let item">
-        {{ item.createdSolution ? (item.createdSolution | date) : '—' }}
-      </td>
-    </ng-container>
-
-    <!-- Срок годности раствора -->
-    <ng-container matColumnDef="expirationSolution">
-      <th mat-header-cell *matHeaderCellDef>Срок годности раствора</th>
-      <td mat-cell *matCellDef="let item">
-        {{ item.expirationSolution ? (item.expirationSolution | date) : '—' }}
-      </td>
-    </ng-container>
-
-    <!-- Начальное количество -->
-    <ng-container matColumnDef="initialQuantity">
-      <th mat-header-cell *matHeaderCellDef>Начальное количество</th>
-      <td mat-cell *matCellDef="let item">
-        {{ item.initialQuantity ? (item.initialQuantity + ' ' + item.unit) : '—' }}
-      </td>
-    </ng-container>
-
-    <!-- Остаток -->
-    <ng-container matColumnDef="remains">
-      <th mat-header-cell *matHeaderCellDef>Остаток</th>
-      <td mat-cell *matCellDef="let item">
-        {{ item.remains ? (item.remains + ' ' + item.unit) : '—' }}
+    <!-- Нормативные документы -->
+    <ng-container matColumnDef="regulatoryDocuments">
+      <th mat-header-cell [matTooltip]="'Нормативные документы (НД)'" *matHeaderCellDef>
+        Нормативные документы (НД)
+      </th>
+      <td mat-cell *matCellDef="let item" class="data-cell">
+        @if (item.regulatoryDocuments?.length; as count) {
+          <div class="documents-list">
+            @for (docId of item.regulatoryDocuments; track docId) {
+              <span class="document-item">{{ getTypeValue(docId, 'regulatory-documents') }}</span>
+            }
+          </div>
+        } @else {
+          —
+        }
       </td>
     </ng-container>
 
@@ -166,32 +163,27 @@
             <span>Создать на основе</span>
           </button>
 
-          <!-- Взять реактив (только если consumable = true) -->
-          @if (item.consumable && item.canUse) {
-            <button
-              mat-menu-item
-              (click)="openDialogExpenditure('chemical-solution', item)">
-              <mat-icon>remove_shopping_cart</mat-icon>
-              <span>Взять реактив</span>
-            </button>
+          <button
+            mat-menu-item
+            (click)="openDialogExpenditure('chemical-solution', item)">
+            <mat-icon>remove_shopping_cart</mat-icon>
+            <span>Взять реактив</span>
+          </button>
 
-            <button
-              mat-menu-item
-              (click)="openHistoryExpenditure(item)">
-              <mat-icon>receipt_long</mat-icon>
-              <span>История расхода</span>
-            </button>
-          }
+          <button
+            mat-menu-item
+            (click)="openHistoryExpenditure(item)">
+            <mat-icon>receipt_long</mat-icon>
+            <span>История расхода</span>
+          </button>
 
           <!-- Удалить -->
           <button
             mat-menu-item
-            (click)="delete(item.id, 'chemical-solution')">
+            (click)="delete(item.id, 'reagent')">
             <mat-icon>{{ item.canUse ? 'move_to_inbox' : 'delete' }}</mat-icon>
             <span>{{ item.canUse ? 'Убрать в архив' : 'Удалить' }} </span>
           </button>
-
-          <!--          todo нужно потом добавить возможность возвращать из архива-->
         </mat-menu>
       </td>
     </ng-container>
@@ -199,17 +191,16 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-
-  <mat-paginator
-    [length]="totalItems()"
-    [pageIndex]="currentPage()"
-    [pageSize]="pageSize()"
-    [pageSizeOptions]="[5, 10, 20]"
-    (page)="onPageChange($event)"
-    aria-label="Пагинация транзакций"
-  >
-  </mat-paginator>
-
 } @else if (viewMode == 'expiration-chart') {
   <app-reagent-expiration [info]="filterInfo(info(), canUse)"></app-reagent-expiration>
 }
+
+<mat-paginator
+  [length]="totalItems()"
+  [pageIndex]="currentPage()"
+  [pageSize]="pageSize()"
+  [pageSizeOptions]="[5, 10, 20]"
+  (page)="onPageChange($event)"
+  aria-label="Пагинация транзакций"
+>
+</mat-paginator>

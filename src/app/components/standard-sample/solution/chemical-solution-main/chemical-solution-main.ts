@@ -56,45 +56,38 @@ import {MatTooltip} from '@angular/material/tooltip';
 export class ChemicalSolutionMain extends AbstractReagentComponent<ChemicalSolutionInfo> implements OnInit {
   protected readonly ChemicalSolutionDialog = ChemicalSolutionDialog;
 
+  protected override getPathValue(): string {
+    return 'chemical-solution';
+  }
+
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
-    this.loadGuide(['chemical-solution-name']);
+    this.loadGuide(['regulatory-documents']);
     this.loadEntities('chemical-solution');
     this.displayedColumns = [...this.allColumns];
   }
 
-  // protected allColumns = [
-  //   'index',
-  //   'name',
-  //   'description',
-  //   'dishes',
-  //   'termsOfUse',
-  //   'conditions',
-  //   'createdSolution',
-  //   'expirationDate',
-  //   'initialQuantity',
-  //   'remains',
-  //   'actions'
-  // ];
-  //
-  // protected override getColumnLabel(column: string): string {
-  //   const labels: Record<string, string> = {
-  //     name: 'Наименование',
-  //     description: 'Описание',
-  //     dishes: 'Посуда',
-  //     termsOfUse: 'Нормативный документ (НД)',
-  //     conditions: 'Условия хранения',
-  //     createdSolution: 'Дата приготовления',
-  //     expirationDate: 'Срок годности раствора',
-  //     initialQuantity: 'Начальное количество',
-  //     remains: 'Остаток',
-  //   };
-  //   return labels[column] || column;
-  // }
+  protected override allColumns = [
+    'index',
+    'name',
+    'producer',
+    'purpose',
+    'information',
+    'regulatoryDocuments',
+    'termsOfUse',
+    'actions'
+  ];
 
-  getTypeLabel(typeId: string): string | null {
-    if (!typeId) return null;
-    return this.valueType()!.get('chemical-solution-name')?.get(typeId) || null;
+  protected override getColumnLabel(column: string): string {
+    const labels: Record<string, string> = {
+      name: 'Наименование, номер реактива',
+      producer: 'Изготовитель и дата выпуска',
+      information: 'Дополнительные сведения',
+      purpose: 'Назначение',
+      termsOfUse: 'Условия применения',
+      regulatoryDocuments: 'Нормативные документы (НД)',
+    };
+    return labels[column] || column;
   }
 }

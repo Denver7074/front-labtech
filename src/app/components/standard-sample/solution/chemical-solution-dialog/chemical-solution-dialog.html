@@ -1,1 +1,162 @@
-<p>chemical-solution-dialog works!</p>
+<div class="dialog-form">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon>inventory_2</mat-icon>
+      <h2 class="title">{{ title }}</h2>
+    </div>
+    <p class="subtitle">Заполните информацию о реактиве</p>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+
+
+      <div class="form-fields">
+        <!-- Наименование -->
+        <mat-form-field appearance="outline">
+          <mat-label>Наименование</mat-label>
+          <input matInput formControlName="name" placeholder="Например, Раствор хлорида натрия">
+          <mat-icon matPrefix>title</mat-icon>
+          @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
+            <mat-error>Укажите наименование</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Назначение -->
+        <mat-form-field appearance="outline">
+          <mat-label>Назначение</mat-label>
+          <textarea matInput formControlName="purpose"
+                    placeholder="Для градуировки приборов, контроля методик..."></textarea>
+          <mat-icon matPrefix>description</mat-icon>
+          @if (form.get('purpose')?.hasError('required') && form.get('purpose')?.touched) {
+            <mat-error>Укажите назначение</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Условия применения -->
+        <mat-form-field appearance="outline">
+          <mat-label>Условия применения и хранения</mat-label>
+          <textarea matInput formControlName="termsOfUse"
+                    placeholder="Температура, влажность, особые условия..."></textarea>
+        </mat-form-field>
+
+        <!-- Дополнительная информация -->
+        <mat-form-field appearance="outline">
+          <mat-label>Дополнительная информация</mat-label>
+          <textarea matInput formControlName="information"
+                    placeholder="Дополнительные сведения..."></textarea>
+        </mat-form-field>
+
+        <!-- Нормативнй документ -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Нормативный документ</mat-label>
+
+          <mat-chip-grid #chipList>
+            @for (docId of form.get('regulatoryDocuments')?.value || []; track docId) {
+              <mat-chip-row (removed)="removeDocument(docId)">
+                {{ getDocumentValue(docId) }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+          </mat-chip-grid>
+
+          <!-- Контейнер для input + кнопки -->
+          <div class="input-with-button">
+            <input
+              matInput
+              [formControl]="documentInput"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="[]"
+              (matChipInputTokenEnd)="preventAdd($event)" />
+
+            <button
+              mat-icon-button
+              type="button"
+              (click)="openRegulatoryDocumentGuide()"
+              [matTooltip]="'Добавить новый документв'"
+              class="open-guide-button">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+          </div>
+
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onDocumentSelected($event)">
+            @for (doc of filteredDocuments(); track doc) {
+              <mat-option [value]="doc">{{ doc }}</mat-option>
+            }
+          </mat-autocomplete>
+
+          <mat-icon matPrefix>description</mat-icon>
+        </mat-form-field>
+
+        <div class="grid">
+          <!-- Дата изготовления -->
+          <mat-form-field appearance="outline">
+            <mat-label>Дата изготовления</mat-label>
+            <input
+              matInput
+              [matDatepicker]="produceDatePicker"
+              formControlName="produceDate"
+              placeholder="Выберите дату"
+            />
+            <mat-datepicker-toggle matSuffix [for]="produceDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #produceDatePicker></mat-datepicker>
+            @if (form.get('produceDate')?.hasError('required') && form.get('produceDate')?.touched) {
+              <mat-error>Укажите дату изготовления</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Срок годности -->
+          <mat-form-field appearance="outline">
+            <mat-label>Срок годности до</mat-label>
+            <input
+              matInput
+              [matDatepicker]="expirationDatePicker"
+              formControlName="expirationDate"
+              placeholder="Выберите дату"
+            />
+            <mat-datepicker-toggle matSuffix [for]="expirationDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #expirationDatePicker></mat-datepicker>
+            @if (form.get('expirationDate')?.hasError('required') && form.get('expirationDate')?.touched) {
+              <mat-error>Укажите срок годности</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Начальный остаток</mat-label>
+            <input matInput type="number" step="0.001" formControlName="initialQuantity"/>
+            @if (form.get('initialQuantity')?.hasError('required') && form.get('initialQuantity')?.touched) {
+              <mat-error>Укажите количество</mat-error>
+            }
+            @if (form.get('initialQuantity')?.hasError('greaterThanZero')) {
+              <mat-error>Количество должно быть больше 0</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Единица измерения</mat-label>
+            <input matInput formControlName="unit" placeholder="мл, г, шт..."/>
+            @if (form.get('unit')?.hasError('required') && form.get('unit')?.touched) {
+              <mat-error>Укажите единицу измерения</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <app-button mat-dialog-close class="mr-20 error">
+      Отмена
+    </app-button>
+    <app-button [disabled]="form.invalid" (click)="onSubmit()">
+      {{ submitLabel }}
+    </app-button>
+  </mat-dialog-actions>
+</div>

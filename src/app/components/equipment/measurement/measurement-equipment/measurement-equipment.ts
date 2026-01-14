@@ -15,6 +15,10 @@ export class MeasurementEquipment extends AbstractTableComponent<MeasurementEqui
     return `/equipment-service/api/v1/organizations/parts/`;
   }
 
+  protected override getPathValue(): string {
+    return 'measurement-equipments';
+  }
+
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
