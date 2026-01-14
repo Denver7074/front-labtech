@@ -126,16 +126,23 @@
       </td>
     </ng-container>
 
-<!--    &lt;!&ndash; Условия применения &ndash;&gt;-->
-<!--    <ng-container matColumnDef="regulatoryDocuments">-->
-<!--      <th mat-header-cell [matTooltip]="'Нормативный документ (НД)'" *matHeaderCellDef>-->
-<!--        Нормативный документ(НД)-->
-<!--      </th>-->
-<!--      <td mat-cell *matCellDef="let item" class="data-cell">-->
-<!--        {{ item.regulatoryDocuments || '—' }}-->
-<!--      </td>-->
-<!--    </ng-container>-->
-
+    <!-- Нормативные документы -->
+    <ng-container matColumnDef="regulatoryDocuments">
+      <th mat-header-cell [matTooltip]="'Нормативные документы (НД)'" *matHeaderCellDef>
+        Нормативные документы (НД)
+      </th>
+      <td mat-cell *matCellDef="let item" class="data-cell">
+        @if (item.regulatoryDocuments?.length; as count) {
+          <div class="documents-list">
+            @for (docId of item.regulatoryDocuments; track docId) {
+              <span class="document-item">{{ getTypeValue(docId, 'regulatory-documents') }}</span>
+            }
+          </div>
+        } @else {
+          —
+        }
+      </td>
+    </ng-container>
 
     <!-- Действия → Выпадающее меню -->
     <ng-container matColumnDef="actions">

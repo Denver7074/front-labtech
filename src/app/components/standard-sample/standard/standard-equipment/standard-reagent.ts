@@ -79,7 +79,7 @@ export class StandardReagent extends AbstractReagentComponent<StandardReagentInf
     'characteristicNameValue',
     'characteristicUncertainty',
     'information',
-    // 'regulatoryDocuments',
+    'regulatoryDocuments',
     'termsOfUse',
     'actions'
   ];
@@ -91,7 +91,7 @@ export class StandardReagent extends AbstractReagentComponent<StandardReagentInf
       information: 'Дополнительные сведения',
       purpose: 'Назначение',
       termsOfUse: 'Условия применения',
-      // regulatoryDocument: 'Нормативный документ(НД)',
+      regulatoryDocuments: 'Нормативные документы (НД)',
       characteristicNameValue: 'Наименование и аттестованное значение',
       characteristicUncertainty: 'Неопределённость и (или) характеристика погрешности аттестованного значения'
     };

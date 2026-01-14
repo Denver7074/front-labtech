@@ -71,6 +71,7 @@ export abstract class AbstractReagentComponent<TInterface extends ChemicalSoluti
     'producer',
     'purpose',
     'information',
+    'regulatoryDocuments',
     'termsOfUse',
     'actions'
   ];
@@ -82,6 +83,7 @@ export abstract class AbstractReagentComponent<TInterface extends ChemicalSoluti
       information: 'Дополнительные сведения',
       purpose: 'Назначение',
       termsOfUse: 'Условия применения',
+      regulatoryDocuments: 'Нормативные документы (НД)',
     };
     return labels[column] || column;
   }

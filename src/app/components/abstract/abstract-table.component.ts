@@ -93,7 +93,7 @@ export abstract class AbstractTableComponent<TInterface>  extends AbstractGuideC
     const p = `${this.getPath()}/${this.id()}/${path}/${id}`
     this.crudService.delete(p).subscribe({
       next: () => {
-        this.loadEntities();
+        this.loadEntities(path);
       },
       error: (err) => {
         console.error('Не удалось удалить сессию', err);
