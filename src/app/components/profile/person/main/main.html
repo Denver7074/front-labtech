@@ -81,7 +81,7 @@
                       <mat-icon>edit</mat-icon>
                     </button>
                     <div class="contact-header">
-                      <mat-label>{{ valueType()!.get('contact-type')?.get(contact.contactTypeId) }}:</mat-label>
+                      <mat-label>{{ getTypeValue(contact.contactTypeId, 'contact-type') }}:</mat-label>
                     </div>
                     <div class="contact-body">
                       <a class="contact-link">{{ contact.value }}</a>
@@ -151,7 +151,7 @@
                     <div class="education-body">
                       <div class="specialization">
                         <mat-icon>auto_stories</mat-icon>
-                        {{ valueType()!.get('education-type')?.get(edu.educationTypeId) }}
+                        {{ getTypeValue(edu.educationTypeId, 'education-type') }}
                       </div>
                       <div class="specialization">
                         <mat-icon>subject</mat-icon>
@@ -160,7 +160,7 @@
                       @if (edu.documentNumber) {
                         <div class="diploma">
                           <mat-icon>verified</mat-icon>
-                          <span>{{ valueType()!.get('education-doc-type')?.get(edu.educationDocumentTypeId) }}
+                          <span>{{ getTypeValue(edu.educationDocumentTypeId, 'education-doc-type') }}
                             № {{ edu.documentNumber }}</span>
                           @if (edu.documentIssueDate) {
                             <span class="issue-date">от {{ edu.documentIssueDate | date }}</span>
@@ -232,7 +232,7 @@
                       @if (work.measurementTypeIds && work.measurementTypeIds.length > 0) {
                         <mat-chip-set class="work-tags" aria-label="Типы измерений">
                           @for (measurementTypeId of work.measurementTypeIds; track measurementTypeId) {
-                            <mat-chip-row>{{ valueType()!.get('measurement-type')?.get(measurementTypeId) }}</mat-chip-row>
+                            <mat-chip-row>{{ getTypeValue(measurementTypeId, 'measurement-type') }}</mat-chip-row>
                           }
                         </mat-chip-set>
                       }

@@ -40,14 +40,10 @@ export class MainOrganization extends AbstractMainComponent<OrganizationInfo> im
     return 'organizations';
   }
 
-  protected override getPathGuide(): string[] {
-    return ['legal-form', 'organization-type', 'taxation-type', 'contact-type'];
-  }
-
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationId');
     this.id.set(profileId);
-    this.loadGuide();
+    this.loadGuide(['legal-form', 'organization-type', 'taxation-type', 'contact-type']);
     this.loadProfile();
   }
 

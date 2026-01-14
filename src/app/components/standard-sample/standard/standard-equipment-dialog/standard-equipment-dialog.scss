@@ -42,3 +42,14 @@
   align-items: center;
   justify-content: center;
 }
+
+.input-with-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.open-guide-button {
+  margin-left: 8px;
+  margin-right: 4px; // компенсация отступа matInput
+}

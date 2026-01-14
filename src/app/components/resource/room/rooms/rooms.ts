@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractTableComponent} from '../../abstract-main.component';
+import {AbstractTableComponent} from '../../../abstract/abstract-table.component';
 import {RoomInfo, roomTypeMap} from '../../../../data/equipment.interface';
 import {
   MatCell,
@@ -53,19 +53,15 @@ export class Rooms extends AbstractTableComponent<RoomInfo> implements OnInit {
   protected readonly AddressDialog = RoomDialog;
   protected readonly roomTypeMap = roomTypeMap;
 
-  protected override getResource(): string {
-    return 'rooms';
-  }
-
-  protected override getPathGuide(): string[] {
-    return ['parameter-type', 'equipment-type'];
+  protected override getPath(): string {
+    return '/equipment-service/api/v1/organizations/parts/';
   }
 
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
-    this.loadGuide();
-    this.loadEntities();
+    this.loadGuide(['parameter-type', 'equipment-type']);
+    this.loadEntities('rooms');
     this.displayedColumns = [...this.allColumns];
   }
 
@@ -92,13 +88,5 @@ export class Rooms extends AbstractTableComponent<RoomInfo> implements OnInit {
       ownership: 'Право владения',
     };
     return labels[column] || column;
-  }
-
-  getParameterTypeName(id: string): string {
-    return this.valueType()!.get('parameter-type')?.get(id) || '—';
-  }
-
-  getEquipmentTypeName(id: string): string {
-    return this.valueType()!.get('equipment-type')?.get(id) || '—';
   }
 }

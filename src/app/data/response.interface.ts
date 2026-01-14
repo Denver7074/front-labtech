@@ -45,7 +45,8 @@ export enum Mode {
 }
 
 export interface ResponseType {
-  id: string
+  id: string;
   value: string;
-  icon: string;
+  version: number;
+  archive: boolean;
 }

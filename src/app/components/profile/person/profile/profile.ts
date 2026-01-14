@@ -60,7 +60,7 @@ export class ProfileDialog extends AbstractDialogComponent<PersonInfo> implement
     }
   }
 
-  onSubmit() {
+  protected override onSubmit() {
     if (this.form.valid) {
       const rawValue = this.form.getRawValue();
       this.dialogRef.close({

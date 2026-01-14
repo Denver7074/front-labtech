@@ -15,7 +15,7 @@
         <!-- Наименование -->
         <mat-form-field appearance="outline">
           <mat-label>Наименование</mat-label>
-          <input matInput formControlName="name" placeholder="Например, СО состава стали">
+          <input matInput formControlName="name" placeholder="Например, Хлорид натрия">
           <mat-icon matPrefix>title</mat-icon>
           @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
             <mat-error>Укажите наименование</mat-error>
@@ -85,21 +85,55 @@
                     placeholder="Температура, влажность, особые условия..."></textarea>
         </mat-form-field>
 
-        <!-- Сведения о стандартном образце -->
+        <!-- Дополнительная информация -->
         <mat-form-field appearance="outline">
           <mat-label>Дополнительная информация</mat-label>
           <textarea matInput formControlName="information"
-                    placeholder="Аттестованные значения, методы аттестации..."></textarea>
+                    placeholder="Дополнительные сведения..."></textarea>
         </mat-form-field>
 
         <!-- Нормативнй документ -->
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="full-width">
           <mat-label>Нормативный документ</mat-label>
-          <input matInput formControlName="regulatoryDocuments" placeholder="Например, СО состава стали">
-          <mat-icon matPrefix>title</mat-icon>
-          @if (form.get('regulatoryDocuments')?.hasError('required') && form.get('regulatoryDocuments')?.touched) {
-            <mat-error>Укажите НД</mat-error>
-          }
+
+          <mat-chip-grid #chipList>
+            @for (docId of form.get('regulatoryDocuments')?.value || []; track docId) {
+              <mat-chip-row (removed)="removeDocument(docId)">
+                {{ getDocumentValue(docId) }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+          </mat-chip-grid>
+
+          <!-- Контейнер для input + кнопки -->
+          <div class="input-with-button">
+            <input
+              matInput
+              [formControl]="documentInput"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="[]"
+              (matChipInputTokenEnd)="preventAdd($event)" />
+
+            <button
+              mat-icon-button
+              type="button"
+              (click)="openRegulatoryDocumentGuide()"
+              [matTooltip]="'Добавить новый документв'"
+              class="open-guide-button">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+          </div>
+
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onDocumentSelected($event)">
+            @for (doc of filteredDocuments(); track doc) {
+              <mat-option [value]="doc">{{ doc }}</mat-option>
+            }
+          </mat-autocomplete>
+
+          <mat-icon matPrefix>description</mat-icon>
         </mat-form-field>
 
         <div class="grid">

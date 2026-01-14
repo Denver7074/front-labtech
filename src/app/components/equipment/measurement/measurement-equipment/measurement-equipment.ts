@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractTableComponent} from '../../../resource/abstract-main.component';
+import {AbstractTableComponent} from '../../../abstract/abstract-table.component';
 import {MeasurementEquipmentInfo} from '../../../../data/equipment.interface';
 
 @Component({
@@ -10,15 +10,15 @@ import {MeasurementEquipmentInfo} from '../../../../data/equipment.interface';
   standalone: true
 })
 export class MeasurementEquipment extends AbstractTableComponent<MeasurementEquipmentInfo> implements OnInit {
-  protected override getResource(): string {
-    return 'measurement-equipments';
+
+  protected override getPath(): string {
+    return `/equipment-service/api/v1/organizations/parts/`;
   }
 
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
-    this.loadGuide();
-    this.loadEntities();
+    this.loadEntities('measurement-equipments');
     this.displayedColumns = [...this.allColumns];
   }
 

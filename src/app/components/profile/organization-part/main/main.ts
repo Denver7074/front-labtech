@@ -32,15 +32,11 @@ export class MainOrganizationPart extends AbstractMainComponent<PartInfo> implem
     return 'organizations';
   }
 
-  protected override getPathGuide(): string[] {
-    return ['organization-type', 'contact-type', 'parameter-type', 'equipment-type'];
-  }
-
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
     this.orgContext.setOrgPartId(profileId);
-    this.loadGuide();
+    this.loadGuide(['organization-type', 'contact-type', 'parameter-type', 'equipment-type']);
     this.loadProfile();
   }
 

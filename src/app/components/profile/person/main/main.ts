@@ -47,12 +47,8 @@ export class MainPerson extends AbstractMainComponent<PersonInfo> implements OnI
   ngOnInit(): void {
     const personId = this.activatedRoute.snapshot.paramMap.get('personId');
     this.id.set(personId);
-    this.loadGuide();
+    this.loadGuide(['contact-type', 'education-type', 'education-doc-type', 'measurement-type']);
     this.loadProfile();
-  }
-
-  protected override getPathGuide(): string[] {
-    return ['contact-type', 'education-type', 'education-doc-type', 'measurement-type'];
   }
 
   // Возраст

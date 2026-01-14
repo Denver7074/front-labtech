@@ -107,7 +107,7 @@
                       </button>
                       <div class="contact-header">
                         <mat-label>
-                          {{ valueType()!.get('contact-type')?.get(contact.contactTypeId) || '—' }}:
+                          {{ getTypeValue(contact.contactTypeId, 'contact-type') || '—' }}:
                         </mat-label>
                       </div>
                       <div class="contact-body">
@@ -188,7 +188,7 @@
                       <p class="part-type">
                         <mat-icon>category</mat-icon>
                         Тип:
-                        {{ valueType()!.get('organization-type')?.get(part!.organizationTypeId) || '—' }}
+                        {{ getTypeValue(part!.organizationTypeId, 'organization-type') || '—' }}
                       </p>
                     </div>
 

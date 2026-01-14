@@ -46,7 +46,7 @@ export class ReagentExpenditureDialog extends AbstractDialogComponent<Reagent> {
     quantity: ['', [Validators.required, Validators.min(0.001), this.greaterThanZeroValidator(), this.maxRemainValidator]]
   });
 
-  onSubmit() {
+  protected override onSubmit() {
     if (this.form.valid) {
       const raw = this.form.getRawValue();
 

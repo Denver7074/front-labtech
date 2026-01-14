@@ -36,10 +36,9 @@
               }
             </mat-form-field>
 
-            <!-- Наименование -->
             <mat-form-field appearance="outline">
               <mat-label>Наименование</mat-label>
-              <input matInput formControlName="name" placeholder="Например, СО состава стали">
+              <input matInput formControlName="name" placeholder="Например, Хлорид натрия">
               <mat-icon matPrefix>title</mat-icon>
               @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
                 <mat-error>Укажите наименование</mat-error>
@@ -51,9 +50,9 @@
               <mat-label>Нормативный документ</mat-label>
 
               <mat-chip-grid #chipList>
-                @for (doc of form.get('regulatoryDocuments')?.value || []; track doc) {
-                  <mat-chip-row (removed)="removeDocument(doc)">
-                    {{ doc }}
+                @for (docId of form.get('regulatoryDocuments')?.value || []; track docId) {
+                  <mat-chip-row (removed)="removeDocument(docId)">
+                    {{ getDocumentValue(docId) }}
                     <button matChipRemove>
                       <mat-icon>cancel</mat-icon>
                     </button>
@@ -61,13 +60,25 @@
                 }
               </mat-chip-grid>
 
-              <input
-                matInput
-                [formControl]="documentInput"
-                [matAutocomplete]="auto"
-                [matChipInputFor]="chipList"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                (matChipInputTokenEnd)="addDocument($event)" />
+              <!-- Контейнер для input + кнопки -->
+              <div class="input-with-button">
+                <input
+                  matInput
+                  [formControl]="documentInput"
+                  [matAutocomplete]="auto"
+                  [matChipInputFor]="chipList"
+                  [matChipInputSeparatorKeyCodes]="[]"
+                  (matChipInputTokenEnd)="preventAdd($event)" />
+
+                <button
+                  mat-icon-button
+                  type="button"
+                  (click)="openRegulatoryDocumentGuide()"
+                  [matTooltip]="'Добавить новый документв'"
+                  class="open-guide-button">
+                  <mat-icon>open_in_new</mat-icon>
+                </button>
+              </div>
 
               <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onDocumentSelected($event)">
                 @for (doc of filteredDocuments(); track doc) {

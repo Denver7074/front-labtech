@@ -57,25 +57,17 @@ import {MatPaginator} from '@angular/material/paginator';
     ReagentExpiration,
     MatPaginator,
   ],
-  templateUrl: './standard-equipment.html',
+  templateUrl: './standard-reagent.html',
   standalone: true
 })
-export class StandardEquipment extends AbstractReagentComponent<StandardReagentInfo> implements OnInit {
+export class StandardReagent extends AbstractReagentComponent<StandardReagentInfo> implements OnInit {
   protected readonly StandardEquipmentDialog = StandardEquipmentDialog;
-
-  protected override getResource(): string {
-    return 'standard-samples';
-  }
-
-  protected override getPathGuide(): string[] {
-    return ['standard-equipment-type'];
-  }
 
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
-    this.loadGuide();
-    this.loadEntities();
+    this.loadGuide(['standard-equipment-type', 'regulatory-documents']);
+    this.loadEntities('standard-samples');
     this.displayedColumns = [...this.allColumns];
   }
 
@@ -87,7 +79,7 @@ export class StandardEquipment extends AbstractReagentComponent<StandardReagentI
     'characteristicNameValue',
     'characteristicUncertainty',
     'information',
-    // 'regulatoryDocument',
+    // 'regulatoryDocuments',
     'termsOfUse',
     'actions'
   ];
@@ -104,10 +96,5 @@ export class StandardEquipment extends AbstractReagentComponent<StandardReagentI
       characteristicUncertainty: 'Неопределённость и (или) характеристика погрешности аттестованного значения'
     };
     return labels[column] || column;
-  }
-
-  protected getTypeLabel(typeId: string): string | null {
-    if (!typeId) return null;
-    return this.valueType()!.get('standard-equipment-type')?.get(typeId) || null;
   }
 }

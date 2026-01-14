@@ -1,5 +1,5 @@
-import {Component, computed, OnInit} from '@angular/core';
-import {FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormArray, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
@@ -18,9 +18,9 @@ import {StandardMetrologicalCharacteristic, StandardReagentInfo} from '../../../
 import {MatCheckbox} from '@angular/material/checkbox';
 import {Mode} from '../../../../data/response.interface';
 import {AbstractReagentDialog} from '../../abstract-reagent-dialog';
-import {MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRemove, MatChipRow} from '@angular/material/chips';
-import {MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger} from '@angular/material/autocomplete';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipGrid, MatChipInput, MatChipRemove, MatChipRow} from '@angular/material/chips';
+import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {MatTooltip} from '@angular/material/tooltip';
 
 
 @Component({
@@ -56,7 +56,8 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
     MatAutocomplete,
     MatChipRemove,
     MatChipRow,
-    MatChipGrid
+    MatChipGrid,
+    MatTooltip
   ],
   templateUrl: './standard-equipment-dialog.html',
   styleUrl: "standard-equipment-dialog.scss",
@@ -109,6 +110,9 @@ export class StandardEquipmentDialog extends AbstractReagentDialog<StandardReage
         charArray.push(this.createCharacteristic(char));
       });
     }
+    const initial = this.data.guide?.get('regulatory-documents');
+    this.regulatoryDocumentsSignal.set(initial || new Map());
+    this.documentInput.setValue('');
   }
 
   // === CHARACTERISTICS ===
@@ -133,57 +137,5 @@ export class StandardEquipmentDialog extends AbstractReagentDialog<StandardReage
 
   removeCharacteristic(index: number): void {
     this.characteristics.removeAt(index);
-  }
-
-  readonly separatorKeysCodes = [ENTER, COMMA] as const;
-
-  // FormControl для ввода (не основной формы!)
-  documentInput = new FormControl('');
-
-  // Список всех возможных НД (можно загрузить из справочника)
-  allDocuments: string[] = [
-    'ГОСТ 8.315-2019',
-    'ПНД Ф 16.1:2.2.2:2.3.74-2012',
-    'ФС РФ на ГСО',
-    'СТО 12345-2020'
-    // ... или загружайте через this.data.guide
-  ];
-
-  // Отфильтрованные документы для автодополнения
-  filteredDocuments = computed(() => {
-    const input = this.documentInput.value?.toLowerCase() || '';
-    return this.allDocuments.filter(doc =>
-      doc.toLowerCase().includes(input)
-    );
-  });
-
-  // Методы для работы с тегами
-  addDocument(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-    if (value && !this.isDuplicate(value)) {
-      const current = this.form.get('regulatoryDocuments')?.value || [];
-      this.form.get('regulatoryDocuments')?.setValue([...current, value]);
-    }
-    event.chipInput!.clear();
-    this.documentInput.setValue('');
-  }
-
-  removeDocument(doc: string): void {
-    const current = this.form.get('regulatoryDocuments')!.value || [];
-    const updated = current.filter((d: string) => d !== doc);
-    this.form.get('regulatoryDocuments')?.setValue(updated);
-  }
-
-  onDocumentSelected(event: MatAutocompleteSelectedEvent): void {
-    const current = this.form.get('regulatoryDocuments')?.value || [];
-    if (!this.isDuplicate(event.option.viewValue)) {
-      this.form.get('regulatoryDocuments')?.setValue([...current, event.option.viewValue]);
-    }
-    this.documentInput.setValue('');
-  }
-
-  private isDuplicate(value: string): boolean {
-    const current = this.form.get('regulatoryDocuments')?.value || [];
-    return current.includes(value);
   }
 }

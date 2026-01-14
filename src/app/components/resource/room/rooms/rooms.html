@@ -91,7 +91,7 @@
         <div class="parameter-list">
           @for (id of address.parameterTypeIds; track id; let i = $index) {
             <div class="parameter-item">
-              {{ i + 1 }}. {{ getParameterTypeName(id) || id }}
+              {{ i + 1 }}. {{ getTypeValue(id, 'parameter-type') || id }}
             </div>
           }
         </div>
@@ -113,7 +113,7 @@
         <div class="parameter-list">
           @for (id of address.equipmentTypeIds; track id; let i = $index) {
             <div class="parameter-item">
-              {{ i + 1 }}. {{ getEquipmentTypeName(id) || id }}
+              {{ i + 1 }}. {{ getTypeValue(id, 'equipment-type') || id }}
             </div>
           }
         </div>

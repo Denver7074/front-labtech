@@ -22,7 +22,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatFormField, MatLabel, MatOption, MatSelect} from '@angular/material/select';
 import {TestEquipmentAttestation} from '../test-equipment-attestation/test-equipment-attestation';
 import {TestEquipmentMaintenance} from '../test-equipment-maintenance/test-equipment-maintenance';
-import {AbstractTableComponent} from '../../../resource/abstract-main.component';
+import {AbstractTableComponent} from '../../../abstract/abstract-table.component';
 import {TestEquipmentInfo} from '../../../../data/equipment.interface';
 
 @Component({
@@ -60,15 +60,14 @@ export class TestEquipment extends AbstractTableComponent<TestEquipmentInfo> imp
   protected readonly Array = Array;
   protected viewMode: 'table' | 'attestation-chart' | 'maintenance-chart' = 'table';
 
-  protected override getResource(): string {
-    return 'test-equipments';
+  protected override getPath(): string {
+    return '/equipment-service/api/v1/organizations/parts/';
   }
 
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
-    this.loadGuide();
-    this.loadEntities();
+    this.loadEntities('test-equipments');
     this.displayedColumns = [...this.allColumns];
   }
 

@@ -29,14 +29,12 @@
             </div>
 
             <!-- Тип подразделения -->
-            @if (info()?.organizationTypeId) {
-              <div class="info-item">
-                <span class="info-label">Тип подразделения</span>
-                <span class="info-value">
-                  {{ valueType()!.get('organization-type')!.get(info()!.organizationTypeId) || '—' }}
+            <div class="info-item">
+              <span class="info-label">Тип подразделения</span>
+              <span class="info-value">
+                  {{ getTypeValue(info()!.organizationTypeId, 'organization-type') || '—' }}
                 </span>
-              </div>
-            }
+            </div>
 
             <!-- Номер аккредитации -->
             @if (info()?.registrationNumber) {
@@ -114,7 +112,7 @@
                       </button>
                       <div class="contact-header">
                         <mat-label>
-                          {{ valueType()!.get('contact-type')!.get(contact.contactTypeId) }}:
+                          {{ getTypeValue(contact.contactTypeId, 'contact-type') }}:
                         </mat-label>
                       </div>
                       <div class="contact-body">

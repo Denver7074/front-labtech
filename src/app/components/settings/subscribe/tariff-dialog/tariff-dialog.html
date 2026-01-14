@@ -1,4 +1,4 @@
-<div class="dialog-form">
+<div class="dialog-form" style="min-width: 500px !important;">
   <div mat-dialog-title class="dialog-header">
     <div class="header-content">
       <mat-icon>payments</mat-icon>
@@ -84,7 +84,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end" class="dialog-actions">
-    <app-button type="button" mat-dialog-close (click)="form.reset()" class="mr-10 error">
+    <app-button type="button" mat-dialog-close (click)="form.reset()" class="mr-20 error">
       Отмена
     </app-button>
     <app-button (click)="onSubmit()">

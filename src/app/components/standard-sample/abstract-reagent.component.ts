@@ -1,8 +1,10 @@
 import {Directive} from '@angular/core';
-import {AbstractTableComponent} from '../resource/abstract-main.component';
+import {AbstractTableComponent} from '../abstract/abstract-table.component';
 import {ReagentExpenditureDialog} from './expenditure/reagent-expenditure-dialog/reagent-expenditure-dialog';
 import {ReagentHistoryExpenditure} from './expenditure/reagent-history-expenditure/reagent-history-expenditure';
 import {ChemicalSolutionInfo} from '../../data/standard-sample.interface';
+import {Mode} from '../../data/response.interface';
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Directive()
 export abstract class AbstractReagentComponent<TInterface extends ChemicalSolutionInfo> extends AbstractTableComponent<TInterface> {
@@ -25,7 +27,7 @@ export abstract class AbstractReagentComponent<TInterface extends ChemicalSoluti
     }
   }
 
-  openDialogExpenditure(path: string, standardReagent: TInterface) {
+  protected openDialogExpenditure(path: string, standardReagent: TInterface) {
     const dialogRef = this.dialog.open(ReagentExpenditureDialog, {
       width: '600px',
       maxWidth: '95vw',
@@ -40,7 +42,7 @@ export abstract class AbstractReagentComponent<TInterface extends ChemicalSoluti
     });
   }
 
-  openHistoryExpenditure(standardReagent: TInterface) {
+  protected openHistoryExpenditure(standardReagent: TInterface) {
     const dialogRef = this.dialog.open(ReagentHistoryExpenditure, {
       width: '900px',
       maxWidth: '95vw',
@@ -69,7 +71,6 @@ export abstract class AbstractReagentComponent<TInterface extends ChemicalSoluti
     'producer',
     'purpose',
     'information',
-    'regulatoryDocument',
     'termsOfUse',
     'actions'
   ];
@@ -81,8 +82,22 @@ export abstract class AbstractReagentComponent<TInterface extends ChemicalSoluti
       information: 'Дополнительные сведения',
       purpose: 'Назначение',
       termsOfUse: 'Условия применения',
-      regulatoryDocument: 'Нормативный документ (НД)',
     };
     return labels[column] || column;
+  }
+
+  protected override afterCloseDialog(dialogRef: MatDialogRef<any>, path: string, mode: Mode): void {
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result || mode === Mode.VIEW) return;
+      this.refreshGuide('regulatory-documents');
+      if (mode === Mode.EDIT) {
+        const p = `${this.getPath()}${this.id()}/${path}/${result.id}`;
+        this.update(result, p);
+      } else {
+        // CREATE или CREATE_AS_TEMPLATE
+        const p = `${this.getPath()}${this.id()}/${path}`;
+        this.add(result, p);
+      }
+    });
   }
 }

@@ -1,5 +1,4 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
-import {NotificationService} from '../../../ui/notification.service';
 import {ApiResponse} from '../../../../data/response.interface';
 import {PERIOD_LABELS, TRANSACTION_STATUS_LABELS, TransactionInfo} from '../../../../data/subscribe.interface';
 import {MatCard} from '@angular/material/card';
@@ -22,8 +21,10 @@ import {MatIconButton} from '@angular/material/button';
 import {Loader} from '../../../ui/loader/loader';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatIconModule} from '@angular/material/icon';
-import {GuideService} from '../../../../service/guide.service';
+import {AbstractTableComponent} from '../../../abstract/abstract-table.component';
 import {CrudService} from '../../../../service/crud.service';
+import {GuideService} from '../../../../service/guide.service';
+import {NotificationService} from '../../../ui/notification.service';
 
 @Component({
   selector: 'app-transactions',

@@ -102,7 +102,7 @@ export class EducationDialog extends AbstractDialogComponent<EducationInfo> impl
     }
   }
 
-  protected onSubmit() {
+  protected override onSubmit() {
     if (this.form.valid) {
       const rawValue = this.form.getRawValue();
       this.dialogRef.close({

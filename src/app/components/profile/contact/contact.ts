@@ -55,12 +55,4 @@ export class ContactDialog extends AbstractDialogComponent<ContactInfo> implemen
       });
     }
   }
-
-  protected onSubmit() {
-    if (this.form.valid) {
-      this.dialogRef.close({
-        ...this.form.value
-      });
-    }
-  }
 }

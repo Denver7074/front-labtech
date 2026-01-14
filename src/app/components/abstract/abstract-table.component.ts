@@ -1,7 +1,7 @@
-import {inject, OnInit, signal} from '@angular/core';
+import {inject, signal} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {AbstractGuideComponent} from '../abstract/abstract-guide.component';
+import {AbstractGuideComponent} from './abstract-guide.component';
 import {CrudService} from '../../service/crud.service';
 import {ApiResponse, Mode} from '../../data/response.interface';
 import {ComponentType} from '@angular/cdk/portal';
@@ -13,26 +13,19 @@ export abstract class AbstractTableComponent<TInterface>  extends AbstractGuideC
   protected crudService = inject(CrudService);
   protected activatedRoute = inject(ActivatedRoute);
   protected dialog = inject(MatDialog);
-  currentPage = signal(0);
-  pageSize = signal(10);
-  totalItems = signal(0);
+  protected currentPage = signal(0);
+  protected pageSize = signal(10);
+  protected totalItems = signal(0);
+  protected id = signal<string | null>('');
+  protected info = signal<TInterface[]>([]);
 
-  isLoading = signal(false);
-  id = signal<string | null>('');
-  info = signal<TInterface[]>([]);
-
-  protected getPath(): string {
-    return `/equipment-service/api/v1/organizations/parts/`;
-  }
-
-  protected abstract getResource(): string;
+  protected abstract getPath(): string;
   protected abstract readonly allColumns: string[];
   protected abstract getColumnLabel(column: string): string;
   protected displayedColumns: string[] = [];
 
-  protected loadEntities(): void {
-    this.isLoading.set(true);
-    const path = `${this.getPath()}${this.getResource()}`
+  protected loadEntities(value?: string): void {
+    const path = `${this.getPath()}${value}`
     const filter = {
       organizationPartId: this.id()
     }
@@ -121,7 +114,7 @@ export abstract class AbstractTableComponent<TInterface>  extends AbstractGuideC
     }
   }
 
-  onPageChange(event: PageEvent): void {
+  protected onPageChange(event: PageEvent): void {
     this.currentPage.set(event.pageIndex);
     this.pageSize.set(event.pageSize);
     this.loadEntities();

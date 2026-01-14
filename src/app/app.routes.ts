@@ -13,7 +13,7 @@ import {MainSettings} from './components/settings/main/main';
 import {MainOrganizationPart} from './components/profile/organization-part/main/main';
 import {Rooms} from './components/resource/room/rooms/rooms';
 import {MainEquipment} from './components/equipment/main-equipment/main-equipment';
-import {StandardEquipment} from './components/standard-sample/standard/standard-equipment/standard-equipment';
+import {StandardReagent} from './components/standard-sample/standard/standard-equipment/standard-reagent';
 import {StandardMain} from './components/standard-sample/standard-main/standard-main';
 
 export const routes: Routes = [

@@ -179,11 +179,12 @@
             <span>История расхода</span>
           </button>
 
+          <!-- Удалить -->
           <button
             mat-menu-item
             (click)="delete(item.id, 'reagent')">
-            <mat-icon>delete</mat-icon>
-            <span>Удалить</span>
+            <mat-icon>{{ item.canUse ? 'move_to_inbox' : 'delete' }}</mat-icon>
+            <span>{{ item.canUse ? 'Убрать в архив' : 'Удалить' }} </span>
           </button>
         </mat-menu>
       </td>

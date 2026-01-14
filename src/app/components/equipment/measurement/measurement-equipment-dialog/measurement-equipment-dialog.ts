@@ -117,7 +117,7 @@ export class MeasurementEquipmentDialog extends AbstractDialogComponent<Measurem
     this.attestations.removeAt(index);
   }
 
-  onSubmit() {
+  protected override onSubmit() {
     if (this.form.valid) {
       const raw = this.form.getRawValue();
 

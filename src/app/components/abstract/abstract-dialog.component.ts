@@ -50,7 +50,16 @@ export abstract class AbstractDialogComponent<TInterface> {
     return `${year}-${month}-${day}`;
   }
 
-  compareIds(a: any, b: any): boolean {
+  protected compareIds(a: any, b: any): boolean {
     return a === b;
+  }
+
+  protected onSubmit() {
+    if (this.form.valid) {
+      const raw = this.form.getRawValue();
+      this.dialogRef.close({
+        ...raw,
+      });
+    }
   }
 }

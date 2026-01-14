@@ -54,12 +54,4 @@ export class PartDialog extends AbstractDialogComponent<PartInfo> implements OnI
       });
     }
   }
-
-  onSubmit() {
-    if (this.form.valid) {
-      this.dialogRef.close({
-        ...this.form.value
-      });
-    }
-  }
 }

@@ -20,7 +20,7 @@ import {DatePipe} from '@angular/common';
 import {AdditionalEquipmentDialog} from '../additional-equipment-dialog/additional-equipment-dialog';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {AbstractTableComponent} from '../../../resource/abstract-main.component';
+import {AbstractTableComponent} from '../../../abstract/abstract-table.component';
 import {AdditionalEquipmentInfo} from '../../../../data/equipment.interface';
 
 
@@ -53,15 +53,14 @@ import {AdditionalEquipmentInfo} from '../../../../data/equipment.interface';
 export class AdditionalEquipment extends AbstractTableComponent<AdditionalEquipmentInfo> implements OnInit {
   protected readonly AdditionalEquipmentDialog = AdditionalEquipmentDialog;
 
-  protected override getResource(): string {
-    return 'additional-equipments';
+  protected override getPath(): string {
+    return '/equipment-service/api/v1/organizations/parts/';
   }
 
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
-    this.loadGuide();
-    this.loadEntities();
+    this.loadEntities('additional-equipments');
     this.displayedColumns = [...this.allColumns];
   }
 

@@ -1,22 +1,13 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {FormDataInterface} from '../../../../data/response.interface';
-import {
-  MAT_DIALOG_DATA, MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle
-} from '@angular/material/dialog';
-import {MatFormField, MatInput, MatLabel, MatError} from '@angular/material/input';
+import {Component, OnInit} from '@angular/core';
+import {FormArray, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
+import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {Button} from '../../../ui/button/button';
 import {MatIconModule} from '@angular/material/icon';
 import {PERIOD_LABELS, TariffPlanInfo, TariffPriceInfo} from '../../../../data/subscribe.interface';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatCheckbox} from '@angular/material/checkbox';
-import {map} from 'rxjs';
-import {GuideService} from '../../../../service/guide.service';
 import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
 
 @Component({
@@ -46,7 +37,7 @@ export class TariffDialog extends AbstractDialogComponent<TariffPlanInfo> implem
   protected readonly PERIOD_LABELS = PERIOD_LABELS;
   protected readonly periodKeys = Object.keys(PERIOD_LABELS);
 
-  override form: FormGroup = this.fb.group({
+  protected override form: FormGroup = this.fb.group({
     id: [''],
     trial: [false, [Validators.required]],
     tariffPlanTypeId: ['', [Validators.required]],
@@ -96,7 +87,7 @@ export class TariffDialog extends AbstractDialogComponent<TariffPlanInfo> implem
     }
   }
 
-  onSubmit(): void {
+  protected override onSubmit(): void {
     if (this.form.get('trial')?.value === true) {
       const tariffs = this.form.get('tariffs') as FormArray;
       tariffs.clear();

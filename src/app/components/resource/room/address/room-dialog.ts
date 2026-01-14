@@ -98,7 +98,7 @@ export class RoomDialog extends AbstractDialogComponent<RoomInfo> implements OnI
     this.parameterType.set(parameterType ?? new Map<string, string>());
   }
 
-  onSubmit() {
+  protected override onSubmit() {
     if (this.form.valid) {
       const raw = this.form.getRawValue();
 

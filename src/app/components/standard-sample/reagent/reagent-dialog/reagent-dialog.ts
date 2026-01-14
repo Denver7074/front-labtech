@@ -9,6 +9,10 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {Mode} from '../../../../data/response.interface';
 import {AbstractReagentDialog} from '../../abstract-reagent-dialog';
+import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {MatChipGrid, MatChipInput, MatChipRemove, MatChipRow} from '@angular/material/chips';
+import {MatIconButton} from '@angular/material/button';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-reagent-dialog',
@@ -30,7 +34,15 @@ import {AbstractReagentDialog} from '../../abstract-reagent-dialog';
     MatSuffix,
     ReactiveFormsModule,
     MatOption,
-    MatSelect
+    MatSelect,
+    MatAutocomplete,
+    MatAutocompleteTrigger,
+    MatChipGrid,
+    MatChipInput,
+    MatChipRemove,
+    MatChipRow,
+    MatIconButton,
+    MatTooltip
   ],
   templateUrl: './reagent-dialog.html',
   styleUrl: './reagent-dialog.scss',
@@ -50,7 +62,7 @@ export class ReagentDialog extends AbstractReagentDialog<Reagent> implements OnI
     produceDate: ['', [Validators.required]],
     initialQuantity: [null, [Validators.required]],
     unit: ['', [Validators.required]],
-    regulatoryDocument: ['', [Validators.required]],
+    regulatoryDocuments: this.fb.control<string[]>([]),
     purityTypeId: [''],
     purityValue: [''],
   });
@@ -71,10 +83,13 @@ export class ReagentDialog extends AbstractReagentDialog<Reagent> implements OnI
         produceDate: this.isCreateAsTemplate ? null :  value.produceDate,
         initialQuantity: this.isCreateAsTemplate ? null : value.initialQuantity,
         unit: value.unit,
-        regulatoryDocuments: value.regulatoryDocuments,
+        regulatoryDocuments: value.regulatoryDocuments || [],
         purityTypeId: value.purityTypeId,
         purityValue: value.purityValue,
       });
     }
+    const initial = this.data.guide?.get('regulatory-documents');
+    this.regulatoryDocumentsSignal.set(initial || new Map());
+    this.documentInput.setValue('');
   }
 }

@@ -67,7 +67,7 @@
       </th>
       <td mat-cell *matCellDef="let item" class="data-cell">
         {{ item.name }}, № {{ item.number }}
-        @if (getTypeLabel(item.standardTypeId); as typeLabel) {
+        @if (getTypeValue(item.standardTypeId, 'standard-equipment-type'); as typeLabel) {
           ({{ typeLabel }})
         }
       </td>

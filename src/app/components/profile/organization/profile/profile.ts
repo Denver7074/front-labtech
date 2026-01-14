@@ -92,14 +92,4 @@ export class OrganizationDialog extends AbstractDialogComponent<OrganizationInfo
       }
     }
   }
-
-  onSubmit() {
-    if (this.form.valid) {
-      if (this.isViewMode) return;
-
-      this.dialogRef.close({
-        ...this.form.value
-      });
-    }
-  }
 }

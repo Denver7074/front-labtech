@@ -86,7 +86,7 @@ export class AdditionalEquipmentDialog extends AbstractDialogComponent<Additiona
     }
   }
 
-  onSubmit() {
+  protected override onSubmit() {
     if (this.form.valid) {
       const raw = this.form.getRawValue();
 

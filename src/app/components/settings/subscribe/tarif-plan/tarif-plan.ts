@@ -66,7 +66,6 @@ export class TariffPlan implements OnInit {
     this.loadTariffPlans();
   }
 
-  // В компоненте или сервисе
   protected readonly tariffPlanTypes = toSignal(
     forkJoin({
       'tariff-plan-type': this.guideService.getTypes('tariff-plan-type'),

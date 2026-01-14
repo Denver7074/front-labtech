@@ -1,0 +1,38 @@
+<div class="dialog-form">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon>inventory_2</mat-icon>
+      <h2 class="title">{{ title }}</h2>
+    </div>
+    <p class="subtitle">Заполните информацию о справочнике</p>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+      <div class="form-fields">
+        <!-- Значение -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Значение</mat-label>
+          <input
+            matInput
+            formControlName="value"
+            placeholder="Введите значение"
+            autocomplete="off"
+          />
+          @if (form.get('value')?.hasError('required') && form.get('value')?.touched) {
+            <mat-error>Это поле обязательно</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <app-button mat-dialog-close class="mr-20 error">
+      Отмена
+    </app-button>
+    <app-button [disabled]="form.invalid" (click)="onSubmit()">
+      {{ submitLabel }}
+    </app-button>
+  </mat-dialog-actions>
+</div>

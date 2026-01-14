@@ -60,23 +60,15 @@ import {MatPaginator} from '@angular/material/paginator';
 export class ReagentMain extends AbstractReagentComponent<ChemicalSolutionInfo> implements OnInit {
   protected readonly ReagentDialog = ReagentDialog;
 
-  protected override getResource(): string {
-    return 'reagent';
-  }
-
-  protected override getPathGuide(): string[] {
-    return ['purity-reagent-type'];
-  }
-
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
-    this.loadGuide();
-    this.loadEntities();
+    this.loadGuide(['purity-reagent-type', 'regulatory-documents']);
+    this.loadEntities('reagent');
     this.displayedColumns = [...this.allColumns];
   }
 
-  getPurity(typeId: string, value: number): string | '-' {
+  protected getPurity(typeId: string, value: number): string | '-' {
     if (!typeId) return '-';
     const type = this.valueType()!.get('purity-reagent-type')?.get(typeId) || null;
     return type + ` ${value}`
