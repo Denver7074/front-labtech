@@ -27,8 +27,6 @@ export interface MeasurementEquipmentInfo extends AbstractEquipment{
   characteristics: MetrologicalCharacteristicInfo[];
 }
 
-
-
 export interface ContractInfo {
   id: string;
   contractNumber: string;
@@ -44,8 +42,6 @@ export interface EquipmentAttestationInfo {
   endAt: string;
   startAt: string;
 }
-
-
 
 export interface MetrologicalCharacteristicInfo {
   id: string;

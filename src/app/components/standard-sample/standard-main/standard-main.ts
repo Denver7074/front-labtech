@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {MatTab, MatTabContent, MatTabGroup} from '@angular/material/tabs';
-import {EthanolMain} from '../ethanol/ethanol-main/ethanol-main';
 import {ReagentMain} from '../reagent/reagent-main/reagent-main';
 import {StandardReagent} from '../standard/standard-equipment/standard-reagent';
 import {PrecursorsMain} from '../precursors/precursors-main/precursors-main';
@@ -12,11 +11,10 @@ import {ChemicalSolutionMain} from '../solution/chemical-solution-main/chemical-
     MatTab,
     MatTabContent,
     MatTabGroup,
-    EthanolMain,
     ReagentMain,
     StandardReagent,
     PrecursorsMain,
-    ChemicalSolutionMain
+    ChemicalSolutionMain,
   ],
   templateUrl: './standard-main.html',
   styleUrl: './standard-main.scss',

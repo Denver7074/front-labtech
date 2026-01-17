@@ -54,17 +54,13 @@ export class AdditionalEquipment extends AbstractTableComponent<AdditionalEquipm
   protected readonly AdditionalEquipmentDialog = AdditionalEquipmentDialog;
 
   protected override getPath(): string {
-    return '/equipment-service/api/v1/organizations/parts/';
-  }
-
-  protected override getPathValue(): string {
-    return 'additional-equipments';
+    return '/equipment-service/api/v1/additional-equipments';
   }
 
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
-    this.loadEntities('additional-equipments');
+    this.loadEntities();
     this.displayedColumns = [...this.allColumns];
   }
 

@@ -24,6 +24,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {ReagentExpiration} from '../../reagent-expiration/reagent-expiration';
 import {ReagentDialog} from '../reagent-dialog/reagent-dialog';
 import {MatPaginator} from '@angular/material/paginator';
+import {EmptyPipe} from '../../../ui/pipes/empty-pipe';
 
 @Component({
   selector: 'app-reagent-main',
@@ -53,6 +54,7 @@ import {MatPaginator} from '@angular/material/paginator';
     ReagentExpiration,
     MatHeaderCellDef,
     MatPaginator,
+    EmptyPipe,
   ],
   templateUrl: './reagent-main.html',
   standalone: true
@@ -60,22 +62,21 @@ import {MatPaginator} from '@angular/material/paginator';
 export class ReagentMain extends AbstractReagentComponent<ChemicalSolutionInfo> implements OnInit {
   protected readonly ReagentDialog = ReagentDialog;
 
-
-  protected override getPathValue(): string {
-    return 'reagent';
+  protected override getPath(): string {
+    return `/standard-sample-service/api/v1/reagents`;
   }
 
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
     this.loadGuide(['purity-reagent-type', 'regulatory-documents']);
-    this.loadEntities('reagent');
+    this.loadEntities();
     this.displayedColumns = [...this.allColumns];
   }
 
   protected getPurity(typeId: string, value: number): string | '-' {
     if (!typeId) return '-';
-    const type = this.valueType()!.get('purity-reagent-type')?.get(typeId) || null;
+    const type = this.getTypeValue(typeId, 'purity-reagent-type') || null;
     return type + ` ${value}`
   }
 
@@ -84,7 +85,9 @@ export class ReagentMain extends AbstractReagentComponent<ChemicalSolutionInfo> 
     'name',
     'producer',
     'purpose',
+    'purity',
     'information',
+    'ownership',
     'regulatoryDocuments',
     'termsOfUse',
     'actions'
@@ -95,7 +98,9 @@ export class ReagentMain extends AbstractReagentComponent<ChemicalSolutionInfo> 
       name: 'Наименование, номер реактива',
       producer: 'Изготовитель и дата выпуска',
       information: 'Дополнительные сведения',
+      ownership: 'Право владения',
       purpose: 'Назначение',
+      purity: 'Степень чистоты',
       termsOfUse: 'Условия применения',
       regulatoryDocuments: 'Нормативные документы (НД)',
     };

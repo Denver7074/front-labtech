@@ -12,10 +12,6 @@ export abstract class AbstractReagentComponent<TInterface extends ChemicalSoluti
   protected viewMode: 'table' | 'expiration-chart' = 'table';
   protected canUse: 'all' | 'isCanNotUse' | 'isCanUse' = 'all'
 
-  protected override getPath(): string {
-    return `/standard-sample-service/api/v1/organizations/parts/`;
-  }
-
   protected filterInfo(info: TInterface[], canUse: string): TInterface[] {
     switch (canUse) {
       case 'isCanNotUse':
@@ -27,7 +23,7 @@ export abstract class AbstractReagentComponent<TInterface extends ChemicalSoluti
     }
   }
 
-  protected openDialogExpenditure(path: string, standardReagent: TInterface) {
+  protected openDialogExpenditure(standardReagent: TInterface) {
     const dialogRef = this.dialog.open(ReagentExpenditureDialog, {
       width: '600px',
       maxWidth: '95vw',
@@ -37,7 +33,7 @@ export abstract class AbstractReagentComponent<TInterface extends ChemicalSoluti
     });
     dialogRef.afterClosed().subscribe(result => {
       if (!result) return;
-      const p = `${this.getPath()}${this.id()}/${path}/${standardReagent.id}/add-expenditure`;
+      const p = `${this.getPath()}/${standardReagent.id}/organizations/parts/${this.id()}/expenditure`;
       this.add(result, p);
     });
   }
@@ -52,7 +48,7 @@ export abstract class AbstractReagentComponent<TInterface extends ChemicalSoluti
     });
     dialogRef.afterClosed().subscribe(result => {
       if (!result) return;
-      const p = `${this.getPath()}${this.id()}/standard-samples/${standardReagent.id}/delete-expenditure/${result.id}`;
+      const p = `${this.getPath()}/${standardReagent.id}/organizations/parts/${this.id()}/expenditure/${result.id}`;
       this.crudService.delete(p).subscribe({
         next: () => {
           this.loadEntities();
@@ -65,16 +61,16 @@ export abstract class AbstractReagentComponent<TInterface extends ChemicalSoluti
     });
   }
 
-  protected override afterCloseDialog(dialogRef: MatDialogRef<any>, path: string, mode: Mode): void {
+  protected override afterCloseDialog(dialogRef: MatDialogRef<any>,  mode: Mode): void {
     dialogRef.afterClosed().subscribe(result => {
       if (!result || mode === Mode.VIEW) return;
       this.refreshGuide('regulatory-documents');
       if (mode === Mode.EDIT) {
-        const p = `${this.getPath()}${this.id()}/${path}/${result.id}`;
+        const p = `${this.getPath()}/${result.id}/organizations/parts/${this.id()}`;
         this.update(result, p);
       } else {
         // CREATE или CREATE_AS_TEMPLATE
-        const p = `${this.getPath()}${this.id()}/${path}`;
+        const p = `${this.getPath()}/organizations/parts/${this.id()}`;
         this.add(result, p);
       }
     });

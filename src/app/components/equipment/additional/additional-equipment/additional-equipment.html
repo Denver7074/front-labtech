@@ -23,7 +23,7 @@
     </mat-menu>
 
   <button
-    (click)="openDialog(AdditionalEquipmentDialog, 'additional-equipments', Mode.CREATE)"
+    (click)="openDialog(AdditionalEquipmentDialog, Mode.CREATE)"
     [matTooltip]="'Добавить оборудование'"
     class="table-add-button">
     <mat-icon>add</mat-icon>
@@ -162,13 +162,13 @@
       <button
         mat-icon-button
         [matTooltip]="'Редактировать'"
-        (click)="openDialog(AdditionalEquipmentDialog, 'additional-equipments', Mode.EDIT, item)">
+        (click)="openDialog(AdditionalEquipmentDialog, Mode.EDIT, item)">
         <mat-icon>edit</mat-icon>
       </button>
       <button
         mat-icon-button
         [matTooltip]="'Удалить'"
-        (click)="delete(item.id, 'additional-equipments')">
+        (click)="delete(item.id)">
         <mat-icon>delete</mat-icon>
       </button>
     </td>

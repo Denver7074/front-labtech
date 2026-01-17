@@ -1,4 +1,4 @@
-import {MetrologicalCharacteristicInfo} from './equipment.interface';
+import {ContractInfo, MetrologicalCharacteristicInfo} from './equipment.interface';
 
 export interface StandardReagentInfo extends Reagent {
   standardTypeId: string;
@@ -25,7 +25,6 @@ export interface StandardMetrologicalCharacteristic extends MetrologicalCharacte
   unitUncertainty: string;
 }
 
-
 export interface ChemicalSolutionInfo {
   id: string;
   name: string;
@@ -40,4 +39,23 @@ export interface ChemicalSolutionInfo {
   purpose: string;
   information: string;
   expenditures: ExpenditureInfo[];
+  contract: ContractInfo;
+  type: string;
+  organizationPartId: string;
+  actDebiting: ActDebitingInfo;
 }
+
+export interface ActDebitingInfo {
+  id: string;
+  dateDebit: string;
+  description: string;
+  purpose: string;
+}
+
+export const reagentTypeMap = new Map([
+  ['CONTROLLED_SUBSTANCE', 'precursors'],
+  ['CHEMICAL_SOLUTION', 'chemical-solutions'],
+  ['REAGENT', 'reagents'],
+  ['STANDARD_TYPE', 'standard-samples']
+]);
+

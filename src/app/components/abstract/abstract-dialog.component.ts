@@ -38,7 +38,6 @@ export abstract class AbstractDialogComponent<TInterface> {
     return text;
   }
 
-
   protected formatDate(date: Date | string | null): string | null {
     if (!date) return null;
     if (typeof date === 'string') return date;

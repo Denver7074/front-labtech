@@ -1,20 +1,27 @@
 import {Component, OnInit} from '@angular/core';
-import {ChemicalSolutionInfo} from '../../../../data/standard-sample.interface';
+import {Reagent} from '../../../../data/standard-sample.interface';
 import {FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Mode} from '../../../../data/response.interface';
 import {AbstractReagentDialog} from '../../abstract-reagent-dialog';
-import {Button} from "../../../ui/button/button";
-import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/material/autocomplete";
-import {MatChipGrid, MatChipInput, MatChipRemove, MatChipRow} from "@angular/material/chips";
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
-import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
-import {MatIconButton} from "@angular/material/button";
-import {MatError, MatFormField, MatInput, MatLabel, MatPrefix, MatSuffix} from "@angular/material/input";
+import {Button} from '../../../ui/button/button';
+import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
+import {MatChipGrid, MatChipInput, MatChipRemove, MatChipRow} from '@angular/material/chips';
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
+import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
+import {MatIconButton} from '@angular/material/button';
+import {MatError, MatFormField, MatInput, MatLabel, MatPrefix, MatSuffix} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle
+} from '@angular/material/expansion';
+import {MatSelect} from '@angular/material/select';
 
 @Component({
-  selector: 'app-chemical-solution-dialog',
+  selector: 'app-abstract-reagent-dialog',
   imports: [
     Button,
     FormsModule,
@@ -41,17 +48,24 @@ import {MatTooltip} from '@angular/material/tooltip';
     MatPrefix,
     MatSuffix,
     ReactiveFormsModule,
-    MatTooltip
+    MatTooltip,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatSelect
   ],
-  templateUrl: './chemical-solution-dialog.html',
+  templateUrl: './abstract-reagent-dialog.html',
   standalone: true
 })
-export class ChemicalSolutionDialog extends AbstractReagentDialog<ChemicalSolutionInfo> implements OnInit {
+export class ReagentDialog extends AbstractReagentDialog<Reagent> implements OnInit {
 
   protected override form: FormGroup = this.fb.group({
     id: [''],
     name: ['', [Validators.required]],
+    number: ['', [Validators.required]],
     purpose: ['', [Validators.required]],
+    producer: ['', [Validators.required]],
     termsOfUse: [''],
     information: [''],
     expirationDate: ['', [Validators.required]],
@@ -59,6 +73,13 @@ export class ChemicalSolutionDialog extends AbstractReagentDialog<ChemicalSoluti
     initialQuantity: [null, [Validators.required]],
     unit: ['', [Validators.required]],
     regulatoryDocuments: this.fb.control<string[]>([]),
+    contract: this.fb.group({
+      id: [''],
+      contractNumber: ['', Validators.required],
+      contractDate: ['', Validators.required],
+      endAt: [''],
+      isOwn: [true, Validators.required]
+    }),
   });
 
   ngOnInit() {
@@ -68,7 +89,9 @@ export class ChemicalSolutionDialog extends AbstractReagentDialog<ChemicalSoluti
       this.form.patchValue({
         id: this.isCreateAsTemplate ? null : value.id,
         name: value.name,
+        number: this.isCreateAsTemplate ? null : value.number,
         purpose: value.purpose,
+        producer: value.producer,
         termsOfUse: value.termsOfUse,
         information: value.information,
         expirationDate: this.isCreateAsTemplate ? null : value.expirationDate,
@@ -76,6 +99,7 @@ export class ChemicalSolutionDialog extends AbstractReagentDialog<ChemicalSoluti
         initialQuantity: this.isCreateAsTemplate ? null : value.initialQuantity,
         unit: value.unit,
         regulatoryDocuments: value.regulatoryDocuments || [],
+        contract: this.isCreateAsTemplate ? null : value.contract || {},
       });
     }
     const initial = this.data.guide?.get('regulatory-documents');

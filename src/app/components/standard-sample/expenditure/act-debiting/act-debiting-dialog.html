@@ -1,0 +1,67 @@
+<div class="dialog-form">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon>inventory_2</mat-icon>
+      <h2 class="title">{{ title }}</h2>
+    </div>
+    <p class="subtitle">Заполните информацию акта списания</p>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+      <div class="form-fields">
+
+        <!-- Дата списания -->
+        <mat-form-field appearance="outline">
+          <mat-label>Дата списания</mat-label>
+          <input
+            matInput
+            [matDatepicker]="dateDebit"
+            formControlName="dateDebit"
+            placeholder="Выберите дату"
+          />
+          <mat-datepicker-toggle matSuffix [for]="dateDebit"></mat-datepicker-toggle>
+          <mat-datepicker #dateDebit></mat-datepicker>
+          @if (form.get('dateDebit')?.hasError('required') && form.get('dateDebit')?.touched) {
+            <mat-error>Укажите срок годности</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Цель списания -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Причина списания</mat-label>
+          <input
+            matInput
+            formControlName="purpose"
+            placeholder="Например, израсходован"
+            autocomplete="off"
+          />
+          @if (form.get('purpose')?.hasError('required') && form.get('purpose')?.touched) {
+            <mat-error>Укажите цель списания</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Описание (опционально) -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Описание</mat-label>
+          <textarea
+            matInput
+            formControlName="description"
+            placeholder="Дополнительные сведения..."
+            rows="3"
+          ></textarea>
+        </mat-form-field>
+
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <app-button mat-dialog-close class="mr-20 error">
+      Отмена
+    </app-button>
+    <app-button [disabled]="form.invalid" (click)="onSubmit()">
+      {{ submitLabel }}
+    </app-button>
+  </mat-dialog-actions>
+</div>

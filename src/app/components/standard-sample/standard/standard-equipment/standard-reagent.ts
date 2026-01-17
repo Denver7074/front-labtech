@@ -26,6 +26,7 @@ import {MatFormField, MatLabel} from '@angular/material/input';
 import {ReagentExpiration} from '../../reagent-expiration/reagent-expiration';
 import {AbstractReagentComponent} from '../../abstract-reagent.component';
 import {MatPaginator} from '@angular/material/paginator';
+import {EmptyPipe} from '../../../ui/pipes/empty-pipe';
 
 
 @Component({
@@ -56,6 +57,7 @@ import {MatPaginator} from '@angular/material/paginator';
     MatSelect,
     ReagentExpiration,
     MatPaginator,
+    EmptyPipe,
   ],
   templateUrl: './standard-reagent.html',
   standalone: true
@@ -63,15 +65,15 @@ import {MatPaginator} from '@angular/material/paginator';
 export class StandardReagent extends AbstractReagentComponent<StandardReagentInfo> implements OnInit {
   protected readonly StandardEquipmentDialog = StandardEquipmentDialog;
 
-  protected override getPathValue(): string {
-    return 'standard-samples';
+  protected override getPath(): string {
+    return `/standard-sample-service/api/v1/standard-samples`;
   }
 
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
     this.loadGuide(['standard-equipment-type', 'regulatory-documents']);
-    this.loadEntities('standard-samples');
+    this.loadEntities();
     this.displayedColumns = [...this.allColumns];
   }
 
@@ -84,6 +86,7 @@ export class StandardReagent extends AbstractReagentComponent<StandardReagentInf
     'characteristicUncertainty',
     'information',
     'regulatoryDocuments',
+    'ownership',
     'termsOfUse',
     'actions'
   ];
@@ -95,7 +98,8 @@ export class StandardReagent extends AbstractReagentComponent<StandardReagentInf
       information: 'Дополнительные сведения',
       purpose: 'Назначение',
       termsOfUse: 'Условия применения',
-      regulatoryDocuments: 'Нормативные документы (НД)',
+      regulatoryDocuments: 'Методики измерения',
+      ownership: 'Право владения',
       characteristicNameValue: 'Наименование и аттестованное значение',
       characteristicUncertainty: 'Неопределённость и (или) характеристика погрешности аттестованного значения'
     };

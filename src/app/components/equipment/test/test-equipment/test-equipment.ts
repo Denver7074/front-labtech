@@ -60,18 +60,14 @@ export class TestEquipment extends AbstractTableComponent<TestEquipmentInfo> imp
   protected readonly Array = Array;
   protected viewMode: 'table' | 'attestation-chart' | 'maintenance-chart' = 'table';
 
-  protected override getPathValue(): string {
-    return 'test-equipments';
-  }
-
   protected override getPath(): string {
-    return '/equipment-service/api/v1/organizations/parts/';
+    return '/equipment-service/api/v1/test-equipments';
   }
 
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
-    this.loadEntities('test-equipments');
+    this.loadEntities();
     this.displayedColumns = [...this.allColumns];
   }
 

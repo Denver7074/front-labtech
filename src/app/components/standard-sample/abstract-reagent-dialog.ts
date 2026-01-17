@@ -20,10 +20,19 @@ export abstract class AbstractReagentDialog<TInterface extends ChemicalSolutionI
     if (this.form.valid) {
       const raw = this.form.getRawValue();
 
+      let contract;
+      if (raw.contract) {
+        contract = {
+          ...raw.contract,
+          contractDate: raw.contract.contractDate ? this.formatDate(raw.contract.contractDate) : null,
+          endAt: raw.contract.endAt ? this.formatDate(raw.contract.endAt) : null
+        };
+      }
       this.dialogRef.close({
         ...raw,
         produceDate: raw.produceDate ? this.formatDate(raw.produceDate) : null,
-        expirationDate: raw.expirationDate ? this.formatDate(raw.expirationDate) : null
+        expirationDate: raw.expirationDate ? this.formatDate(raw.expirationDate) : null,
+        contract: contract,
       });
     }
   }

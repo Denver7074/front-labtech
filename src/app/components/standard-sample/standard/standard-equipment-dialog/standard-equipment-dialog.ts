@@ -81,6 +81,13 @@ export class StandardEquipmentDialog extends AbstractReagentDialog<StandardReage
     initialQuantity: [],
     unit: [''],
     regulatoryDocuments: this.fb.control<string[]>([]),
+    contract: this.fb.group({
+      id: [''],
+      contractNumber: ['', Validators.required],
+      contractDate: ['', Validators.required],
+      endAt: [''],
+      isOwn: [true, Validators.required]
+    }),
   });
 
   ngOnInit() {
@@ -102,6 +109,7 @@ export class StandardEquipmentDialog extends AbstractReagentDialog<StandardReage
         initialQuantity: this.isCreateAsTemplate ? null : value.initialQuantity,
         unit: value.unit,
         regulatoryDocuments: value.regulatoryDocuments || [],
+        contract: this.isCreateAsTemplate ? null : value.contract || {},
       });
 
       const charArray = this.form.get('characteristics') as FormArray;

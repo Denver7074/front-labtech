@@ -13,6 +13,12 @@ import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocom
 import {MatChipGrid, MatChipInput, MatChipRemove, MatChipRow} from '@angular/material/chips';
 import {MatIconButton} from '@angular/material/button';
 import {MatTooltip} from '@angular/material/tooltip';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle
+} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-reagent-dialog',
@@ -42,10 +48,13 @@ import {MatTooltip} from '@angular/material/tooltip';
     MatChipRemove,
     MatChipRow,
     MatIconButton,
-    MatTooltip
+    MatTooltip,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle
   ],
   templateUrl: './reagent-dialog.html',
-  styleUrl: './reagent-dialog.scss',
   standalone: true
 })
 export class ReagentDialog extends AbstractReagentDialog<Reagent> implements OnInit {
@@ -65,11 +74,19 @@ export class ReagentDialog extends AbstractReagentDialog<Reagent> implements OnI
     regulatoryDocuments: this.fb.control<string[]>([]),
     purityTypeId: [''],
     purityValue: [''],
+    contract: this.fb.group({
+      id: [''],
+      contractNumber: ['', Validators.required],
+      contractDate: ['', Validators.required],
+      endAt: [''],
+      isOwn: [true, Validators.required]
+    }),
   });
 
   ngOnInit() {
     if ((this.data.mode === Mode.EDIT || this.data.mode === Mode.CREATE_AS_TEMPLATE) && this.data.value) {
       const value = this.data.value;
+      const contract = value.contract || {};
 
       this.form.patchValue({
         id: this.isCreateAsTemplate ? null : value.id,
@@ -86,6 +103,7 @@ export class ReagentDialog extends AbstractReagentDialog<Reagent> implements OnI
         regulatoryDocuments: value.regulatoryDocuments || [],
         purityTypeId: value.purityTypeId,
         purityValue: value.purityValue,
+        contract: this.isCreateAsTemplate ? null : contract,
       });
     }
     const initial = this.data.guide?.get('regulatory-documents');

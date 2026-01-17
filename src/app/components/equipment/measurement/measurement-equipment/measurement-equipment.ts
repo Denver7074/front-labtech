@@ -12,17 +12,13 @@ import {MeasurementEquipmentInfo} from '../../../../data/equipment.interface';
 export class MeasurementEquipment extends AbstractTableComponent<MeasurementEquipmentInfo> implements OnInit {
 
   protected override getPath(): string {
-    return `/equipment-service/api/v1/organizations/parts/`;
-  }
-
-  protected override getPathValue(): string {
-    return 'measurement-equipments';
+    return `/equipment-service/api/v1/measurement-equipments`;
   }
 
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
-    this.loadEntities('measurement-equipments');
+    this.loadEntities();
     this.displayedColumns = [...this.allColumns];
   }
 

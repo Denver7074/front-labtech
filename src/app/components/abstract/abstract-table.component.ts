@@ -21,14 +21,13 @@ export abstract class AbstractTableComponent<TInterface> extends AbstractGuideCo
   protected displayedColumns: string[] = [];
 
   protected abstract getPath(): string;
-  protected abstract getPathValue(): string;
 
   protected abstract readonly allColumns: string[];
 
   protected abstract getColumnLabel(column: string): string;
 
-  protected loadEntities(value?: string): void {
-    const path = `${this.getPath()}${this.getPathValue()}`
+  protected loadEntities(): void {
+    const path = `${this.getPath()}`
     const filter = {
       organizationPartId: this.id()
     }
@@ -48,7 +47,7 @@ export abstract class AbstractTableComponent<TInterface> extends AbstractGuideCo
     this.crudService.put<TInterface>(result, path)
       .subscribe({
         next: () => {
-          this.loadEntities(this.getPathValue());
+          this.loadEntities();
         },
         error: (err) => this.notification.showErrorMsg(err.error.error.message)
       });
@@ -58,13 +57,13 @@ export abstract class AbstractTableComponent<TInterface> extends AbstractGuideCo
     this.crudService.post<TInterface>(result, path)
       .subscribe({
         next: () => {
-          this.loadEntities(this.getPathValue());
+          this.loadEntities();
         },
         error: (err) => this.notification.showErrorMsg(err.error.error.message)
       });
   }
 
-  protected openDialog(dialogComponent: ComponentType<any>, path: string, mode: Mode, value?: any) {
+  protected openDialog(dialogComponent: ComponentType<any>, mode: Mode, value?: any) {
     const dialogRef = this.dialog.open(dialogComponent, {
       width: '900px',
       maxWidth: '95vw',
@@ -74,29 +73,29 @@ export abstract class AbstractTableComponent<TInterface> extends AbstractGuideCo
         guide: this.valueType()
       }
     });
-    return this.afterCloseDialog(dialogRef, path, mode)
+    return this.afterCloseDialog(dialogRef, mode)
   }
 
-  protected afterCloseDialog(dialogRef: MatDialogRef<any>, path: string, mode: Mode): void {
+  protected afterCloseDialog(dialogRef: MatDialogRef<any>, mode: Mode): void {
     dialogRef.afterClosed().subscribe(result => {
       if (!result || mode === Mode.VIEW) return;
 
       if (mode === Mode.EDIT) {
-        const p = `${this.getPath()}${this.id()}/${path}/${result.id}`;
+        const p = `${this.getPath()}/${result.id}/organizations/parts/${this.id()}`;
         this.update(result, p);
       } else {
         // CREATE или CREATE_AS_TEMPLATE
-        const p = `${this.getPath()}${this.id()}/${path}`;
+        const p = `${this.getPath()}/organizations/parts/${this.id()}`;
         this.add(result, p);
       }
     });
   }
 
-  protected delete(id: string, path: string) {
-    const p = `${this.getPath()}/${this.id()}/${path}/${id}`
+  protected delete(id: string) {
+    const p = `${this.getPath()}/${id}/organizations/parts/${this.id()}`
     this.crudService.delete(p).subscribe({
       next: () => {
-        this.loadEntities(path);
+        this.loadEntities();
       },
       error: (err) => {
         console.error('Не удалось удалить сессию', err);

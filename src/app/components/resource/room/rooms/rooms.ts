@@ -53,10 +53,6 @@ export class Rooms extends AbstractTableComponent<RoomInfo> implements OnInit {
   protected readonly AddressDialog = RoomDialog;
   protected readonly roomTypeMap = roomTypeMap;
 
-  protected override getPathValue(): string {
-    return 'rooms';
-  }
-
   protected override getPath(): string {
     return '/equipment-service/api/v1/organizations/parts/';
   }
@@ -65,7 +61,7 @@ export class Rooms extends AbstractTableComponent<RoomInfo> implements OnInit {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
     this.loadGuide(['parameter-type', 'equipment-type']);
-    this.loadEntities('rooms');
+    this.loadEntities();
     this.displayedColumns = [...this.allColumns];
   }
 

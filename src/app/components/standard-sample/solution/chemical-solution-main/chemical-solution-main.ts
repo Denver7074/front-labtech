@@ -56,15 +56,15 @@ import {MatTooltip} from '@angular/material/tooltip';
 export class ChemicalSolutionMain extends AbstractReagentComponent<ChemicalSolutionInfo> implements OnInit {
   protected readonly ChemicalSolutionDialog = ChemicalSolutionDialog;
 
-  protected override getPathValue(): string {
-    return 'chemical-solution';
+  protected override getPath(): string {
+    return `/standard-sample-service/api/v1/chemical-solutions`;
   }
 
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
     this.loadGuide(['regulatory-documents']);
-    this.loadEntities('chemical-solution');
+    this.loadEntities();
     this.displayedColumns = [...this.allColumns];
   }
 

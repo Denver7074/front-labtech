@@ -56,13 +56,14 @@
   gap: 20px;
 }
 
-.mr-20 {
-  margin-right: 20px;
+.input-guide-with-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: 16px;
+.open-guide-button {
+  margin-left: 8px;
+  margin-right: 4px;
 }
 

@@ -1,16 +1,3 @@
-.characteristic-item {
-  position: relative;
-  margin-bottom: 20px;
-  background-color: rgba(0, 0, 0, 0.02);
-  border-radius: 8px;
-  display: flex;
-  align-items: flex-start;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
 .field-row {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -30,26 +17,37 @@
   }
 }
 
-.delete-btn {
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
-  z-index: 10;
-  width: 56px;
-  height: 56px;
+.characteristic-item {
+  position: relative;
+  margin-bottom: 20px;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  align-items: flex-start;
+  padding: 16px;
 
-.input-with-button {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
+  &:last-child {
+    margin-bottom: 0;
+  }
 
-.open-guide-button {
-  margin-left: 8px;
-  margin-right: 4px; // компенсация отступа matInput
+  .characteristic-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; // 3 равные колонки
+    gap: 16px;
+    flex: 1;
+
+    .characteristic-name-field {
+      grid-row: span 2;
+      min-width: 200px;
+    }
+
+    mat-form-field:not(.characteristic-name-field) {
+      min-width: 120px;
+    }
+  }
+
+  .delete-btn {
+    margin-top: 40px;
+    margin-left: 16px;
+  }
 }

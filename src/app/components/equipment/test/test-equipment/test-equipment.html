@@ -32,7 +32,7 @@
     </mat-menu>
 
     <button
-      (click)="openDialog(TestEquipmentDialog, 'test-equipments', Mode.CREATE)"
+      (click)="openDialog(TestEquipmentDialog, Mode.CREATE)"
       [matTooltip]="'Добавить оборудование'"
       class="table-add-button">
       <mat-icon>add</mat-icon>
@@ -153,24 +153,20 @@
     <!-- Основные технические характеристики -->
     <ng-container matColumnDef="characteristics">
       <th mat-header-cell
-          [matTooltip]="'Основные технические характеристики оборудования'"
+          [matTooltip]="'Основные технические стандартного образца'"
           *matHeaderCellDef>
         Технические характеристики
       </th>
       <td mat-cell *matCellDef="let item" class="data-cell">
-        @if (item?.characteristics && Array.isArray(item.characteristics)) {
-          @if (item.characteristics.length > 0) {
-            <div class="characteristics-list">
-              @for (char of item.characteristics; track $index) {
-                <div class="characteristic-item">
-                  <strong>{{ char.name }}</strong>:
-                  {{ char.value }} {{ char.unit || '' }}
-                </div>
-              }
-            </div>
-          } @else {
-            <span>—</span>
-          }
+        @if (item?.characteristics && Array.isArray(item.characteristics) && item.characteristics.length > 0) {
+          <div class="characteristics-list">
+            @for (char of item.characteristics; track $index) {
+              <div class="characteristic-item">
+                <strong>{{ char.name }}</strong>:
+                {{ char.value }} {{ char.unit || '' }}
+              </div>
+            }
+          </div>
         } @else {
           <span>—</span>
         }
@@ -240,13 +236,13 @@
         <button
           mat-icon-button
           [matTooltip]="'Редактировать'"
-          (click)="openDialog(TestEquipmentDialog, 'test-equipments', Mode.EDIT, item)">
+          (click)="openDialog(TestEquipmentDialog, Mode.EDIT, item)">
           <mat-icon>edit</mat-icon>
         </button>
         <button
           mat-icon-button
           [matTooltip]="'Удалить'"
-          (click)="delete(item.id, 'test-equipments')">
+          (click)="delete(item.id)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
