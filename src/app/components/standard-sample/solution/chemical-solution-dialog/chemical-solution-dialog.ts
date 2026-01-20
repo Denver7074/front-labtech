@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ChemicalSolutionInfo} from '../../../../data/standard-sample.interface';
-import {FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ChemicalSolutionInfo, SolutionComponentInfo} from '../../../../data/standard-sample.interface';
+import {FormArray, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Mode} from '../../../../data/response.interface';
 import {AbstractReagentDialog} from '../../abstract-reagent-dialog';
 import {Button} from "../../../ui/button/button";
@@ -8,10 +8,16 @@ import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/mater
 import {MatChipGrid, MatChipInput, MatChipRemove, MatChipRow} from "@angular/material/chips";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
-import {MatIconButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatError, MatFormField, MatInput, MatLabel, MatPrefix, MatSuffix} from "@angular/material/input";
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle
+} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-chemical-solution-dialog',
@@ -41,7 +47,12 @@ import {MatTooltip} from '@angular/material/tooltip';
     MatPrefix,
     MatSuffix,
     ReactiveFormsModule,
-    MatTooltip
+    MatTooltip,
+    MatAccordion,
+    MatButton,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
   ],
   templateUrl: './chemical-solution-dialog.html',
   standalone: true
@@ -59,6 +70,7 @@ export class ChemicalSolutionDialog extends AbstractReagentDialog<ChemicalSoluti
     initialQuantity: [null, [Validators.required]],
     unit: ['', [Validators.required]],
     regulatoryDocuments: this.fb.control<string[]>([]),
+    solutionComponents: this.fb.array([]),
   });
 
   ngOnInit() {
@@ -77,9 +89,37 @@ export class ChemicalSolutionDialog extends AbstractReagentDialog<ChemicalSoluti
         unit: value.unit,
         regulatoryDocuments: value.regulatoryDocuments || [],
       });
+
+      const charArray = this.form.get('solutionComponents') as FormArray;
+      charArray.clear();
+      (value.solutionComponents || []).forEach(char => {
+        charArray.push(this.createSolutionComponents(char));
+      });
     }
     const initial = this.data.guide?.get('regulatory-documents');
     this.regulatoryDocumentsSignal.set(initial || new Map());
     this.documentInput.setValue('');
+  }
+
+  // === SolutionComponents ===
+  get solutionComponents(): FormArray {
+    return this.form.get('solutionComponents') as FormArray;
+  }
+
+  createSolutionComponents(char?: SolutionComponentInfo): FormGroup {
+    return this.fb.group({
+      id: [this.isCreateAsTemplate ? '' : char?.id || ''],
+      type: [char?.type || '', Validators.required],
+      value: [char?.value || '', Validators.required],
+      reagentId: [char?.reagentId || '', Validators.required],
+    });
+  }
+
+  addSolutionComponents(): void {
+    this.solutionComponents.push(this.createSolutionComponents());
+  }
+
+  removeSolutionComponent(index: number): void {
+    this.solutionComponents.removeAt(index);
   }
 }

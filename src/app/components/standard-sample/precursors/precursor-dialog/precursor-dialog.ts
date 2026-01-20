@@ -19,9 +19,11 @@ import {
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
 import {MatSelect} from '@angular/material/select';
+import {debounceTime, startWith} from 'rxjs';
+import {DatePipe} from '@angular/common';
 
 @Component({
-  selector: 'app-abstract-reagent-dialog',
+  selector: 'app-precursor-dialog',
   imports: [
     Button,
     FormsModule,
@@ -53,9 +55,10 @@ import {MatSelect} from '@angular/material/select';
     MatExpansionPanel,
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
-    MatSelect
+    MatSelect,
+    DatePipe
   ],
-  templateUrl: './abstract-reagent-dialog.html',
+  templateUrl: './precursor-dialog.html',
   standalone: true
 })
 export class ReagentDialog extends AbstractReagentDialog<Reagent> implements OnInit {
@@ -83,6 +86,7 @@ export class ReagentDialog extends AbstractReagentDialog<Reagent> implements OnI
   });
 
   ngOnInit() {
+    this.loadContract();
     if ((this.data.mode === Mode.EDIT || this.data.mode === Mode.CREATE_AS_TEMPLATE) && this.data.value) {
       const value = this.data.value;
 
@@ -105,5 +109,11 @@ export class ReagentDialog extends AbstractReagentDialog<Reagent> implements OnI
     const initial = this.data.guide?.get('regulatory-documents');
     this.regulatoryDocumentsSignal.set(initial || new Map());
     this.documentInput.setValue('');
+    this.form.get('contract.contractNumber')?.valueChanges.pipe(
+      startWith(''),
+      debounceTime(200)
+    ).subscribe(value => {
+      this.filterContracts(value);
+    });
   }
 }

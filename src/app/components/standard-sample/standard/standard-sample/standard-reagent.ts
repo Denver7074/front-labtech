@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {StandardEquipmentDialog} from '../standard-equipment-dialog/standard-equipment-dialog';
+import {StandardSampleDialog} from '../standard-sample-dialog/standard-sample-dialog';
 import {DatePipe} from '@angular/common';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {
@@ -30,7 +30,7 @@ import {EmptyPipe} from '../../../ui/pipes/empty-pipe';
 
 
 @Component({
-  selector: 'app-standard-equipment',
+  selector: 'app-standard-sample',
   imports: [
     DatePipe,
     MatButton,
@@ -60,10 +60,11 @@ import {EmptyPipe} from '../../../ui/pipes/empty-pipe';
     EmptyPipe,
   ],
   templateUrl: './standard-reagent.html',
+  styleUrl: "../../standard-reagent.scss",
   standalone: true
 })
 export class StandardReagent extends AbstractReagentComponent<StandardReagentInfo> implements OnInit {
-  protected readonly StandardEquipmentDialog = StandardEquipmentDialog;
+  protected readonly StandardEquipmentDialog = StandardSampleDialog;
 
   protected override getPath(): string {
     return `/standard-sample-service/api/v1/standard-samples`;
@@ -72,7 +73,7 @@ export class StandardReagent extends AbstractReagentComponent<StandardReagentInf
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
-    this.loadGuide(['standard-equipment-type', 'regulatory-documents']);
+    this.loadGuide(['standard-sample-type', 'regulatory-documents']);
     this.loadEntities();
     this.displayedColumns = [...this.allColumns];
   }
@@ -81,13 +82,10 @@ export class StandardReagent extends AbstractReagentComponent<StandardReagentInf
     'index',
     'name',
     'producer',
-    'purpose',
-    'characteristicNameValue',
-    'characteristicUncertainty',
-    'information',
+    'characteristics',
+    'termsOfUse',
     'regulatoryDocuments',
     'ownership',
-    'termsOfUse',
     'actions'
   ];
 
@@ -95,13 +93,10 @@ export class StandardReagent extends AbstractReagentComponent<StandardReagentInf
     const labels: Record<string, string> = {
       name: 'Наименование, № и категория СО',
       producer: 'Изготовитель и дата выпуска',
-      information: 'Дополнительные сведения',
-      purpose: 'Назначение',
       termsOfUse: 'Условия применения',
       regulatoryDocuments: 'Методики измерения',
       ownership: 'Право владения',
-      characteristicNameValue: 'Наименование и аттестованное значение',
-      characteristicUncertainty: 'Неопределённость и (или) характеристика погрешности аттестованного значения'
+      characteristics: 'Аттестованные характеристики',
     };
     return labels[column] || column;
   }

@@ -19,41 +19,44 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
+import {DatePipe} from "@angular/common";
+import {debounceTime, startWith} from 'rxjs';
 
 @Component({
   selector: 'app-reagent-dialog',
-  imports: [
-    Button,
-    MatDatepicker,
-    MatDatepickerInput,
-    MatDatepickerToggle,
-    MatDialogActions,
-    MatDialogClose,
-    MatDialogContent,
-    MatDialogTitle,
-    MatError,
-    MatFormField,
-    MatIconModule,
-    MatInput,
-    MatLabel,
-    MatPrefix,
-    MatSuffix,
-    ReactiveFormsModule,
-    MatOption,
-    MatSelect,
-    MatAutocomplete,
-    MatAutocompleteTrigger,
-    MatChipGrid,
-    MatChipInput,
-    MatChipRemove,
-    MatChipRow,
-    MatIconButton,
-    MatTooltip,
-    MatAccordion,
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatExpansionPanelTitle
-  ],
+    imports: [
+        Button,
+        MatDatepicker,
+        MatDatepickerInput,
+        MatDatepickerToggle,
+        MatDialogActions,
+        MatDialogClose,
+        MatDialogContent,
+        MatDialogTitle,
+        MatError,
+        MatFormField,
+        MatIconModule,
+        MatInput,
+        MatLabel,
+        MatPrefix,
+        MatSuffix,
+        ReactiveFormsModule,
+        MatOption,
+        MatSelect,
+        MatAutocomplete,
+        MatAutocompleteTrigger,
+        MatChipGrid,
+        MatChipInput,
+        MatChipRemove,
+        MatChipRow,
+        MatIconButton,
+        MatTooltip,
+        MatAccordion,
+        MatExpansionPanel,
+        MatExpansionPanelHeader,
+        MatExpansionPanelTitle,
+        DatePipe
+    ],
   templateUrl: './reagent-dialog.html',
   standalone: true
 })
@@ -84,6 +87,7 @@ export class ReagentDialog extends AbstractReagentDialog<Reagent> implements OnI
   });
 
   ngOnInit() {
+    this.loadContract();
     if ((this.data.mode === Mode.EDIT || this.data.mode === Mode.CREATE_AS_TEMPLATE) && this.data.value) {
       const value = this.data.value;
       const contract = value.contract || {};
@@ -109,5 +113,11 @@ export class ReagentDialog extends AbstractReagentDialog<Reagent> implements OnI
     const initial = this.data.guide?.get('regulatory-documents');
     this.regulatoryDocumentsSignal.set(initial || new Map());
     this.documentInput.setValue('');
+    this.form.get('contract.contractNumber')?.valueChanges.pipe(
+      startWith(''),
+      debounceTime(200)
+    ).subscribe(value => {
+      this.filterContracts(value);
+    });
   }
 }

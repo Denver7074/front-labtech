@@ -9,12 +9,19 @@ import {startWith} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {GuideDialog} from '../guide/guide-dialog/guide-dialog';
 import {Mode} from '../../data/response.interface';
+import {CrudService} from '../../service/crud.service';
+import {ContractInfo} from '../../data/equipment.interface';
+import {NotificationService} from '../ui/notification.service';
 
 
 export abstract class AbstractReagentDialog<TInterface extends ChemicalSolutionInfo> extends AbstractDialogComponent<TInterface> {
+  protected crudService = inject(CrudService);
+  protected notification = inject(NotificationService);
   protected dialog = inject(MatDialog);
   protected documentInput = new FormControl('');
   protected readonly regulatoryDocumentsSignal = signal<Map<string, string> | null>(null);
+  filteredContracts = signal<ContractInfo[]>([]);
+  protected contracts = signal<ContractInfo[]>([]);
 
   protected override onSubmit() {
     if (this.form.valid) {
@@ -35,6 +42,48 @@ export abstract class AbstractReagentDialog<TInterface extends ChemicalSolutionI
         contract: contract,
       });
     }
+  }
+
+  protected filterContracts(value: string): void {
+    const filterValue = value?.toLowerCase() || '';
+    const filtered = this.contracts().filter(contract =>
+      contract.contractNumber?.toLowerCase().includes(filterValue)
+    );
+    this.filteredContracts.set(filtered);
+  }
+
+  protected onContractSelected(event: MatAutocompleteSelectedEvent): void {
+    const selectedNumber = event.option.value;
+    const contract = this.contracts().find(c => c.contractNumber === selectedNumber);
+
+    if (contract) {
+      // Заполняем остальные поля договора
+      this.form.get('contract')?.patchValue({
+        id: contract.id,
+        contractNumber: contract.contractNumber,
+        contractDate: new Date(contract.contractDate),
+        endAt: contract.endAt ? new Date(contract.endAt) : null,
+        isOwn: contract.isOwn
+      });
+    }
+  }
+
+  protected loadContract() {
+    this.crudService.get<any>('/standard-sample-service/api/v1/contracts/all').subscribe({
+      next: (response) => {
+        const contracts = Array.isArray(response)
+          ? response
+          : response?.data || response?.content || [];
+        this.contracts.set(contracts);
+        this.filteredContracts.set(contracts);
+      },
+      error: (error) => {
+        console.error('Ошибка загрузки договоров:', error);
+        this.notification.showErrorMsg(
+          error.error?.error?.message || 'Не удалось загрузить список договоров'
+        );
+      }
+    });
   }
 
   openRegulatoryDocumentGuide() {

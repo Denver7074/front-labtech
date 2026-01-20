@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
-import {Reagent, ExpenditureInfo, StandardReagentInfo} from '../../../../data/standard-sample.interface';
+import {Reagent} from '../../../../data/standard-sample.interface';
 import {
   AbstractControl,
   FormGroup,
@@ -10,10 +10,10 @@ import {
   Validators
 } from '@angular/forms';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
-import {MatError, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
+import {MatError, MatFormField, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
-import {MatFormField} from '@angular/material/input';
 import {Button} from '../../../ui/button/button';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-reagent-expenditure-dialog',
@@ -31,10 +31,11 @@ import {Button} from '../../../ui/button/button';
     MatLabel,
     MatSuffix,
     Button,
-    MatError
+    MatError,
+    MatIconModule
   ],
   templateUrl: './reagent-expenditure-dialog.html',
-  styleUrl: './reagent-expenditure-dialog.scss',
+  styleUrl: '../reagent-expenditure.scss',
   standalone: true
 })
 export class ReagentExpenditureDialog extends AbstractDialogComponent<Reagent> {

@@ -41,8 +41,6 @@ export class ActDebitingDialog extends AbstractDialogComponent<ActDebitingInfo> 
     purpose: ['', [Validators.required]],
   });
 
-  ngOnInit() {}
-
   protected override onSubmit() {
     if (this.form.valid) {
       const raw = this.form.getRawValue();

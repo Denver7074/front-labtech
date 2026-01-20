@@ -1,0 +1,54 @@
+.compact-characteristics {
+  font-size: 13px;
+  line-height: 1.4;
+  padding: 8px 12px;
+
+  .char-line {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .uncertainty {
+      margin-left: 6px;
+    }
+  }
+}
+
+.compact-ownership {
+  font-size: 13px;
+  line-height: 1.4;
+  padding: 8px 12px;
+
+  .ownership-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .period {
+    font-size: 0.9em;
+  }
+
+  .badge {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: 500;
+
+    &.rent {
+      background: #fff3e0;
+      color: #e65100;
+    }
+  }
+}
+
+

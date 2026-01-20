@@ -125,6 +125,8 @@
                   [matDatepicker]="contractDatePicker"
                   formControlName="contractDate"
                   placeholder="Выберите дату"
+                  readonly
+                  (click)="contractDatePicker.open()"
                 />
                 <mat-datepicker-toggle matSuffix [for]="contractDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #contractDatePicker></mat-datepicker>
@@ -150,7 +152,13 @@
               @if (form.get('contract.isOwn')?.value === false) {
                 <mat-form-field appearance="outline">
                   <mat-label>Дата окончания</mat-label>
-                  <input matInput [matDatepicker]="endPicker" formControlName="endAt">
+                  <input
+                    matInput
+                         [matDatepicker]="endPicker"
+                    formControlName="endAt"
+                    readonly
+                    (click)="endPicker.open()"
+                  >
                   <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
                   <mat-datepicker #endPicker></mat-datepicker>
                   @if (form.get('contract.endAt')?.hasError('required') && form.get('contract.endAt')?.touched) {

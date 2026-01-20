@@ -1,11 +1,23 @@
 <h2 mat-dialog-title>Взять реактив</h2>
 
-<!-- Отображение остатка -->
-@if (data.value?.remains) {
-  <div class="dialog-remainder">
-    <strong>Остаток:</strong> {{ this.data.value?.remains }} {{ this.data.value?.unit }}
+
+<div style="padding: 16px 24px;">
+  <div class="card-header">
+    <h4>{{ data.value!.name }}</h4>
+    <span>{{ data.value!.number }}</span>
   </div>
-}
+  <div class="card-stats">
+    <div class="stat">
+      <span> Приход: {{ data.value!.initialQuantity }} {{ data.value!.unit }}</span>
+    </div>
+    <div class="stat">
+      <span>
+        Остаток: {{ data.value!.remains }} {{ data.value!.unit }}
+      </span>
+    </div>
+  </div>
+</div>
+
 
 <mat-dialog-content class="dialog-content">
   <form [formGroup]="form">
@@ -31,7 +43,13 @@
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Дата взятия</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="useDate"/>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="useDate"
+          readonly
+          (click)="picker.open()"
+        />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>

@@ -20,7 +20,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTooltip} from '@angular/material/tooltip';
 import {EmptyPipe} from '../../../ui/pipes/empty-pipe';
-import {ReagentDialog} from '../abstract-reagent-dialog/abstract-reagent-dialog';
+import {ReagentDialog} from '../precursor-dialog/precursor-dialog';
 
 
 @Component({
@@ -54,6 +54,7 @@ import {ReagentDialog} from '../abstract-reagent-dialog/abstract-reagent-dialog'
     EmptyPipe
   ],
   templateUrl: './precursors-main.html',
+  styleUrl: "../../standard-reagent.scss",
   standalone: true
 })
 export class PrecursorsMain extends AbstractReagentComponent<ChemicalSolutionInfo> implements OnInit {
@@ -75,11 +76,9 @@ export class PrecursorsMain extends AbstractReagentComponent<ChemicalSolutionInf
     'index',
     'name',
     'producer',
-    'purpose',
-    'information',
+    'termsOfUse',
     'regulatoryDocuments',
     'ownership',
-    'termsOfUse',
     'actions'
   ];
 
@@ -87,8 +86,6 @@ export class PrecursorsMain extends AbstractReagentComponent<ChemicalSolutionInf
     const labels: Record<string, string> = {
       name: 'Наименование, номер реактива',
       producer: 'Изготовитель и дата выпуска',
-      information: 'Дополнительные сведения',
-      purpose: 'Назначение',
       termsOfUse: 'Условия применения',
       ownership: 'Право владения',
       regulatoryDocuments: 'Нормативные документы (НД)',

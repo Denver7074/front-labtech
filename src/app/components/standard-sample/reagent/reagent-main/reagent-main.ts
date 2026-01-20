@@ -57,6 +57,7 @@ import {EmptyPipe} from '../../../ui/pipes/empty-pipe';
     EmptyPipe,
   ],
   templateUrl: './reagent-main.html',
+  styleUrl: "../../standard-reagent.scss",
   standalone: true
 })
 export class ReagentMain extends AbstractReagentComponent<ChemicalSolutionInfo> implements OnInit {
@@ -77,19 +78,17 @@ export class ReagentMain extends AbstractReagentComponent<ChemicalSolutionInfo> 
   protected getPurity(typeId: string, value: number): string | '-' {
     if (!typeId) return '-';
     const type = this.getTypeValue(typeId, 'purity-reagent-type') || null;
-    return type + ` ${value}`
+    return type + ` ${value}%`;
   }
 
   protected override allColumns = [
     'index',
     'name',
-    'producer',
-    'purpose',
     'purity',
-    'information',
-    'ownership',
-    'regulatoryDocuments',
+    'producer',
     'termsOfUse',
+    'regulatoryDocuments',
+    'ownership',
     'actions'
   ];
 
@@ -97,9 +96,7 @@ export class ReagentMain extends AbstractReagentComponent<ChemicalSolutionInfo> 
     const labels: Record<string, string> = {
       name: 'Наименование, номер реактива',
       producer: 'Изготовитель и дата выпуска',
-      information: 'Дополнительные сведения',
       ownership: 'Право владения',
-      purpose: 'Назначение',
       purity: 'Степень чистоты',
       termsOfUse: 'Условия применения',
       regulatoryDocuments: 'Нормативные документы (НД)',

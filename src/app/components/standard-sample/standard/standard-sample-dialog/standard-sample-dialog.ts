@@ -19,12 +19,14 @@ import {MatCheckbox} from '@angular/material/checkbox';
 import {Mode} from '../../../../data/response.interface';
 import {AbstractReagentDialog} from '../../abstract-reagent-dialog';
 import {MatChipGrid, MatChipInput, MatChipRemove, MatChipRow} from '@angular/material/chips';
-import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {MatTooltip} from '@angular/material/tooltip';
+import {debounceTime, startWith} from 'rxjs';
+import {DatePipe} from '@angular/common';
 
 
 @Component({
-  selector: 'app-standard-equipment-dialog',
+  selector: 'app-standard-sample-dialog',
   imports: [
     Button,
     MatAccordion,
@@ -57,13 +59,13 @@ import {MatTooltip} from '@angular/material/tooltip';
     MatChipRemove,
     MatChipRow,
     MatChipGrid,
-    MatTooltip
+    MatTooltip,
+    DatePipe,
   ],
-  templateUrl: './standard-equipment-dialog.html',
-  styleUrl: "standard-equipment-dialog.scss",
+  templateUrl: './standard-sample-dialog.html',
   standalone: true
 })
-export class StandardEquipmentDialog extends AbstractReagentDialog<StandardReagentInfo> implements OnInit {
+export class StandardSampleDialog extends AbstractReagentDialog<StandardReagentInfo> implements OnInit {
 
   protected override form: FormGroup = this.fb.group({
     id: [''],
@@ -91,6 +93,7 @@ export class StandardEquipmentDialog extends AbstractReagentDialog<StandardReage
   });
 
   ngOnInit() {
+    this.loadContract();
     if ((this.data.mode === Mode.EDIT || this.data.mode === Mode.CREATE_AS_TEMPLATE) && this.data.value) {
       const value = this.data.value;
 
@@ -118,9 +121,23 @@ export class StandardEquipmentDialog extends AbstractReagentDialog<StandardReage
         charArray.push(this.createCharacteristic(char));
       });
     }
+
+    this.form.get('consumable')?.valueChanges.subscribe(isConsumable => {
+      this.toggleConsumableValidators(isConsumable);
+    });
+
+    // Инициализация при первом запуске
+    this.toggleConsumableValidators(this.form.get('consumable')?.value);
+
     const initial = this.data.guide?.get('regulatory-documents');
     this.regulatoryDocumentsSignal.set(initial || new Map());
     this.documentInput.setValue('');
+    this.form.get('contract.contractNumber')?.valueChanges.pipe(
+      startWith(''),
+      debounceTime(200)
+    ).subscribe(value => {
+      this.filterContracts(value);
+    });
   }
 
   // === CHARACTERISTICS ===
@@ -145,5 +162,27 @@ export class StandardEquipmentDialog extends AbstractReagentDialog<StandardReage
 
   removeCharacteristic(index: number): void {
     this.characteristics.removeAt(index);
+  }
+
+  private toggleConsumableValidators(isConsumable: boolean): void {
+    const quantityCtrl = this.form.get('initialQuantity');
+    const unitCtrl = this.form.get('unit');
+
+    if (isConsumable) {
+      // Добавляем валидаторы
+      quantityCtrl?.setValidators([
+        Validators.required,
+        Validators.min(0.001)
+      ]);
+      unitCtrl?.setValidators([Validators.required]);
+    } else {
+      // Убираем валидаторы
+      quantityCtrl?.clearValidators();
+      unitCtrl?.clearValidators();
+    }
+
+    // Обновляем статус валидности
+    quantityCtrl?.updateValueAndValidity();
+    unitCtrl?.updateValueAndValidity();
   }
 }

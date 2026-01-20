@@ -43,6 +43,7 @@ export interface ChemicalSolutionInfo {
   type: string;
   organizationPartId: string;
   actDebiting: ActDebitingInfo;
+  solutionComponents: SolutionComponentInfo[];
 }
 
 export interface ActDebitingInfo {
@@ -50,6 +51,13 @@ export interface ActDebitingInfo {
   dateDebit: string;
   description: string;
   purpose: string;
+}
+
+export interface SolutionComponentInfo {
+  id: string;
+  value: number;
+  reagentId: string;
+  type: string;
 }
 
 export const reagentTypeMap = new Map([

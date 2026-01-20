@@ -4,12 +4,12 @@
   width: 100%;
 }
 
-.attestation-grid {
-  width: 100%;
-  font-size: 13px;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
+//.attestation-grid {
+//  width: 100%;
+//  font-size: 12px;
+//  border-collapse: collapse;
+//  table-layout: fixed;
+//}
 
 ::ng-deep .attestation-grid .mat-mdc-header-cell,
 ::ng-deep .attestation-grid .mat-mdc-cell {
@@ -26,14 +26,12 @@
   font-size: 12px;
 }
 
-.mark-cell {
-  padding: 0 !important;
+.name-cell {
+  white-space: normal;
+  word-wrap: break-word;
+  min-width: 180px;
+  max-width: 300px;
+  vertical-align: top;
+  padding: 8px 12px;
 }
 
-.expiry-mark {
-  display: inline-block;
-  font-weight: bold;
-  color: var(--mat-sys-error);
-  font-size: 16px;
-  line-height: 1.2;
-}

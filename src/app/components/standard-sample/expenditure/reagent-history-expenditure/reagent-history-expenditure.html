@@ -1,10 +1,20 @@
 <h2 mat-dialog-title>История расхода</h2>
 
-<div class="reagent-info">
-  <strong>{{ data.value!.name }}</strong> (№ {{ data.value!.number }})
-  <span>
-    Остаток: {{ data.value!.remains }} {{ data.value!.unit }}
-  </span>
+<div style="padding: 16px 24px;">
+  <div class="card-header">
+    <h4>{{ data.value!.name }}</h4>
+    <span>{{ data.value!.number }}</span>
+  </div>
+  <div class="card-stats">
+    <div class="stat">
+      <span> Приход: {{ data.value!.initialQuantity }} {{ data.value!.unit }}</span>
+    </div>
+    <div class="stat">
+      <span>
+        Остаток: {{ data.value!.remains }} {{ data.value!.unit }}
+      </span>
+    </div>
+  </div>
 </div>
 
 <mat-dialog-content>
@@ -41,7 +51,7 @@
         </td>
       </ng-container>
 
-      @if(!data.value?.actDebiting) {
+      @if (!data.value?.actDebiting) {
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let exp">
@@ -63,10 +73,10 @@
   }
 </mat-dialog-content>
 
-<mat-dialog-actions align="end" >
+<mat-dialog-actions align="end">
   <app-button mat-dialog-close class="mr-20 error">Закрыть</app-button>
   @if (data.value?.type === 'CONTROLLED_SUBSTANCE') {
-    @if(!data.value?.canUse && !data.value?.actDebiting) {
+    @if (!data.value?.canUse && !data.value?.actDebiting) {
       <app-button (click)="openDialog(data.value)">Списать</app-button>
     } @else {
       <app-button (click)="openDialog(data.value)">Скачать акт списания</app-button>

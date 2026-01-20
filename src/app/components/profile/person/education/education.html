@@ -99,6 +99,8 @@
               [matDatepicker]="pickerStart"
               formControlName="startDate"
               placeholder="Выберите дату"
+              readonly
+              (click)="pickerStart.open()"
             >
             <mat-icon matSuffix (click)="pickerStart.open()">calendar_today</mat-icon>
             <mat-datepicker #pickerStart></mat-datepicker>
@@ -111,6 +113,8 @@
               [matDatepicker]="pickerEnd"
               formControlName="endDate"
               placeholder="Выберите дату"
+              readonly
+              (click)="pickerEnd.open()"
             >
             <mat-icon matSuffix (click)="pickerEnd.open()">calendar_today</mat-icon>
             <mat-datepicker #pickerEnd></mat-datepicker>
@@ -138,6 +142,8 @@
               [matDatepicker]="pickerIssue"
               formControlName="documentIssueDate"
               placeholder="Выберите дату"
+              readonly
+              (click)="pickerIssue.open()"
             >
 
             <!-- Иконка-триггер (опционально) -->

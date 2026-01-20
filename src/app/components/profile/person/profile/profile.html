@@ -56,6 +56,8 @@
               [matDatepicker]="pickerBirth"
               formControlName="birthDate"
               placeholder="Выберите дату"
+              readonly
+              (click)="pickerBirth.open()"
             >
             <mat-icon matSuffix (click)="pickerBirth.open()">calendar_today</mat-icon>
             <mat-datepicker #pickerBirth></mat-datepicker>

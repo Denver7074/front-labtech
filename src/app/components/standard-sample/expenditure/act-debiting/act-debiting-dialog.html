@@ -19,6 +19,8 @@
             [matDatepicker]="dateDebit"
             formControlName="dateDebit"
             placeholder="Выберите дату"
+            readonly
+            (click)="dateDebit.open()"
           />
           <mat-datepicker-toggle matSuffix [for]="dateDebit"></mat-datepicker-toggle>
           <mat-datepicker #dateDebit></mat-datepicker>

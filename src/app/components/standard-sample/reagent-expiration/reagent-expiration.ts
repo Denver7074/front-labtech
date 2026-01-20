@@ -33,14 +33,14 @@ import {MatTooltip} from '@angular/material/tooltip';
     MatSelect,
     MatTable,
     MatHeaderCellDef,
-    MatTooltip
+    MatTooltip,
   ],
   templateUrl: './reagent-expiration.html',
   styleUrl: './reagent-expiration.scss',
   standalone: true
 })
 export class ReagentExpiration extends AbstractMonthChartComponent<ChemicalSolutionInfo> {
-  displayedColumns = ['name', 'initialQuantity', 'remains', ...this.months.map(m => m.key)];
+  displayedColumns = ['name', ...this.months.map(m => m.key)];
 
   gridRows = computed<GridRow<ChemicalSolutionInfo>[]>(() => {
     const equipments = this.info();
@@ -67,8 +67,4 @@ export class ReagentExpiration extends AbstractMonthChartComponent<ChemicalSolut
     });
   });
 
-  getValue(value: number, unit: string): string {
-    if (value == null) return '-';
-    return `${value}, ${unit}`
-  }
 }

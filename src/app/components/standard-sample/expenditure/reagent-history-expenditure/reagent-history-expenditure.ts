@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
-import {Reagent, reagentTypeMap} from '../../../../data/standard-sample.interface';
+import {ChemicalSolutionInfo, Reagent, reagentTypeMap} from '../../../../data/standard-sample.interface';
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {MatIconButton} from '@angular/material/button';
 import {
@@ -20,7 +20,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {DatePipe} from '@angular/common';
 import {ActDebitingDialog} from '../act-debiting/act-debiting-dialog';
 import {Button} from '../../../ui/button/button';
-import {ReagentDialog} from '../../precursors/abstract-reagent-dialog/abstract-reagent-dialog';
+import {ReagentDialog} from '../../precursors/precursor-dialog/precursor-dialog';
 import {CrudService} from '../../../../service/crud.service';
 
 @Component({
@@ -47,7 +47,7 @@ import {CrudService} from '../../../../service/crud.service';
     Button
   ],
   templateUrl: './reagent-history-expenditure.html',
-  styleUrl: './reagent-history-expenditure.scss',
+  styleUrl: '../reagent-expenditure.scss',
   standalone: true
 })
 export class ReagentHistoryExpenditure extends AbstractDialogComponent<Reagent> {

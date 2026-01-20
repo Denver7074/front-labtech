@@ -19,30 +19,11 @@
             *matHeaderCellDef>
           Наименование, номер
         </th>
-        <td mat-cell *matCellDef="let row" class="data-cell">
-          {{ row.equipment.name }}, № {{ row.equipment.number }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="initialQuantity">
-        <th mat-header-cell
-            [matTooltip]="'Приход'"
-            *matHeaderCellDef>
-          Приход
-        </th>
-        <td mat-cell *matCellDef="let row" class="data-cell">
-          {{ getValue(row.equipment.initialQuantity, row.equipment.unit) }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="remains">
-        <th mat-header-cell
-            [matTooltip]="'Остаток'"
-            *matHeaderCellDef>
-          Остаток
-        </th>
-        <td mat-cell *matCellDef="let row" class="data-cell">
-          {{ getValue(row.equipment.remains, row.equipment.unit) }}
+        <td mat-cell
+            *matCellDef="let row"
+            class="data-cell name-cell"
+            [matTooltip]="row.equipment.name + ', ' + row.equipment.number">
+          {{ row.equipment.name }}, {{ row.equipment.number }}
         </td>
       </ng-container>
 
@@ -52,9 +33,9 @@
           <th mat-header-cell *matHeaderCellDef>
             <div class="vertical-header">{{ month.name }}</div>
           </th>
-          <td mat-cell *matCellDef="let row" class="mark-cell">
+          <td mat-cell *matCellDef="let row">
             @if (row.monthIndex === i) {
-              {{ row.expiryDate | date:'shortDate' }}
+              {{ row.expiryDate | date:'dd.MM' }}
             }
           </td>
         </ng-container>

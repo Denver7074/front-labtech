@@ -49,7 +49,13 @@
           <!-- Дата начала -->
           <mat-form-field appearance="outline">
             <mat-label>Дата начала</mat-label>
-            <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+            <input
+              matInput
+              [matDatepicker]="startPicker"
+              formControlName="startDate"
+              readonly
+              (click)="startPicker.open()"
+            >
             <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
             <mat-datepicker #startPicker></mat-datepicker>
             @if (form.get('startDate')?.hasError('required') && form.get('startDate')?.touched) {
@@ -60,7 +66,13 @@
           <!-- Дата окончания -->
           <mat-form-field appearance="outline">
             <mat-label>Дата окончания</mat-label>
-            <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+            <input
+              matInput
+              [matDatepicker]="endPicker"
+              formControlName="endDate"
+              readonly
+              (click)="endPicker.open()"
+            >
             <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
             <mat-datepicker #endPicker></mat-datepicker>
           </mat-form-field>
