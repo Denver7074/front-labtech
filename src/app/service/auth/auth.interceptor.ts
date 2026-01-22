@@ -1,8 +1,7 @@
-import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { AuthService } from './auth.service';
+import {HttpHandlerFn, HttpInterceptorFn, HttpRequest} from '@angular/common/http';
+import {inject} from '@angular/core';
+import {AuthService} from './auth.service';
 import {BehaviorSubject, catchError, filter, switchMap, take, throwError} from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 
 let refreshSubject: BehaviorSubject<string | null> | null = null;
 

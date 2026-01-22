@@ -109,7 +109,7 @@ export abstract class AbstractMainComponent<TInterface> extends AbstractGuideCom
   }
 
   protected delete(id: string, path: string) {
-    this.crudService.delete(`/profile-service/api/v1/${this.getPath()}/${this.id}`).subscribe({
+    this.crudService.delete(`/profile-service/api/v1/${this.getPath()}/${this.id()}/${path}/${id}`).subscribe({
       next: () => {
         this.loadProfile();
       },

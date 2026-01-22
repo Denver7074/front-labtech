@@ -122,6 +122,7 @@ export class StandardSampleDialog extends AbstractReagentDialog<StandardReagentI
       });
     }
 
+    //todo
     this.form.get('consumable')?.valueChanges.subscribe(isConsumable => {
       this.toggleConsumableValidators(isConsumable);
     });
