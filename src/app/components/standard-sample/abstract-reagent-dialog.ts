@@ -11,7 +11,7 @@ import {GuideDialog} from '../guide/guide-dialog/guide-dialog';
 import {Mode} from '../../data/response.interface';
 import {CrudService} from '../../service/crud.service';
 import {ContractInfo} from '../../data/equipment.interface';
-import {NotificationService} from '../ui/notification.service';
+import {NotificationService} from '../../shared/notification.service';
 
 
 export abstract class AbstractReagentDialog<TInterface extends ChemicalSolutionInfo> extends AbstractDialogComponent<TInterface> {
@@ -57,7 +57,6 @@ export abstract class AbstractReagentDialog<TInterface extends ChemicalSolutionI
     const contract = this.contracts().find(c => c.contractNumber === selectedNumber);
 
     if (contract) {
-      // Заполняем остальные поля договора
       this.form.get('contract')?.patchValue({
         id: contract.id,
         contractNumber: contract.contractNumber,

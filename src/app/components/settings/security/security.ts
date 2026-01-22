@@ -2,14 +2,14 @@ import {Component, inject, signal} from '@angular/core';
 import {MatInput, MatFormField, MatError, MatLabel} from '@angular/material/input';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgClass} from '@angular/common';
-import {Button} from '../../ui/button/button';
+import {Button} from '../../../shared/button/button';
 import {MatTab, MatTabChangeEvent, MatTabContent, MatTabGroup} from '@angular/material/tabs';
 import {AccountRequest, Session, UpdatePasswordRequest} from '../../../data/auth.interface';
 import {AuthService} from '../../../service/auth/auth.service';
-import {NotificationService} from '../../ui/notification.service';
+import {NotificationService} from '../../../shared/notification.service';
 import {Router} from '@angular/router';
 import {MatCard} from '@angular/material/card';
-import {Loader} from '../../ui/loader/loader';
+import {Loader} from '../../../shared/loader/loader';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatIconModule} from '@angular/material/icon';
 

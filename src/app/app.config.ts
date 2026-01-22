@@ -7,7 +7,7 @@ import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {authTokenInterceptor} from './service/auth/auth.interceptor';
 import {MAT_DATE_LOCALE, provideNativeDateAdapter} from '@angular/material/core';
 import {MatPaginatorIntl} from '@angular/material/paginator';
-import {RussianPaginatorIntl} from './components/ui/russian-paginator-intl';
+import {RussianPaginatorIntl} from './shared/russian-paginator-intl';
 
 export const appConfig: ApplicationConfig = {
   providers: [

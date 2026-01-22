@@ -1,5 +1,5 @@
 import {inject, signal} from '@angular/core';
-import {NotificationService} from '../ui/notification.service';
+import {NotificationService} from '../../shared/notification.service';
 import {GuideService} from '../../service/guide.service';
 
 

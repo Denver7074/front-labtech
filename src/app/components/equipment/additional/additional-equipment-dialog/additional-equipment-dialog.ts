@@ -14,7 +14,7 @@ import {
 } from '@angular/material/expansion';
 import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
 import {AdditionalEquipmentInfo} from '../../../../data/equipment.interface';
-import {Button} from '../../../ui/button/button';
+import {Button} from '../../../../shared/button/button';
 
 @Component({
   selector: 'app-additional-equipment-dialog',

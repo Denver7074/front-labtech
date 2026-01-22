@@ -3,7 +3,7 @@ import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angula
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {catchError, debounceTime, distinctUntilChanged, of, switchMap} from 'rxjs';
 import {CommonModule} from '@angular/common';
-import {Button} from '../../../ui/button/button';
+import {Button} from '../../../../shared/button/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';

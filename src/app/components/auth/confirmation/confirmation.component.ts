@@ -2,9 +2,9 @@ import {Component, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {AuthService} from '../../../service/auth/auth.service';
 
-import {Button} from '../../ui/button/button';
-import {Loader} from '../../ui/loader/loader';
-import {NotificationService} from '../../ui/notification.service';
+import {Button} from '../../../shared/button/button';
+import {Loader} from '../../../shared/loader/loader';
+import {NotificationService} from '../../../shared/notification.service';
 
 @Component({
   selector: 'app-confirmation',

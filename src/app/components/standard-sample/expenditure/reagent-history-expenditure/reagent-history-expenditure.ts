@@ -19,7 +19,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {MatIconModule} from '@angular/material/icon';
 import {DatePipe} from '@angular/common';
 import {ActDebitingDialog} from '../act-debiting/act-debiting-dialog';
-import {Button} from '../../../ui/button/button';
+import {Button} from '../../../../shared/button/button';
 import {ReagentDialog} from '../../precursors/precursor-dialog/precursor-dialog';
 import {CrudService} from '../../../../service/crud.service';
 

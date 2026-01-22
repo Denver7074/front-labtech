@@ -1,5 +1,5 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
-import {NotificationService} from '../../../ui/notification.service';
+import {NotificationService} from '../../../../shared/notification.service';
 import {Router} from '@angular/router';
 import {ApiResponse} from '../../../../data/response.interface';
 import {MatPaginator} from '@angular/material/paginator';

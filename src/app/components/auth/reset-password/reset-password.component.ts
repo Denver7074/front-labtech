@@ -3,10 +3,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {ResetPasswordRequest} from '../../../data/auth.interface';
-import {Button} from '../../ui/button/button';
+import {Button} from '../../../shared/button/button';
 import {MatInput, MatLabel, MatError, MatFormField} from '@angular/material/input';
 import {AuthService} from '../../../service/auth/auth.service';
-import {NotificationService} from '../../ui/notification.service';
+import {NotificationService} from '../../../shared/notification.service';
 
 
 @Component({

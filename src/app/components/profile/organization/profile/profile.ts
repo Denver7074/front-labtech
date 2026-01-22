@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Button} from '../../../ui/button/button';
+import {Button} from '../../../../shared/button/button';
 import {FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {MatError, MatFormField, MatInput, MatLabel, MatPrefix} from '@angular/material/input';

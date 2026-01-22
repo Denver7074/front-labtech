@@ -18,13 +18,13 @@ import {
 import {DatePipe, DecimalPipe} from '@angular/common';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatIconButton} from '@angular/material/button';
-import {Loader} from '../../../ui/loader/loader';
+import {Loader} from '../../../../shared/loader/loader';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatIconModule} from '@angular/material/icon';
 import {AbstractTableComponent} from '../../../abstract/abstract-table.component';
 import {CrudService} from '../../../../service/crud.service';
 import {GuideService} from '../../../../service/guide.service';
-import {NotificationService} from '../../../ui/notification.service';
+import {NotificationService} from '../../../../shared/notification.service';
 
 @Component({
   selector: 'app-transactions',

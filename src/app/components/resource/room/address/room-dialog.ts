@@ -1,7 +1,7 @@
 import {Component, OnInit, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
-import {Button} from '../../../ui/button/button';
+import {Button} from '../../../../shared/button/button';
 import {MatError, MatFormField, MatInput, MatLabel, MatPrefix} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';

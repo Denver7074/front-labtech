@@ -24,7 +24,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {ReagentExpiration} from '../../reagent-expiration/reagent-expiration';
 import {ReagentDialog} from '../reagent-dialog/reagent-dialog';
 import {MatPaginator} from '@angular/material/paginator';
-import {EmptyPipe} from '../../../ui/pipes/empty-pipe';
+import {EmptyPipe} from '../../../../shared/pipes/empty-pipe';
 
 @Component({
   selector: 'app-reagent-main',

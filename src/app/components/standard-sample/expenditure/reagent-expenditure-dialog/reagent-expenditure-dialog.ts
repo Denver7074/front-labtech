@@ -12,7 +12,7 @@ import {
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatError, MatFormField, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
-import {Button} from '../../../ui/button/button';
+import {Button} from '../../../../shared/button/button';
 import {MatIconModule} from '@angular/material/icon';
 
 @Component({

@@ -13,13 +13,13 @@ import {
 } from '@angular/material/expansion';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {Button} from '../../../ui/button/button';
+import {Button} from '../../../../shared/button/button';
 import {StandardMetrologicalCharacteristic, StandardReagentInfo} from '../../../../data/standard-sample.interface';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {Mode} from '../../../../data/response.interface';
 import {AbstractReagentDialog} from '../../abstract-reagent-dialog';
 import {MatChipGrid, MatChipInput, MatChipRemove, MatChipRow} from '@angular/material/chips';
-import {MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {MatTooltip} from '@angular/material/tooltip';
 import {debounceTime, startWith} from 'rxjs';
 import {DatePipe} from '@angular/common';

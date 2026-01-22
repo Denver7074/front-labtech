@@ -12,7 +12,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 
-import {Button} from '../../ui/button/button';
+import {Button} from '../../../shared/button/button';
 import {AbstractDialogComponent} from '../../abstract/abstract-dialog.component';
 import {ContactInfo} from '../../../data/profile.interface';
 

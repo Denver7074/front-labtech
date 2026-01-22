@@ -3,11 +3,11 @@ import {Router} from '@angular/router';
 import {UserRegisterRequest} from '../../../data/auth.interface';
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Button} from '../../ui/button/button';
+import {Button} from '../../../shared/button/button';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {NgClass} from '@angular/common';
 import {AuthService} from '../../../service/auth/auth.service';
-import {NotificationService} from '../../ui/notification.service';
+import {NotificationService} from '../../../shared/notification.service';
 
 
 @Component({

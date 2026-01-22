@@ -26,7 +26,7 @@ import {MatFormField, MatLabel} from '@angular/material/input';
 import {ReagentExpiration} from '../../reagent-expiration/reagent-expiration';
 import {AbstractReagentTable} from '../../abstract-reagent-table';
 import {MatPaginator} from '@angular/material/paginator';
-import {EmptyPipe} from '../../../ui/pipes/empty-pipe';
+import {EmptyPipe} from '../../../../shared/pipes/empty-pipe';
 
 
 @Component({

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
 import {ActDebitingInfo} from '../../../../data/standard-sample.interface';
 import {FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Button} from '../../../ui/button/button';
+import {Button} from '../../../../shared/button/button';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {MatError, MatFormField, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';

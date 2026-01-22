@@ -3,7 +3,7 @@ import {Reagent} from '../../../../data/standard-sample.interface';
 import {FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Mode} from '../../../../data/response.interface';
 import {AbstractReagentDialog} from '../../abstract-reagent-dialog';
-import {Button} from '../../../ui/button/button';
+import {Button} from '../../../../shared/button/button';
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {MatChipGrid, MatChipInput, MatChipRemove, MatChipRow} from '@angular/material/chips';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';

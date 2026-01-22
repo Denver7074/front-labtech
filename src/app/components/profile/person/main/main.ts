@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Loader} from '../../../ui/loader/loader';
+import {Loader} from '../../../../shared/loader/loader';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTabsModule} from '@angular/material/tabs';
-import {SnilsPipe} from '../../../ui/pipes/snils-pipe';
+import {SnilsPipe} from '../../../../shared/pipes/snils-pipe';
 
 import {MatChipsModule} from '@angular/material/chips';
 import {CommonModule, DatePipe} from '@angular/common';

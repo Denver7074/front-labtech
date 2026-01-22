@@ -11,9 +11,10 @@ import {
 } from '@angular/forms';
 import {Mode} from '../../../../data/response.interface';
 import {AbstractReagentDialog} from '../../abstract-reagent-dialog';
-import {Button} from "../../../ui/button/button";
+import {Button} from "../../../../shared/button/button";
 import {
-  MatAutocomplete, MatAutocompleteModule,
+  MatAutocomplete,
+  MatAutocompleteModule,
   MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger,
   MatOption
@@ -39,8 +40,6 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
-import {ContractInfo} from '../../../../data/equipment.interface';
-import {debounceTime, distinctUntilChanged, startWith} from 'rxjs';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
@@ -223,7 +222,7 @@ export class ChemicalSolutionDialog extends AbstractReagentDialog<ChemicalSoluti
     if (!reagentId) return '';
 
     const reagent = this.components().find(r => r.id === reagentId);
-    if (!reagent) return reagentId; // fallback на ID
+    if (!reagent) return reagentId;
 
     return reagent.number
       ? `${reagent.name} (${reagent.number})`
@@ -248,29 +247,24 @@ export class ChemicalSolutionDialog extends AbstractReagentDialog<ChemicalSoluti
     return `${reagent.remains} ${reagent.unit || ''}`.trim();
   }
 
-  // В компоненте
   private createRemainsValidator(index: number) {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
 
-      // Пропускаем пустые/некорректные значения
       if (value == null || value <= 0) {
         return null;
       }
 
-      // Получаем reagentId из текущей строки
       const reagentId = this.solutionComponents.at(index)?.get('reagentId')?.value;
       if (!reagentId) {
         return null;
       }
 
-      // Находим реагент и его остаток
       const reagent = this.components().find(r => r.id === reagentId);
       if (!reagent || reagent.remains == null) {
         return null;
       }
 
-      // Проверяем превышение
       return value > reagent.remains
         ? {
           exceedsRemains: {

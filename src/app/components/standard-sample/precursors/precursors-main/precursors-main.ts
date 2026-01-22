@@ -23,7 +23,7 @@ import {MatFormField, MatLabel} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTooltip} from '@angular/material/tooltip';
-import {EmptyPipe} from '../../../ui/pipes/empty-pipe';
+import {EmptyPipe} from '../../../../shared/pipes/empty-pipe';
 import {ReagentDialog} from '../precursor-dialog/precursor-dialog';
 
 

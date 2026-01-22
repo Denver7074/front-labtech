@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Loader} from '../../../ui/loader/loader';
+import {Loader} from '../../../../shared/loader/loader';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
 import {MatLabel} from '@angular/material/input';

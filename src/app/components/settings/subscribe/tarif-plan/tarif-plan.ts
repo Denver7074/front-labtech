@@ -1,5 +1,5 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
-import {NotificationService} from '../../../ui/notification.service';
+import {NotificationService} from '../../../../shared/notification.service';
 import {
   PaymentInfo,
   PaymentRequest,
@@ -10,9 +10,9 @@ import {
 import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
 
 import {MatDivider} from '@angular/material/divider';
-import {Loader} from '../../../ui/loader/loader';
+import {Loader} from '../../../../shared/loader/loader';
 import {MatIconModule} from '@angular/material/icon';
-import {Button} from '../../../ui/button/button';
+import {Button} from '../../../../shared/button/button';
 import {catchError, forkJoin, map, of} from 'rxjs';
 import {GuideService} from '../../../../service/guide.service';
 import {DecimalPipe} from '@angular/common';

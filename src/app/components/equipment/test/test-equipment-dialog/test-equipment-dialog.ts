@@ -24,7 +24,7 @@ import {
   TestEquipmentInfo
 } from '../../../../data/equipment.interface';
 import {AbstractDialogComponent} from '../../../abstract/abstract-dialog.component';
-import {Button} from '../../../ui/button/button';
+import {Button} from '../../../../shared/button/button';
 
 @Component({
   selector: 'app-test-equipment-dialog',

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormArray, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {Button} from '../../../ui/button/button';
+import {Button} from '../../../../shared/button/button';
 import {MatIconModule} from '@angular/material/icon';
 import {PERIOD_LABELS, TariffPlanInfo, TariffPriceInfo} from '../../../../data/subscribe.interface';
 import {MatButton, MatIconButton} from '@angular/material/button';
