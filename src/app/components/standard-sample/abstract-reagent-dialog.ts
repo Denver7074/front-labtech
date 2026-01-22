@@ -20,7 +20,7 @@ export abstract class AbstractReagentDialog<TInterface extends ChemicalSolutionI
   protected dialog = inject(MatDialog);
   protected documentInput = new FormControl('');
   protected readonly regulatoryDocumentsSignal = signal<Map<string, string> | null>(null);
-  filteredContracts = signal<ContractInfo[]>([]);
+  protected filteredContracts = signal<ContractInfo[]>([]);
   protected contracts = signal<ContractInfo[]>([]);
 
   protected override onSubmit() {

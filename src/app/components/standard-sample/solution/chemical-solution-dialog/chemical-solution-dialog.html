@@ -158,61 +158,94 @@
           </div>
         </mat-expansion-panel>
 
-        <!-- Компоненты раствора -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>Компоненты раствора</mat-panel-title>
-          </mat-expansion-panel-header>
+        @if (form.get('regulatoryDocuments')?.value?.length > 0) {
+          <!-- Компоненты раствора -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Компоненты раствора</mat-panel-title>
+            </mat-expansion-panel-header>
 
-          <div class="form-fields">
-            <div formArrayName="solutionComponents"> <!-- ← Правильное имя -->
-              @for (control of solutionComponents.controls; track $index; let i = $index) {
-                <div [formGroupName]="i" class="grid" style="">
-                  <!-- Количество -->
-                  <mat-form-field appearance="outline">
-                    <mat-label>Количество</mat-label>
-                    <input matInput type="number" step="0.001" formControlName="value" placeholder="0.000">
-                    @if (control.get('value')?.hasError('required') && control.get('value')?.touched) {
-                      <mat-error>Укажите количество</mat-error>
-                    }
-                  </mat-form-field>
+            <div class="form-fields">
+              <div formArrayName="solutionComponents">
+                @for (control of solutionComponents.controls; track $index; let i = $index) {
+                  <div [formGroupName]="i" class="grid" style="grid-template-columns: 1fr 1fr auto;">
+                    <!-- Реагент -->
+                    <mat-form-field appearance="outline">
+                      <mat-label>Реагент</mat-label>
+                      @if (getRemainsForComponent(i); as remains) {
+                        <mat-hint align="end">Остаток: {{ remains }}</mat-hint>
+                      }
+                      <input
+                        matInput
+                        [formControlName]="'reagentId'"
+                        [matAutocomplete]="reagentAuto"
+                        placeholder="Начните вводить название..." />
 
-                  <!-- Реагент -->
-                  <mat-form-field appearance="outline">
-                    <mat-label>Реагент</mat-label>
-                    <input matInput formControlName="reagentId" placeholder="ID реагента">
-                    @if (control.get('reagentId')?.hasError('required') && control.get('reagentId')?.touched) {
-                      <mat-error>Укажите реагент</mat-error>
-                    }
-                  </mat-form-field>
+                      <mat-autocomplete
+                        #reagentAuto="matAutocomplete"
+                        [displayWith]="displayReagentName"
+                        (optionSelected)="onReagentSelected($event, i)">
+                        @for (comp of components(); track comp.id) {
+                          <mat-option [value]="comp.id">
+                            {{ comp.name }}
+                            @if (comp.number) {
+                              ({{ comp.number }})
+                            }
+                          </mat-option>
+                        }
+                      </mat-autocomplete>
 
-                  <!-- Кнопка удаления -->
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="warn"
-                    (click)="removeSolutionComponent(i)"
-                    [disabled]="solutionComponents.length === 1">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </div>
-              }
+                      @if (control.get('reagentId')?.hasError('required') && control.get('reagentId')?.touched) {
+                        <mat-error>Выберите реагент</mat-error>
+                      }
+                    </mat-form-field>
 
-              @if (solutionComponents.length === 0) {
-                <p class="no-data">Нет добавленных компонентов</p>
-              }
+                    <!-- Количество -->
+                    <mat-form-field appearance="outline">
+                      <mat-label>Количество</mat-label>
+
+                      @if (getUnitForComponent(i); as unit) {
+                        <span matSuffix class="mr-20">{{ unit }}&nbsp;</span>
+                      }
+
+                      <input matInput type="number" step="0.001" formControlName="value" placeholder="0.000">
+                      <!-- Ошибки -->
+                      @if (control.get('value')?.hasError('required') && control.get('value')?.touched) {
+                        <mat-error>Укажите количество</mat-error>
+                      }
+                      @if (control.get('value')?.hasError('exceedsRemains')) {
+                        <mat-error>Превышает остаток</mat-error>
+                      }
+                    </mat-form-field>
+
+                    <!-- Кнопка удаления -->
+                    <button
+                      type="button"
+                      mat-icon-button
+                      color="warn"
+                      (click)="removeSolutionComponent(i)"
+                      [disabled]="solutionComponents.length === 1">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                }
+
+                @if (solutionComponents.length === 0) {
+                  <p class="no-data">Нет добавленных компонентов</p>
+                }
+              </div>
+
+              <button
+                mat-stroked-button
+                type="button"
+                (click)="addSolutionComponents()"
+                class="add-component-btn">
+                <mat-icon>add</mat-icon>
+                Добавить компонент
+              </button>
             </div>
-
-            <button
-              mat-stroked-button
-              type="button"
-              (click)="addSolutionComponents()"
-              class="add-component-btn">
-              <mat-icon>add</mat-icon>
-              Добавить компонент
-            </button>
-          </div>
-        </mat-expansion-panel>
+          </mat-expansion-panel>
+        }
 
       </mat-accordion>
     </form>

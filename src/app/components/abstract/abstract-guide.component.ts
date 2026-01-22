@@ -5,7 +5,7 @@ import {GuideService} from '../../service/guide.service';
 
 export abstract class AbstractGuideComponent {
   protected notification = inject(NotificationService);
-  protected guideService = inject(GuideService);
+  private guideService = inject(GuideService);
   protected valueType = signal<Map<string, Map<string, string>>>(new Map<string, Map<string, string>>());
 
   protected loadGuide(pathGuide: string[]): void {

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractReagentComponent} from '../../abstract-reagent.component';
+import {AbstractReagentTable} from '../../abstract-reagent-table';
 import {ChemicalSolutionInfo} from '../../../../data/standard-sample.interface';
 import {DatePipe} from '@angular/common';
 import {MatButton, MatIconButton} from '@angular/material/button';
@@ -7,9 +7,13 @@ import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
-  MatHeaderRowDef, MatRow, MatRowDef, MatTable
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable
 } from '@angular/material/table';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
@@ -57,7 +61,7 @@ import {ReagentDialog} from '../precursor-dialog/precursor-dialog';
   styleUrl: "../../standard-reagent.scss",
   standalone: true
 })
-export class PrecursorsMain extends AbstractReagentComponent<ChemicalSolutionInfo> implements OnInit {
+export class PrecursorsMain extends AbstractReagentTable<ChemicalSolutionInfo> implements OnInit {
   protected readonly PrecursorsDialog = ReagentDialog;
 
   protected override getPath(): string {
@@ -69,18 +73,16 @@ export class PrecursorsMain extends AbstractReagentComponent<ChemicalSolutionInf
     this.id.set(profileId);
     this.loadGuide(['regulatory-documents']);
     this.loadEntities();
-    this.displayedColumns = [...this.allColumns];
+    this.displayedColumns = [...this.getAllColumns()];
   }
 
-  protected override allColumns = [
-    'index',
-    'name',
-    'producer',
-    'termsOfUse',
-    'regulatoryDocuments',
-    'ownership',
-    'actions'
-  ];
+  protected override getAllColumns(): string[] {
+    return [
+      ...super.getAllColumns(),
+      'ownership',
+      'actions'
+    ];
+  }
 
   protected override getColumnLabel(column: string): string {
     const labels: Record<string, string> = {

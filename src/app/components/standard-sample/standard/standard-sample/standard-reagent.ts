@@ -24,7 +24,7 @@ import {StandardReagentInfo} from '../../../../data/standard-sample.interface';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatFormField, MatLabel} from '@angular/material/input';
 import {ReagentExpiration} from '../../reagent-expiration/reagent-expiration';
-import {AbstractReagentComponent} from '../../abstract-reagent.component';
+import {AbstractReagentTable} from '../../abstract-reagent-table';
 import {MatPaginator} from '@angular/material/paginator';
 import {EmptyPipe} from '../../../ui/pipes/empty-pipe';
 
@@ -63,7 +63,7 @@ import {EmptyPipe} from '../../../ui/pipes/empty-pipe';
   styleUrl: "../../standard-reagent.scss",
   standalone: true
 })
-export class StandardReagent extends AbstractReagentComponent<StandardReagentInfo> implements OnInit {
+export class StandardReagent extends AbstractReagentTable<StandardReagentInfo> implements OnInit {
   protected readonly StandardEquipmentDialog = StandardSampleDialog;
 
   protected override getPath(): string {
@@ -75,19 +75,17 @@ export class StandardReagent extends AbstractReagentComponent<StandardReagentInf
     this.id.set(profileId);
     this.loadGuide(['standard-sample-type', 'regulatory-documents']);
     this.loadEntities();
-    this.displayedColumns = [...this.allColumns];
+    this.displayedColumns = [...this.getAllColumns()];
   }
 
-  protected override allColumns = [
-    'index',
-    'name',
-    'producer',
-    'characteristics',
-    'termsOfUse',
-    'regulatoryDocuments',
-    'ownership',
-    'actions'
-  ];
+  protected override getAllColumns(): string[] {
+    return [
+      ...super.getAllColumns(),
+      'characteristics',
+      'ownership',
+      'actions'
+    ];
+  }
 
   protected override getColumnLabel(column: string): string {
     const labels: Record<string, string> = {

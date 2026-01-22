@@ -61,20 +61,22 @@ export class AdditionalEquipment extends AbstractTableComponent<AdditionalEquipm
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
     this.loadEntities();
-    this.displayedColumns = [...this.allColumns];
+    this.displayedColumns = [...this.getAllColumns()];
   }
 
-  protected readonly allColumns = [
-    'index',
-    'name',
-    'producer',
-    'yearOfCommissioning',
-    'numbers',
-    'purpose',
-    'location',
-    'ownership',
-    'actions'
-  ];
+  protected override getAllColumns(): string[] {
+    return [
+      ...super.getAllColumns(),
+      'name',
+      'producer',
+      'yearOfCommissioning',
+      'numbers',
+      'purpose',
+      'location',
+      'ownership',
+      'actions'
+    ];
+  }
 
   protected getColumnLabel(column: string): string {
     const labels: Record<string, string> = {

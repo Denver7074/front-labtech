@@ -35,6 +35,7 @@ export interface FormDataInterface<T> {
   mode: Mode;
   value?: T;
   guide: Map<string, Map<string, string>>;
+  other: Map<string, string>;
 }
 
 export enum Mode {

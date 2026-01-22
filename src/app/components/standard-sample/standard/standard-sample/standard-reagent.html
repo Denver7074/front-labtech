@@ -26,7 +26,7 @@
       Колонки
     </button>
     <mat-menu #columnMenu="matMenu">
-      @for (col of allColumns; track col) {
+      @for (col of getAllColumns(); track col) {
         @if (col !== 'index' && col !== 'actions') {
           <button mat-menu-item>
             <mat-checkbox
@@ -160,7 +160,9 @@
             <div class="char-line">
               {{ char.name }}: {{ char.value }}{{ char.unit ? ' ' + char.unit : '' }}
               @if (char.uncertainty != null) {
-                <span class="uncertainty">(±{{ char.uncertainty }}{{ char.unitUncertainty || char.unit ? ' ' + (char.unitUncertainty || char.unit) : '' }})</span>
+                <span
+                  class="uncertainty">(±{{ char.uncertainty }}{{ char.unitUncertainty || char.unit ? ' ' + (char.unitUncertainty || char.unit) : '' }}
+                  )</span>
               }
             </div>
           }
@@ -199,17 +201,19 @@
           </button>
 
           <!-- Взять реактив (только если consumable = true) -->
-          @if (item.consumable && item.canUse) {
-            <button
-              mat-menu-item
-              (click)="openDialogExpenditure(item)">
-              <mat-icon>remove_shopping_cart</mat-icon>
-              <span>Взять реактив</span>
-            </button>
+          @if (item.consumable) {
+            @if (item.canUse) {
+              <button
+                mat-menu-item
+                (click)="openDialogExpenditure(ReagentExpenditureDialog, item, Mode.CREATE)">
+                <mat-icon>remove_shopping_cart</mat-icon>
+                <span>Взять реактив</span>
+              </button>
+            }
 
             <button
               mat-menu-item
-              (click)="openHistoryExpenditure(item)">
+              (click)="openDialogExpenditure(ReagentHistoryExpenditure, item, Mode.VIEW)">
               <mat-icon>receipt_long</mat-icon>
               <span>История расхода</span>
             </button>
@@ -218,7 +222,7 @@
           <!-- Удалить -->
           <button
             mat-menu-item
-            (click)="delete(item.id)">
+            (click)="delete(getPathDelete(item.id))">
             <mat-icon>{{ item.canUse ? 'move_to_inbox' : 'delete' }}</mat-icon>
             <span>{{ item.canUse ? 'Убрать в архив' : 'Удалить' }} </span>
           </button>

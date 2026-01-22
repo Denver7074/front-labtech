@@ -37,8 +37,17 @@ export class CrudService {
       );
   }
 
-  get<TResponse>(path: string): Observable<TResponse> {
-    return this.http.get<ApiResponse<TResponse>>(path)
+  get<TResponse>(path: string, filter?: Map<string, string | string[]>): Observable<TResponse> {
+    let params = new HttpParams();
+
+    if (filter) {
+      for (const [key, value] of filter.entries()) {
+        if (value != null) {
+          params = params.append(key, value.toString());
+        }
+      }
+    }
+    return this.http.get<ApiResponse<TResponse>>(path, {params})
       .pipe(
         map((response: ApiResponse<TResponse>) => {
           if (response.error) {

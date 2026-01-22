@@ -19,7 +19,7 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import {ChemicalSolutionInfo} from '../../../../data/standard-sample.interface';
 import {MatIconModule} from '@angular/material/icon';
 import {MatFormField, MatLabel} from '@angular/material/input';
-import {AbstractReagentComponent} from '../../abstract-reagent.component';
+import {AbstractReagentTable} from '../../abstract-reagent-table';
 import {MatTooltip} from '@angular/material/tooltip';
 import {ReagentExpiration} from '../../reagent-expiration/reagent-expiration';
 import {ReagentDialog} from '../reagent-dialog/reagent-dialog';
@@ -60,7 +60,7 @@ import {EmptyPipe} from '../../../ui/pipes/empty-pipe';
   styleUrl: "../../standard-reagent.scss",
   standalone: true
 })
-export class ReagentMain extends AbstractReagentComponent<ChemicalSolutionInfo> implements OnInit {
+export class ReagentMain extends AbstractReagentTable<ChemicalSolutionInfo> implements OnInit {
   protected readonly ReagentDialog = ReagentDialog;
 
   protected override getPath(): string {
@@ -72,7 +72,7 @@ export class ReagentMain extends AbstractReagentComponent<ChemicalSolutionInfo> 
     this.id.set(profileId);
     this.loadGuide(['purity-reagent-type', 'regulatory-documents']);
     this.loadEntities();
-    this.displayedColumns = [...this.allColumns];
+    this.displayedColumns = [...this.getAllColumns()];
   }
 
   protected getPurity(typeId: string, value: number): string | '-' {
@@ -81,16 +81,14 @@ export class ReagentMain extends AbstractReagentComponent<ChemicalSolutionInfo> 
     return type + ` ${value}%`;
   }
 
-  protected override allColumns = [
-    'index',
-    'name',
-    'purity',
-    'producer',
-    'termsOfUse',
-    'regulatoryDocuments',
-    'ownership',
-    'actions'
-  ];
+  protected override getAllColumns(): string[] {
+    return [
+      ...super.getAllColumns(),
+      'purity',
+      'ownership',
+      'actions'
+    ];
+  }
 
   protected override getColumnLabel(column: string): string {
     const labels: Record<string, string> = {

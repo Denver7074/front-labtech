@@ -68,23 +68,25 @@ export class TestEquipment extends AbstractTableComponent<TestEquipmentInfo> imp
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
     this.loadEntities();
-    this.displayedColumns = [...this.allColumns];
+    this.displayedColumns = [...this.getAllColumns()];
   }
 
-  protected allColumns = [
-    'index',
-    'name',
-    'producer',
-    'yearOfCommissioning',
-    'numbers',
-    'measurementType',
-    'measurementGroup',
-    'location',
-    'characteristics',
-    'attestation',
-    'ownership',
-    'actions'
-  ];
+  protected override getAllColumns(): string[] {
+    return [
+      ...super.getAllColumns(),
+      'name',
+      'producer',
+      'yearOfCommissioning',
+      'numbers',
+      'measurementType',
+      'measurementGroup',
+      'location',
+      'characteristics',
+      'attestation',
+      'ownership',
+      'actions'
+    ];
+  }
 
   getColumnLabel(column: string): string {
     const labels: Record<string, string> = {

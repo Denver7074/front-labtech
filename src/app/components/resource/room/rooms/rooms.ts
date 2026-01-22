@@ -57,25 +57,31 @@ export class Rooms extends AbstractTableComponent<RoomInfo> implements OnInit {
     return '/equipment-service/api/v1/organizations/parts/';
   }
 
+  protected getPathDelete(id: string) {
+    return `${this.getPath()}/${id}/organizations/parts/${this.id()}`
+  }
+
   ngOnInit(): void {
     const profileId = this.activatedRoute.snapshot.paramMap.get('organizationPartId');
     this.id.set(profileId);
     this.loadGuide(['parameter-type', 'equipment-type']);
     this.loadEntities();
-    this.displayedColumns = [...this.allColumns];
+    this.displayedColumns = [...this.getAllColumns()];
   }
 
-  protected readonly allColumns = [
-    'index',
-    'purpose',
-    'typeRoom',
-    'address',
-    'square',
-    'parameterTypeIds',
-    'equipmentTypeIds',
-    'ownership',
-    'actions'
-  ];
+  protected override getAllColumns(): string[] {
+    return [
+      ...super.getAllColumns(),
+      'purpose',
+      'typeRoom',
+      'address',
+      'square',
+      'parameterTypeIds',
+      'equipmentTypeIds',
+      'ownership',
+      'actions'
+    ];
+  }
 
   protected getColumnLabel(column: string): string {
     const labels: Record<string, string> = {

@@ -48,7 +48,12 @@ export class LoginComponent {
     this.authService.login(requestBody).subscribe({
       next: (value) => {
         const userId = JwtUtils.getPayload(value.accessToken)?.userId
-        this.router.navigate([`persons/${userId}/general`])
+        const type = JwtUtils.getPayload(value.accessToken)?.type?.[0];
+        if (type === 'PERSON') {
+          this.router.navigate([`persons/${userId}/general`])
+        } else {
+          this.router.navigate([`organizations/${userId}/general`])
+        }
       },
       error: (error) => this.notification.showErrorMsg(error.error.error.message)
     });

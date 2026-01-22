@@ -9,7 +9,7 @@
       Колонки
     </button>
     <mat-menu #columnMenu="matMenu">
-      @for (col of allColumns; track col) {
+      @for (col of getAllColumns(); track col) {
         @if (col !== 'index' && col !== 'actions') {
           <button mat-menu-item>
             <mat-checkbox
