@@ -21,7 +21,7 @@ export class Sub {
   @ViewChild('transactionsTab') transactionsTab!: Transactions;
 
   onTabChange($event: MatTabChangeEvent) {
-    if ($event.index === 1) { // индекс вашей вкладки
+    if ($event.index === 1) {
       this.transactionsTab.ngOnInit();
     }
   }

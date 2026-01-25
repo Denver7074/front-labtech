@@ -121,6 +121,7 @@ export abstract class AbstractTableComponent<TInterface> extends AbstractGuideCo
       .subscribe({
         next: () => {
           this.loadEntities();
+          this.notification.showSuccessMsg('Добавлено');
         },
         error: (err) => this.notification.showErrorMsg(err.error.error.message)
       });
